@@ -7,6 +7,8 @@
         mc:Ignorable="d"
         xmlns:vm="clr-namespace:StartCS_Exceptions.ViewModels"
         xmlns:fa="http://schemas.awesome.incremented/wpf/xaml/fontawesome.sharp"
+        xmlns:viewModelClient="clr-namespace:StartCS_Exceptions.Views.Windows.ClientView"
+        xmlns:viewModelTransaction="clr-namespace:StartCS_Exceptions.Views.Windows.TransactionView"
         Title="MainView" Height="700" Width="1300"
         WindowStartupLocation="CenterScreen"
         WindowStyle="None"
@@ -16,10 +18,14 @@
     <Window.DataContext>
         <vm:MainWindowViewModel x:Name="ViewModel"/>
     </Window.DataContext>
-
+    
     <Window.Resources>
-        <DataTemplate DataType="{}">
-            <local:MainView/>
+        <DataTemplate DataType="{x:Type viewModelClient:ClientViewModel}">
+            <viewModelClient:ClientView/>
+        </DataTemplate>
+
+        <DataTemplate DataType="{x:Type viewModelTransaction:TransactionViewModel}">
+            <viewModelTransaction:TransactionView/>
         </DataTemplate>
     </Window.Resources>
 
@@ -77,7 +83,7 @@
                     </RadioButton>
                     <RadioButton Style="{StaticResource menuButton}"
                                  Tag="{StaticResource color2}"
-                                 Command="{Binding ShowCustomerViewCommand}">
+                                 Command="{Binding OpenClientViewCommand}">
                         <StackPanel Orientation="Horizontal">
                             <fa:IconImage Icon="UserGroup" Style="{StaticResource menuButtonIcon}"/>
                             <TextBlock Text="Data clients" Style="{StaticResource menuButtonText}"/>
@@ -86,7 +92,7 @@
                     <RadioButton Style="{StaticResource menuButton}"
                                  Tag="{StaticResource color3}"
                                  IsChecked="False"
-                                 Command="{Binding ShowHomeViewCommand}">
+                                 Command="{Binding Path=OpenTransactionViewCommand}">
                         <StackPanel Orientation="Horizontal">
                             <fa:IconImage Icon="MoneyBillTransfer" Style="{StaticResource menuButtonIcon}"/>
                             <TextBlock Text="Transaction" Style="{StaticResource menuButtonText}"/>
@@ -166,12 +172,12 @@
                         <StackPanel Grid.Column="0"
                                     Orientation="Horizontal"
                                     VerticalAlignment="Center">
-                            <fa:IconImage Icon="{Binding}"
+                            <fa:IconImage Icon="{Binding Icon}"
                                           Height="20"
                                           Width="20"
                                           Foreground="{StaticResource titleColor2}"
                                           Margin="35,0,10,0"/>
-                            <TextBlock Text="{Binding}"
+                            <TextBlock Text="{Binding Caption}"
                                        Foreground="{StaticResource titleColor2}"
                                        FontSize="16"
                                        FontFamily="Montserrat"
@@ -225,7 +231,7 @@
                     </Grid>
                     
                     <!--Content section / Child views-->
-                    <ContentControl Content="{Binding}"
+                    <ContentControl Content="{Binding CurrentChildView}"
                                     Grid.Row="2"
                                     Margin="25"/>
                 </Grid>

@@ -8,7 +8,7 @@ using System.Threading.Tasks;
 
 namespace StartCS_Exceptions.ViewModels.Base
 {
-    internal class ViewModel : INotifyPropertyChanged
+    public class ViewModel : INotifyPropertyChanged
     {
         public event PropertyChangedEventHandler PropertyChanged;
 

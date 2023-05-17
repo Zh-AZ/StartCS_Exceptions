@@ -13,14 +13,14 @@ using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
 
-namespace StartCS_Exceptions.Views.Windows.ClientView
+namespace StartCS_Exceptions.Views.Windows.TransactionView
 {
     /// <summary>
-    /// Логика взаимодействия для ClientView.xaml
+    /// Логика взаимодействия для TransactionView.xaml
     /// </summary>
-    public partial class ClientView : UserControl
+    public partial class TransactionView : UserControl
     {
-        public ClientView()
+        public TransactionView()
         {
             InitializeComponent();
         }
