@@ -134,7 +134,9 @@
   <ItemGroup>
     <None Include="App.config" />
   </ItemGroup>
-  <ItemGroup />
+  <ItemGroup>
+    <Resource Include="Images\CoinBank.jpg" />
+  </ItemGroup>
   <ItemGroup>
     <Resource Include="Images\Bank.jpeg" />
   </ItemGroup>

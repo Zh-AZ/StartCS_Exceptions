@@ -5,8 +5,611 @@
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
              xmlns:local="clr-namespace:StartCS_Exceptions.Views.Windows.TransactionView"
              mc:Ignorable="d" 
-             d:DesignHeight="450" d:DesignWidth="800">
-    <Grid>
-        
-    </Grid>
+             d:DesignHeight="600" d:DesignWidth="1000"
+             Background="#462AD8">
+    <Border>
+        <Border.Background>
+            <ImageBrush ImageSource="/Images/CoinBank.jpg"
+                        Stretch="UniformToFill"/>
+        </Border.Background>
+
+        <Border Opacity="0.95">
+            <Border.Background>
+                <LinearGradientBrush StartPoint="0,1" EndPoint="1,0">
+                    <GradientStop Color="#060531" Offset="0"/>
+                    <GradientStop Color="#1B1448" Offset="1"/>
+                </LinearGradientBrush>
+            </Border.Background>
+
+            <Grid>
+                <DockPanel>
+                    <Grid>
+                        <Grid.InputBindings>
+                            <MouseBinding Command="{Binding Path=ClearFocusCommand}" 
+                                          MouseAction="LeftClick"/>
+                        </Grid.InputBindings>
+                        <Grid.RowDefinitions>
+                            <RowDefinition Height="100*"/>
+                            <RowDefinition Height="177*"/>
+                            <RowDefinition Height="140*"/>
+                        </Grid.RowDefinitions>
+
+                        <Border Grid.Row="0" 
+                                Background="Transparent"
+                                BorderThickness="2" Margin="0,0,0,235" 
+                                Grid.RowSpan="2"
+                                CornerRadius="0,0,8,8">
+                            <Border.BorderBrush>
+                                <LinearGradientBrush StartPoint="0,0" EndPoint="1,1">
+                                    <GradientStop Color="#462AD8" Offset="0"/>
+                                    <GradientStop Color="#DA34AE" Offset="0.75"/>
+                                    <GradientStop Color="#8A16C1" Offset="1"/>
+                                </LinearGradientBrush>
+                            </Border.BorderBrush>
+
+                            <Canvas>
+                                <StackPanel Canvas.Left="122" Canvas.Top="49" 
+                                            HorizontalAlignment="Left" VerticalAlignment="Top" 
+                                            Width="154">
+                                    <TextBlock Text="Поиск клиента по ID" 
+                                               Foreground="#E0FFFF" 
+                                               FontSize="15" FontWeight="Medium"/>
+
+                                    <TextBox Name="SearchBox" 
+                                             Height="25" 
+                                             FontSize="15" 
+                                             TextAlignment="Center" 
+                                             Foreground="#2F4F4F"/>
+                                </StackPanel>
+
+                                <StackPanel Canvas.Left="575" Canvas.Top="29" 
+                                            Width="120" 
+                                            HorizontalAlignment="Left" 
+                                            VerticalAlignment="Center">
+
+                                    <TextBlock Text="Недепозитный счёт" 
+                                               TextAlignment="Center"  
+                                               Foreground="#E0FFFF" 
+                                               FontSize="13" FontWeight="Medium"/>
+
+                                    <TextBox Name="FoundBalanceBlock" 
+                                             IsReadOnly="True" 
+                                             FontWeight="Medium" 
+                                             FontSize="13" Foreground="#000000" 
+                                             Height="25" TextAlignment="Center"/>
+                                </StackPanel>
+
+                                <StackPanel Canvas.Left="749" Canvas.Top="29" 
+                                            HorizontalAlignment="Left" 
+                                            VerticalAlignment="Center" Width="120">
+
+                                    <TextBlock Text="Депозитный счёт" 
+                                               TextAlignment="Center"  
+                                               Foreground="#E0FFFF" 
+                                               FontSize="13" 
+                                               FontWeight="Medium"/>
+
+                                    <TextBox x:Name="DepFoundBalanceBlock" 
+                                             IsReadOnly="True" 
+                                             Height="25" FontWeight="Medium" 
+                                             FontSize="13" Foreground="#1B1448" 
+                                             TextAlignment="Center"/>
+                                </StackPanel>
+
+                                <Button Content="Найти" 
+                                        Command="{Binding Path=SearchCommand}" 
+                                        FontWeight="Medium" Canvas.Left="313" 
+                                        Canvas.Top="65" 
+                                        HorizontalAlignment="Left" 
+                                        VerticalAlignment="Top" 
+                                        Width="91" Height="29">
+
+                                    <Button.Style>
+                                        <Style TargetType="Button">
+                                            <Setter Property="TextElement.FontFamily" 
+                                                    Value="Fonts/#Dosis"/>
+                                            <Setter Property="Background" Value="#462AD8"/>
+                                            <Setter Property="Cursor" Value="Hand"/>
+
+                                            <Style.Triggers>
+                                                <Trigger Property="IsMouseOver" Value="True">
+                                                    <Setter Property="Background" Value="#8A16C1"/>
+                                                </Trigger>
+                                            </Style.Triggers>
+                                        </Style>
+                                    </Button.Style>
+
+                                    <Button.Template>
+                                        <ControlTemplate TargetType="Button">
+                                            <Border CornerRadius="5" 
+                                                    Background="{TemplateBinding Background}">
+
+                                                <ContentPresenter VerticalAlignment="Center" 
+                                                                  HorizontalAlignment="Center"/>
+                                            </Border>
+                                        </ControlTemplate>
+                                    </Button.Template>
+                                </Button>
+
+                                <Button x:Name="OpenDepositButton" 
+                                        Command="{Binding Path=OpenOrCloseDepositCommand}" 
+                                        Content="" Canvas.Left="764" Canvas.Top="87" 
+                                        HorizontalAlignment="Left" 
+                                        Foreground="#D3D3D3" 
+                                        FontWeight="Medium" 
+                                        VerticalAlignment="Top" 
+                                        Width="90" Height="25" 
+                                        Style="{DynamicResource ButtonColorOpenStyle}">
+
+                                    <Button.Template>
+                                        <ControlTemplate TargetType="Button">
+                                            <Border CornerRadius="5" 
+                                                    Background="{TemplateBinding Background}">
+                                                <ContentPresenter VerticalAlignment="Center" 
+                                                                  HorizontalAlignment="Center"/>
+                                            </Border>
+                                        </ControlTemplate>
+                                    </Button.Template>
+                                </Button>
+
+                                <Button x:Name="OpenNonDepositButton" 
+                                        Foreground="#D3D3D3" 
+                                        FontWeight="Medium" 
+                                        Content="" 
+                                        Command="{Binding Path=OpenOrCloseNonDepositCommand}" 
+                                        Style="{DynamicResource ButtonColorOpenStyle}" 
+                                        Canvas.Left="590" Canvas.Top="87" 
+                                        HorizontalAlignment="Left" 
+                                        Width="90" Height="24"
+                                        VerticalAlignment="Center">
+
+                                    <Button.Template>
+                                        <ControlTemplate TargetType="Button">
+                                            <Border CornerRadius="5" 
+                                                    Background="{TemplateBinding Background}">
+                                                <ContentPresenter VerticalAlignment="Center" 
+                                                                  HorizontalAlignment="Center"/>
+                                            </Border>
+                                        </ControlTemplate>
+                                    </Button.Template>
+                                </Button>
+                            </Canvas>
+                        </Border>
+
+                        <Grid Grid.Row="1" Margin="0,5,0,0">
+                            <Border Margin="0,10,501,-3" 
+                                CornerRadius="8,8,3,3"
+                                BorderThickness="2" RenderTransformOrigin="0.5,0.5">
+                                <Border.RenderTransform>
+                                    <TransformGroup>
+                                        <ScaleTransform/>
+                                        <SkewTransform AngleY="-0.286"/>
+                                        <RotateTransform/>
+                                        <TranslateTransform Y="-1.495"/>
+                                    </TransformGroup>
+                                </Border.RenderTransform>
+                                <Border.BorderBrush>
+                                    <LinearGradientBrush StartPoint="0,0" EndPoint="1,1">
+                                        <GradientStop Color="#462AD8" Offset="0"/>
+                                        <GradientStop Color="#DA34AE" Offset="0.75"/>
+                                        <GradientStop Color="#8A16C1" Offset="1"/>
+                                    </LinearGradientBrush>
+                                </Border.BorderBrush>
+                                <!--<Border.Background>
+                                <LinearGradientBrush StartPoint="0.5,0" EndPoint="0.5,1">
+                                    <GradientStop Color="#708090" Offset="0.0" />
+                                    <GradientStop Color="#708090" Offset="0.5" />
+                                    <GradientStop Color="#2F4F4F" Offset="1.0" />
+                                </LinearGradientBrush>
+                            </Border.Background>-->
+
+                                <Canvas>
+                                    <Button x:Name="NonDepButton" 
+                                        Content="Пополнить" 
+                                        FontWeight="Medium" 
+                                        Command="{Binding Path=NonDepPlusCommand}" 
+                                        Style="{DynamicResource ButtonColorOpenStyle}" 
+                                        Width="92" Height="29" 
+                                        Canvas.Left="306" Canvas.Top="124" 
+                                        HorizontalAlignment="Left" VerticalAlignment="Center">
+
+                                        <Button.Template>
+                                            <ControlTemplate TargetType="Button">
+                                                <Border CornerRadius="5" 
+                                                    Background="{TemplateBinding Background}">
+                                                    <ContentPresenter VerticalAlignment="Center" 
+                                                                  HorizontalAlignment="Center"/>
+                                                </Border>
+                                            </ControlTemplate>
+                                        </Button.Template>
+                                    </Button>
+
+                                    <TextBlock Text="Недепозитный счёт" 
+                                           Foreground="#E0FFFF" 
+                                           FontSize="18" 
+                                           FontWeight="Medium" 
+                                           Canvas.Left="174" Canvas.Top="9" 
+                                           HorizontalAlignment="Left" 
+                                           VerticalAlignment="Top" 
+                                           Width="172" Height="26"/>
+
+                                    <TextBlock Canvas.Left="80" Canvas.Top="101" 
+                                           HorizontalAlignment="Left" 
+                                           VerticalAlignment="Center">
+                                    
+                                    <Run Text="ID клиента: " 
+                                         FontSize="13" FontWeight="Medium" 
+                                         Foreground="#B0C4DE"/>
+                                    
+                                    <TextBox x:Name="NonDepAccountIDBlock" 
+                                             Width="60" TextAlignment="Center"/>
+                                    </TextBlock>
+
+                                    <TextBlock Canvas.Left="80" Canvas.Top="160" 
+                                           HorizontalAlignment="Left" 
+                                           VerticalAlignment="Top">
+                                    
+                                <Run Text="Количество: " 
+                                     FontWeight="Medium" 
+                                     FontSize="13" 
+                                     Foreground="#B0C4DE"/>
+                                    
+                                <TextBox x:Name="NonDepAmountBlock" 
+                                         Width="60" 
+                                         TextAlignment="Center"/>
+                                    </TextBlock>
+                                </Canvas>
+                            </Border>
+
+                            <Border Margin="500,7,0,0" 
+                                CornerRadius="8,8,3,3"
+                                BorderThickness="2">
+                                <Border.BorderBrush>
+                                    <LinearGradientBrush StartPoint="0,0" EndPoint="1,1">
+                                        <GradientStop Color="#8A16C1" Offset="0"/>
+                                        <GradientStop Color="#DA34AE" Offset="0.75"/>
+                                        <GradientStop Color="#462AD8" Offset="1"/>
+                                    </LinearGradientBrush>
+                                </Border.BorderBrush>
+                                <!--<Border.Background>
+                                <LinearGradientBrush StartPoint="0.5,0" EndPoint="0.5,1">
+                                    <GradientStop Color="#708090" Offset="0.0" />
+                                    <GradientStop Color="#708090" Offset="0.5" />
+                                    <GradientStop Color="#2F4F4F" Offset="1.0" />
+                                </LinearGradientBrush>
+                            </Border.Background>-->
+
+                                <Canvas>
+                                    <TextBlock Text="Депозитный счёт" 
+                                           Canvas.Left="174" Canvas.Top="10"  
+                                           Foreground="#E0FFFF" 
+                                           FontSize="18" 
+                                           FontWeight="Medium" 
+                                           HorizontalAlignment="Left" 
+                                           VerticalAlignment="Center"/>
+
+                                    <TextBlock Canvas.Left="71" Canvas.Top="94" 
+                                           HorizontalAlignment="Left" 
+                                           VerticalAlignment="Top">
+                                    
+                                    <Run Text="ID клиента:" 
+                                         FontSize="13" 
+                                         FontWeight="Medium" 
+                                         Foreground="#B0C4DE"/> 
+                                    
+                                    <TextBox x:Name="DepAccountIDBlock" 
+                                             Width="60" TextAlignment="Center"/>
+                                    </TextBlock>
+
+                                    <TextBlock Canvas.Left="71" Canvas.Top="157" 
+                                           HorizontalAlignment="Center" 
+                                           VerticalAlignment="Top">
+                                    
+                                    <Run Text="Количество: " 
+                                         FontSize="13" 
+                                         FontWeight="Medium" 
+                                         Foreground="#B0C4DE"/>
+                                    
+                                    <TextBox x:Name="DepAmountBlock" 
+                                             Width="60" 
+                                             TextAlignment="Center"/>
+                                    </TextBlock>
+
+                                    <Button x:Name="DepButton" 
+                                        Content="Пополнить" 
+                                        Command="{Binding Path=DepositPlusCommand}" 
+                                        FontWeight="Medium" 
+                                        Style="{DynamicResource ButtonColorOpenStyle}" 
+                                        Canvas.Left="328" Canvas.Top="119" 
+                                        HorizontalAlignment="Left" 
+                                        VerticalAlignment="Top" 
+                                        Width="92" Height="29">
+
+                                        <Button.Template>
+                                            <ControlTemplate TargetType="Button">
+                                                <Border CornerRadius="5" 
+                                                    Background="{TemplateBinding Background}">
+                                                    <ContentPresenter VerticalAlignment="Center" 
+                                                                  HorizontalAlignment="Center"/>
+                                                </Border>
+                                            </ControlTemplate>
+                                        </Button.Template>
+                                    </Button>
+                                </Canvas>
+                            </Border>
+                        </Grid>
+
+                        <Border Grid.Row="2" 
+                                Background="Transparent"
+                                BorderThickness="2"
+                                 CornerRadius="8,8,0,0">
+                            <Border.BorderBrush>
+                                <LinearGradientBrush StartPoint="0,0" EndPoint="1,1">
+                                    <GradientStop Color="#462AD8" Offset="0"/>
+                                    <GradientStop Color="#DA34AE" Offset="0.75"/>
+                                    <GradientStop Color="#8A16C1" Offset="1"/>
+                                </LinearGradientBrush>
+                            </Border.BorderBrush>
+
+                            <Canvas>
+                                <TextBlock Text="Переводы" 
+                                           TextAlignment="Center" 
+                                           FontSize="20"
+                                           Foreground="#E6E6FA" 
+                                           FontWeight="Bold" Canvas.Left="426" 
+                                           HorizontalAlignment="Left" 
+                                           VerticalAlignment="Center" 
+                                           Width="144" Height="28"/>
+
+                                <TextBlock Canvas.Left="69" Canvas.Top="69" 
+                                           HorizontalAlignment="Center" 
+                                           VerticalAlignment="Top">
+                                    
+                                    <Run Text="От(ID): " 
+                                         Foreground="#FFF0F5" 
+                                         FontWeight="Medium" 
+                                         FontSize="13"/>
+                                    
+                                    <TextBox x:Name="FromAccountTransaction" 
+                                             FontWeight="Medium" 
+                                             Foreground="#696969" 
+                                             TextAlignment="Center" 
+                                             Width="70"/>
+                                </TextBlock>
+
+                                <TextBlock Canvas.Left="69" Canvas.Top="138"
+                                           HorizontalAlignment="Center" 
+                                           VerticalAlignment="Center">
+                                    
+                                    <Run Text="Кому(ID): " 
+                                         Foreground="#000000" 
+                                         FontWeight="Medium" 
+                                         FontSize="13"/>
+                                    
+                                    <TextBox x:Name="ToAccountTransaction" 
+                                             FontWeight="Medium" 
+                                             Foreground="#696969" 
+                                             TextAlignment="Center" 
+                                             Width="70"/>
+                                </TextBlock>
+
+                                <StackPanel Canvas.Left="250" 
+                                            Width="60" 
+                                            Canvas.Top="51" 
+                                            HorizontalAlignment="Left" 
+                                            VerticalAlignment="Top">
+
+                                    <TextBlock Text="Счёт" 
+                                               TextAlignment="Center" 
+                                               Foreground="#FFF0F5"
+                                               FontWeight="Medium" 
+                                               FontSize="13"/>
+
+                                    <TextBox x:Name="FromIDNonDepositBox" 
+                                             FontWeight="Medium" 
+                                             Foreground="#696969" 
+                                             TextAlignment="Center" 
+                                             IsReadOnly="True"/>
+                                </StackPanel>
+
+                                <StackPanel Canvas.Left="342" 
+                                            Width="60" 
+                                            Canvas.Top="51" 
+                                            HorizontalAlignment="Left" 
+                                            VerticalAlignment="Top">
+
+                                    <TextBlock Text="Деп.счёт" 
+                                               Foreground="#FFF0F5" 
+                                               FontWeight="Medium" 
+                                               FontSize="13" 
+                                               TextAlignment="Center"/>
+
+                                    <TextBox x:Name="FromIDDepositBox" 
+                                             FontWeight="Medium" 
+                                             TextAlignment="Center" 
+                                             Foreground="#696969" 
+                                             IsReadOnly="True"/>
+                                </StackPanel>
+
+                                <StackPanel Canvas.Left="250" Canvas.Top="120" 
+                                            Width="60" 
+                                            HorizontalAlignment="Left" 
+                                            VerticalAlignment="Top">
+
+                                    <TextBlock Text="Счёт" 
+                                               TextAlignment="Center" 
+                                               Foreground="#000000" 
+                                               FontWeight="Medium" 
+                                               FontSize="13"/>
+
+                                    <TextBox x:Name="ToIDNonDepositBox" 
+                                             FontWeight="Medium" 
+                                             Foreground="#696969" 
+                                             TextAlignment="Center" 
+                                             IsReadOnly="True"/>
+                                </StackPanel>
+
+                                <StackPanel Canvas.Left="342" 
+                                            Width="60" 
+                                            Canvas.Top="120"
+                                            HorizontalAlignment="Center" 
+                                            VerticalAlignment="Top">
+
+                                    <TextBlock Text="Деп.счёт"  
+                                               Foreground="#000000" 
+                                               FontWeight="Medium"
+                                               FontSize="13" 
+                                               TextAlignment="Center"/>
+
+                                    <TextBox x:Name="ToIDDepositBox" 
+                                             FontWeight="Medium" 
+                                             Foreground="#696969" 
+                                             TextAlignment="Center" 
+                                             IsReadOnly="True"/>
+                                </StackPanel>
+
+                                <Button Content="Поиск" 
+                                        Name="SeacrchButton" 
+                                        Command="{Binding Path=SearchIDFromToCommand}" 
+                                        Canvas.Left="452" Canvas.Top="83" 
+                                        FontWeight="Medium"
+                                        Width="92" Height="29" 
+                                        HorizontalAlignment="Left" VerticalAlignment="Top">
+
+                                    <Button.Style>
+                                        <Style TargetType="Button">
+                                            <Setter Property="TextElement.FontFamily" 
+                                                    Value="Fonts/#Dosis"/>
+                                            <Setter Property="Background" Value="#462AD8"/>
+                                            <Setter Property="Cursor" Value="Hand"/>
+
+                                            <Style.Triggers>
+                                                <Trigger Property="IsMouseOver" Value="True">
+                                                    <Setter Property="Background" 
+                                                            Value="#8A16C1"/>
+                                                </Trigger>
+                                            </Style.Triggers>
+                                        </Style>
+                                    </Button.Style>
+
+                                    <Button.Template>
+                                        <ControlTemplate TargetType="Button">
+                                            <Border CornerRadius="5"
+                                                    Background="{TemplateBinding Background}">
+                                                <ContentPresenter VerticalAlignment="Center" 
+                                                                  HorizontalAlignment="Center"/>
+                                            </Border>
+                                        </ControlTemplate>
+                                    </Button.Template>
+                                </Button>
+
+                                <TextBlock Canvas.Left="586" Canvas.Top="68" 
+                                           HorizontalAlignment="Left"
+                                           VerticalAlignment="Top">
+                                    
+                                    <Run Text="Перевод счёта: "  
+                                         Foreground="#000000" 
+                                         FontWeight="Medium" 
+                                         FontSize="13"/>
+                                    
+                                    <TextBox x:Name="TransactionAmountBlock" 
+                                             Width="100" 
+                                             FontWeight="Medium" 
+                                             Foreground="#696969" 
+                                             TextAlignment="Center"/>
+                                </TextBlock>
+
+                                <TextBlock Canvas.Left="586" Canvas.Top="127" 
+                                           HorizontalAlignment="Left" 
+                                           VerticalAlignment="Center">
+                                    
+                                    <Run Text="Перевод деп.счёта: " 
+                                         Foreground="#FFF0F5" 
+                                         FontWeight="Medium" 
+                                         FontSize="13"/>
+                                    
+                                    <TextBox x:Name="DepTransactionAmountBlock"
+                                            Width="100" 
+                                             FontWeight="Medium" 
+                                             Foreground="#696969" 
+                                             TextAlignment="Center"/>
+                                </TextBlock>
+
+                                <Button x:Name="DepTransferButton" 
+                                        Command="{Binding Path=DepTransferCommand}" 
+                                        Width="80" Height="25" 
+                                        Content="Перевести" 
+                                        FontWeight="Medium"
+                                        Canvas.Left="845" Canvas.Top="122" 
+                                        HorizontalAlignment="Left" 
+                                        VerticalAlignment="Top">
+
+                                    <Button.Style>
+                                        <Style TargetType="Button">
+                                            <Setter Property="TextElement.FontFamily" 
+                                                    Value="Fonts/#Dosis"/>
+                                            <Setter Property="Background" Value="#B0C4DE"/>
+                                            <Setter Property="Cursor" Value="Hand"/>
+                                            <Style.Triggers>
+                                                <Trigger Property="IsMouseOver" Value="True">
+                                                    <Setter Property="Background" 
+                                                            Value="#4682B4	"/>
+                                                </Trigger>
+                                            </Style.Triggers>
+                                        </Style>
+                                    </Button.Style>
+
+                                    <Button.Template>
+                                        <ControlTemplate TargetType="Button">
+                                            <Border CornerRadius="5" 
+                                                    Background="{TemplateBinding Background}">
+                                                <ContentPresenter VerticalAlignment="Center" 
+                                                                  HorizontalAlignment="Center"/>
+                                            </Border>
+                                        </ControlTemplate>
+                                    </Button.Template>
+                                </Button>
+
+                                <Button x:Name="TransferButton"
+                                        Command="{Binding Path=TransferCommand}"  
+                                        Width="80" Height="25" 
+                                        Content="Перевести" 
+                                        Canvas.Left="845" 
+                                        FontWeight="Medium"
+                                        Canvas.Top="61" 
+                                        HorizontalAlignment="Left"
+                                        VerticalAlignment="Center">
+
+                                    <Button.Style>
+                                        <Style TargetType="Button">
+                                            <Setter Property="TextElement.FontFamily" 
+                                                    Value="Fonts/#Dosis"/>
+                                            <Setter Property="Background" Value="#4682B4"/>
+                                            <Setter Property="Cursor" Value="Hand"/>
+                                            <Style.Triggers>
+                                                <Trigger Property="IsMouseOver" Value="True">
+                                                    <Setter Property="Background" 
+                                                            Value="#B0C4DE"/>
+                                                </Trigger>
+                                            </Style.Triggers>
+                                        </Style>
+                                    </Button.Style>
+
+                                    <Button.Template>
+                                        <ControlTemplate TargetType="Button">
+                                            <Border CornerRadius="5" 
+                                                    Background="{TemplateBinding Background}">
+                                                <ContentPresenter VerticalAlignment="Center" 
+                                                                  HorizontalAlignment="Center"/>
+                                            </Border>
+                                        </ControlTemplate>
+                                    </Button.Template>
+                                </Button>
+                            </Canvas>
+                        </Border>
+                    </Grid>
+                </DockPanel>
+            </Grid>
+        </Border>
+    </Border>
 </UserControl>
