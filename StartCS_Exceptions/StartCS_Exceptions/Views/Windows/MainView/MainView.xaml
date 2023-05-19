@@ -9,6 +9,8 @@
         xmlns:fa="http://schemas.awesome.incremented/wpf/xaml/fontawesome.sharp"
         xmlns:viewModelClient="clr-namespace:StartCS_Exceptions.Views.Windows.ClientView"
         xmlns:viewModelTransaction="clr-namespace:StartCS_Exceptions.Views.Windows.TransactionView"
+        xmlns:viewModelHistoryLog="clr-namespace:StartCS_Exceptions.Views.Windows.HistoryLogView"
+        xmlns:Icon="http://metro.mahapps.com/winfx/xaml/iconpacks"
         Title="MainView" Height="700" Width="1300"
         WindowStartupLocation="CenterScreen"
         WindowStyle="None"
@@ -26,6 +28,10 @@
 
         <DataTemplate DataType="{x:Type viewModelTransaction:TransactionViewModel}">
             <viewModelTransaction:TransactionView/>
+        </DataTemplate>
+
+        <DataTemplate DataType="{x:Type viewModelHistoryLog:HistoryLogViewModel}">
+            <viewModelHistoryLog:HistoryLogView/>
         </DataTemplate>
     </Window.Resources>
 
@@ -101,7 +107,7 @@
                     <RadioButton Style="{StaticResource menuButton}"
                                  Tag="{StaticResource color4}"
                                  IsChecked="False"
-                                 Command="{Binding ShowHomeViewCommand}">
+                                 Command="{Binding Path=OpenHistoryLogViewCommand}">
                         <StackPanel Orientation="Horizontal">
                             <fa:IconImage Icon="History" Style="{StaticResource menuButtonIcon}"/>
                             <TextBlock Text="History log" Style="{StaticResource menuButtonText}"/>
