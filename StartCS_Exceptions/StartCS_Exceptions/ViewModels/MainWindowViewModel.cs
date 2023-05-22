@@ -17,6 +17,7 @@ using System.Windows;
 using System.Collections.ObjectModel;
 using System.IO;
 using System.Xml.Serialization;
+using System.Windows.Media;
 
 namespace StartCS_Exceptions.ViewModels
 {
@@ -26,6 +27,7 @@ namespace StartCS_Exceptions.ViewModels
         string path = @"..\Debug\Client.xml";
 
         static MainView MainView;
+        static TransactionView TransactionView;
         private LoginView LoginView;
         private ViewModel _currentChildView;
         private string _Caption;
@@ -100,6 +102,7 @@ namespace StartCS_Exceptions.ViewModels
         private void OnOpenTransactionViewCommandexecute(object p)
         {
             CurrentChildView = new TransactionViewModel();
+            TransactionView = new TransactionView();
             Caption = "Transaction";
             Icon = IconChar.MoneyBillTransfer;
         }
@@ -113,12 +116,114 @@ namespace StartCS_Exceptions.ViewModels
             Icon = IconChar.History;
         }
 
+        /// <summary>
+        /// Удаление клиента
+        /// </summary>
+        public ICommand DeleteClientCommand { get; }
+        private bool CanDeleteClientCommandExecute(object p) => true; //p is Client client && Clients.Contains(client);
+        private void OnDeleteClientCommandExecute(object p)
+        {
+            if (!(p is Client client)) return;
+            Clients.Remove(client);
+           //WriteToFileHistoryLog($"\nУдалён Менеджером {client.ToString().ToUpper()}");
+            XmlSerialize(Clients);
+        }
+
+        /// <summary>
+        /// Сохранение изменений клииента
+        /// </summary>
+        public ICommand ChangeClientCommand { get; }
+        private bool CanChangeClientCommandExecute(object p) => true; //p is Client client && Clients.Contains(client);
+        private void OnChangeClientCommandExecute(object p)
+        {
+            XmlSerialize(Clients);
+            //ManagerWindow.myListView.Items.Refresh();
+            //MessageWindow = new MessageWindow();
+            //MessageWindow.Owner = ManagerWindow;
+            //MessageWindow.MessageBlock.Text = "Изменения сохранены, подробности в журнале историй";
+            //MessageWindow.Show();
+        }
+
+        /// <summary>
+        /// Поиск клиента по ID 
+        /// </summary>
+        public ICommand SearchCommand { get; }
+        private bool CanSearchCommandExecute(object p) => true;
+        private void OnSearchCommandExecute(object p)
+        {
+            SearchCommandMethod();
+        }
+
+        void SearchCommandMethod()
+        {
+            foreach (Client client in Clients)
+            {
+                if (TransactionView.SearchBox.Text == client.ID)
+                {
+                    TransactionView.FoundBalanceBlock.Text = client.Bill;
+                    TransactionView.DepFoundBalanceBlock.Text = client.DepBill;
+                    if (client.DepBill == "Закрытый")
+                    {
+                        TransactionView.OpenDepositButton.Content = "Открыть";
+                        TransactionView.OpenDepositButton.Style = TransactionView.OpenDepositButton.TryFindResource("ButtonColorOpenStyle") as Style;
+                        TransactionView.DepButton.Style = TransactionView.OpenDepositButton.TryFindResource("ButtonColorCloseStyle") as Style;
+                        TransactionView.DepFoundBalanceBlock.Background = new SolidColorBrush(Colors.DarkRed);
+                    }
+                    else
+                    {
+                        TransactionView.OpenDepositButton.Content = "Закрыть";
+                        TransactionView.OpenDepositButton.Style = TransactionView.OpenDepositButton.TryFindResource("ButtonColorCloseStyle") as Style;
+                        TransactionView.DepButton.Style = TransactionView.OpenDepositButton.TryFindResource("ButtonColorOpenStyle") as Style;
+                        TransactionView.DepFoundBalanceBlock.Background = new SolidColorBrush(Colors.White);
+                    }
+
+                    if (client.Bill == "Закрытый")
+                    {
+                        TransactionView.OpenNonDepositButton.Content = "Открыть";
+                        TransactionView.OpenNonDepositButton.Style = TransactionView.OpenDepositButton.TryFindResource("ButtonColorOpenStyle") as Style;
+                        TransactionView.NonDepButton.Style = TransactionView.OpenDepositButton.TryFindResource("ButtonColorCloseStyle") as Style;
+                        TransactionView.FoundBalanceBlock.Background = new SolidColorBrush(Colors.DarkRed);
+                    }
+                    else
+                    {
+                        TransactionView.OpenNonDepositButton.Content = "Закрыть";
+                        TransactionView.OpenNonDepositButton.Style = TransactionView.OpenDepositButton.TryFindResource("ButtonColorCloseStyle") as Style;
+                        TransactionView.NonDepButton.Style = TransactionView.OpenDepositButton.TryFindResource("ButtonColorOpenStyle") as Style;
+                        TransactionView.FoundBalanceBlock.Background = new SolidColorBrush(Colors.White);
+                    }
+                }
+            }
+
+            foreach (Client client in Clients)
+            {
+                if (TransactionView.FromAccountTransaction.Text == client.ID && TransactionView.FromAccountTransaction.Text != String.Empty
+                    && TransactionView.ToAccountTransaction.Text != string.Empty)
+                {
+                    TransactionView.FromIDNonDepositBox.Text = client.Bill;
+                    TransactionView.FromIDDepositBox.Text = client.DepBill;
+                }
+            }
+
+            foreach (Client client in Clients)
+            {
+                if (TransactionView.ToAccountTransaction.Text == client.ID && TransactionView.ToAccountTransaction.Text != String.Empty
+                   && TransactionView.FromAccountTransaction.Text != String.Empty)
+                {
+                    TransactionView.ToIDDepositBox.Text = client.DepBill;
+                    TransactionView.ToIDNonDepositBox.Text = client.Bill;
+                }
+            }
+        }
+
         public MainWindowViewModel() 
         {
             OpenMainViewCommand = new LambdaCommand(OnOpenMainViewCommandExecute, CanOpenMainViewCommandExecute);
             OpenClientViewCommand = new LambdaCommand(OnOpenClientCiewCommandExecute, CanOpenClientViewCommandExecute);
             OpenTransactionViewCommand = new LambdaCommand(OnOpenTransactionViewCommandexecute, CanOpenTransactionViewCommandExecute);
             OpenHistoryLogViewCommand = new LambdaCommand(OnOpenHistoryLohViewCommandExecute, CanOpenHistoryLogViewCommandExecute);
+            DeleteClientCommand = new LambdaCommand(OnDeleteClientCommandExecute, CanDeleteClientCommandExecute);
+            ChangeClientCommand = new LambdaCommand(OnChangeClientCommandExecute, CanChangeClientCommandExecute);
+            SearchCommand = new LambdaCommand(OnSearchCommandExecute, CanSearchCommandExecute);
 
             Clients = new ObservableCollection<Client>();
             if (File.Exists(path)) { XmlDeserialize(Clients); }

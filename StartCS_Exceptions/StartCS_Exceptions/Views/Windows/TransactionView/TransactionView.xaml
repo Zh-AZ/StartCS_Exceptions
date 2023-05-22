@@ -4,9 +4,14 @@
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
              xmlns:local="clr-namespace:StartCS_Exceptions.Views.Windows.TransactionView"
+             xmlns:vm="clr-namespace:StartCS_Exceptions.ViewModels"
              mc:Ignorable="d" 
              d:DesignHeight="600" d:DesignWidth="1000"
              Background="#462AD8">
+    <UserControl.DataContext>
+        <vm:MainWindowViewModel x:Name="ViewModel"/>
+    </UserControl.DataContext>
+
     <Border>
         <Border.Background>
             <ImageBrush ImageSource="/Images/CoinBank.jpg"
@@ -97,7 +102,8 @@
                                 </StackPanel>
 
                                 <Button Content="Найти" 
-                                        Command="{Binding Path=SearchCommand}" 
+                                        Command="{Binding Path=SearchCommand}"
+                                        Click="Button_Click"
                                         FontWeight="Medium" Canvas.Left="313" 
                                         Canvas.Top="65" 
                                         HorizontalAlignment="Left" 

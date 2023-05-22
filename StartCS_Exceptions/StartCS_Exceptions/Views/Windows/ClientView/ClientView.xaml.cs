@@ -24,5 +24,16 @@ namespace StartCS_Exceptions.Views.Windows.ClientView
         {
             InitializeComponent();
         }
+
+        private void Button_Click(object sender, RoutedEventArgs e)
+        {
+            if (membersDataGrid.SelectedIndex >= 0) 
+            {
+                for (int i =0; i < membersDataGrid.Items.Count; i++) 
+                {
+                    membersDataGrid.Items.Remove(membersDataGrid.SelectedItems[i]);
+                }
+            }
+        }
     }
 }

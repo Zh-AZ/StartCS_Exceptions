@@ -9,7 +9,8 @@
              xmlns:vm="clr-namespace:StartCS_Exceptions.ViewModels"
              xmlns:Icon="http://metro.mahapps.com/winfx/xaml/iconpacks"
              d:DesignHeight="450" d:DesignWidth="800"
-    xmlns:theme="clr-namespace:Microsoft.Windows.Themes;assembly=PresentationFramework.Aero2">
+             xmlns:theme="clr-namespace:Microsoft.Windows.Themes;assembly=PresentationFramework.Aero2">
+    
     <UserControl.Resources>
         <SolidColorBrush x:Key="{x:Static DataGrid.FocusBorderBrushKey}" Color="#FF000000"/>
 
@@ -423,23 +424,25 @@
                       ItemsSource="{Binding Clients}"
                       SelectedItem="{Binding Selected}"
                       Grid.Row="5"
+                      CanUserDeleteRows="True"
+                      IsReadOnly="False"
                       x:Name="membersDataGrid">
                 <DataGrid.Columns>
-                    <DataGridCheckBoxColumn CanUserResize="False" Width="auto"
+                    <!--<DataGridCheckBoxColumn CanUserResize="False" Width="auto"
                         ElementStyle="{StaticResource CheckBoxStyle1}">
                         <DataGridCheckBoxColumn.HeaderTemplate>
                             <DataTemplate>
                                 <CheckBox Style="{StaticResource CheckBoxStyle1}"/>
                             </DataTemplate>
                         </DataGridCheckBoxColumn.HeaderTemplate>
-                    </DataGridCheckBoxColumn>
+                    </DataGridCheckBoxColumn>-->
 
-                    <DataGridTextColumn Header="#" IsReadOnly="True" 
+                    <!--<DataGridTextColumn Header="#" IsReadOnly="True" 
                                         CanUserResize="False"
                                         Width="auto"
-                                        Binding="{Binding ID}"/>
+                                        Binding="{Binding ID}"/>-->
 
-                    <DataGridTemplateColumn Header="Member" IsReadOnly="True" Width="*">
+                    <!--<DataGridTemplateColumn Header="Member" IsReadOnly="True" Width="*">
                         <DataGridTemplateColumn.CellTemplate>
                             <DataTemplate>
                                 <StackPanel Orientation="Horizontal">
@@ -458,13 +461,13 @@
                                 </StackPanel>
                             </DataTemplate>
                         </DataGridTemplateColumn.CellTemplate>
-                    </DataGridTemplateColumn>
+                    </DataGridTemplateColumn>-->
 
                     <DataGridTextColumn Binding="{Binding ID}" Header="ID"/>
                     <DataGridTextColumn Binding="{Binding Surname}" Header="First name"/>
                     <DataGridTextColumn Binding="{Binding Name}"  Header="Middle name"/>
                     <DataGridTextColumn Binding="{Binding Patronymic}" Header="Last name"/>
-                    <DataGridTextColumn Binding="{Binding PhoneNumber}" Header="Phone"/>
+                    <DataGridTextColumn Binding="{Binding NumberPhone}" Header="Phone"/>
                     <DataGridTextColumn Binding="{Binding Address}" Header="Address"/>
                     <DataGridTextColumn Binding="{Binding Bill}" Header="Bill"/>
                     <DataGridTextColumn Binding="{Binding DepBill}" Header="Deposit bill"/>
@@ -483,17 +486,29 @@
                                         Width="*"
                                         Binding="{Binding NumberPhone}"/>-->
 
-                    <DataGridTemplateColumn Header="Operations" IsReadOnly="True" Width="auto">
+                    <DataGridTemplateColumn Header="Operations" 
+                                            IsReadOnly="False" 
+                                            Width="auto">
                         <DataGridTemplateColumn.CellTemplate>
                             <DataTemplate>
                                 <StackPanel Orientation="Horizontal">
-                                    <Button Style="{StaticResource gridEditButton}">
+                                    <Button Style="{StaticResource gridEditButton}"
+                                            CommandParameter="{Binding DataContext.Selected,
+                                            RelativeSource={RelativeSource AncestorType={x:Type DataGrid}}}"
+                                            Command="{Binding DataContext.ChangeClientCommand,
+                                            RelativeSource={RelativeSource AncestorType={x:Type DataGrid}}}">
+                                        
                                         <Icon:PackIconMaterial Kind="PencilOutline"
                                                                Style="{StaticResource gridButtonIcon}"/>
                                     </Button>
 
                                     <Button Style="{StaticResource gridRemoveButton}"
+                                            CommandParameter="{Binding DataContext.Selected,
+                                            RelativeSource={RelativeSource AncestorType={x:Type DataGrid}}}"
+                                            Command="{Binding DataContext.DeleteClientCommand, 
+                                            RelativeSource={RelativeSource AncestorType={x:Type DataGrid}}}"
                                             Margin="5,0,0,0">
+                                        
                                         <Icon:PackIconMaterial Kind="DeleteOutline"
                                                                Style="{StaticResource gridButtonIcon}"/>
                                     </Button>
@@ -506,3 +521,6 @@
         </Border>
     </Grid>
 </UserControl>
+    
+<!--Command="{Binding RelativeSource={RelativeSource AncestorType={x:Type DataGrid}},
+                                            Path=DataContext.DeleteClientCommand}"-->

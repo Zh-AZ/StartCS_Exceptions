@@ -21,6 +21,7 @@
         <vm:MainWindowViewModel x:Name="ViewModel"/>
     </Window.DataContext>
     
+
     <Window.Resources>
         <DataTemplate DataType="{x:Type viewModelClient:ClientViewModel}">
             <viewModelClient:ClientView/>
