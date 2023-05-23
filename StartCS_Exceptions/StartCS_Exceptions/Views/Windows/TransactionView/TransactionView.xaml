@@ -7,7 +7,8 @@
              xmlns:vm="clr-namespace:StartCS_Exceptions.ViewModels"
              mc:Ignorable="d" 
              d:DesignHeight="600" d:DesignWidth="1000"
-             Background="#462AD8">
+             Background="#462AD8"
+             MouseDown="UserControl_MouseDown">
     <UserControl.DataContext>
         <vm:MainWindowViewModel x:Name="ViewModel"/>
     </UserControl.DataContext>
@@ -103,7 +104,7 @@
 
                                 <Button Content="Найти" 
                                         Command="{Binding Path=SearchCommand}"
-                                        Click="Button_Click"
+                                        Click="Search_Click"
                                         FontWeight="Medium" Canvas.Left="313" 
                                         Canvas.Top="65" 
                                         HorizontalAlignment="Left" 
@@ -145,7 +146,8 @@
                                         FontWeight="Medium" 
                                         VerticalAlignment="Top" 
                                         Width="90" Height="25" 
-                                        Style="{DynamicResource ButtonColorOpenStyle}">
+                                        Style="{DynamicResource ButtonColorOpenStyle}"
+                                        Click="OpenDepositButton_Click">
 
                                     <Button.Template>
                                         <ControlTemplate TargetType="Button">
@@ -167,7 +169,8 @@
                                         Canvas.Left="590" Canvas.Top="87" 
                                         HorizontalAlignment="Left" 
                                         Width="90" Height="24"
-                                        VerticalAlignment="Center">
+                                        VerticalAlignment="Center"
+                                        Click="OpenNonDepositButton_Click">
 
                                     <Button.Template>
                                         <ControlTemplate TargetType="Button">
@@ -213,7 +216,8 @@
                                     <Button x:Name="NonDepButton" 
                                         Content="Пополнить" 
                                         FontWeight="Medium" 
-                                        Command="{Binding Path=NonDepPlusCommand}" 
+                                        Command="{Binding Path=NonDepPlusCommand}"
+                                        Click="NonDepButton_Click"
                                         Style="{DynamicResource ButtonColorOpenStyle}" 
                                         Width="92" Height="29" 
                                         Canvas.Left="306" Canvas.Top="124" 
@@ -329,7 +333,8 @@
                                         Canvas.Left="328" Canvas.Top="119" 
                                         HorizontalAlignment="Left" 
                                         VerticalAlignment="Top" 
-                                        Width="92" Height="29">
+                                        Width="92" Height="29"
+                                        Click="DepButton_Click">
 
                                         <Button.Template>
                                             <ControlTemplate TargetType="Button">
@@ -480,7 +485,8 @@
                                         Canvas.Left="452" Canvas.Top="83" 
                                         FontWeight="Medium"
                                         Width="92" Height="29" 
-                                        HorizontalAlignment="Left" VerticalAlignment="Top">
+                                        HorizontalAlignment="Left" VerticalAlignment="Top"
+                                        Click="SeacrchButton_Click">
 
                                     <Button.Style>
                                         <Style TargetType="Button">
@@ -548,7 +554,8 @@
                                         FontWeight="Medium"
                                         Canvas.Left="845" Canvas.Top="122" 
                                         HorizontalAlignment="Left" 
-                                        VerticalAlignment="Top">
+                                        VerticalAlignment="Top"
+                                        Click="DepTransferButton_Click">
 
                                     <Button.Style>
                                         <Style TargetType="Button">
@@ -584,7 +591,8 @@
                                         FontWeight="Medium"
                                         Canvas.Top="61" 
                                         HorizontalAlignment="Left"
-                                        VerticalAlignment="Center">
+                                        VerticalAlignment="Center"
+                                        Click="TransferButton_Click">
 
                                     <Button.Style>
                                         <Style TargetType="Button">
