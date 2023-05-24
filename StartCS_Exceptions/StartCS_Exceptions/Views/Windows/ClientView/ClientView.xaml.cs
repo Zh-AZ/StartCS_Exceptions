@@ -1,5 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Collections.ObjectModel;
+using System.IO;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -12,6 +14,7 @@ using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
+using System.Xml.Serialization;
 
 namespace StartCS_Exceptions.Views.Windows.ClientView
 {
@@ -25,15 +28,9 @@ namespace StartCS_Exceptions.Views.Windows.ClientView
             InitializeComponent();
         }
 
-        private void Button_Click(object sender, RoutedEventArgs e)
+        private void SearchClientBox_MouseDown(object sender, MouseButtonEventArgs e)
         {
-            if (membersDataGrid.SelectedIndex >= 0) 
-            {
-                for (int i =0; i < membersDataGrid.Items.Count; i++) 
-                {
-                    membersDataGrid.Items.Remove(membersDataGrid.SelectedItems[i]);
-                }
-            }
+            SearchClientBox.Text = String.Empty;
         }
     }
 }

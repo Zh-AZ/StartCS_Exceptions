@@ -18,6 +18,8 @@ using System.Collections.ObjectModel;
 using System.IO;
 using System.Xml.Serialization;
 using System.Windows.Media;
+using System.Windows.Controls;
+using System.Windows.Data;
 
 namespace StartCS_Exceptions.ViewModels
 {
@@ -27,9 +29,11 @@ namespace StartCS_Exceptions.ViewModels
         string path = @"..\Debug\Client.xml";
 
         static MainView MainView;
+        static ClientView ClientView;
         static TransactionView TransactionView;
+        static HistoryLogView HistoryLogView;
         private LoginView LoginView;
-        private ViewModel _currentChildView;
+        private UserControl _currentChildView;
         private string _Caption;
         private static Client _Selected;
 
@@ -38,8 +42,8 @@ namespace StartCS_Exceptions.ViewModels
             get => _Selected;
             set => Set(ref _Selected, value);
         }
-
-        public ViewModel CurrentChildView
+        
+        public UserControl CurrentChildView
         {
             get
             {
@@ -91,8 +95,11 @@ namespace StartCS_Exceptions.ViewModels
         private bool CanOpenClientViewCommandExecute(object p) => true;
         private void OnOpenClientCiewCommandExecute(object p)
         {
-            //ClientView = new ClientView();
-            CurrentChildView = new ClientViewModel();
+            //CurrentChildView = new ClientViewModel();
+
+            if (ClientView != null) { ClientView.Visibility = Visibility.Collapsed; }
+            ClientView = new ClientView();
+            CurrentChildView = ClientView;
             Caption = "Customers";
             Icon = IconChar.UserGroup;
         }
@@ -101,18 +108,43 @@ namespace StartCS_Exceptions.ViewModels
         private bool CanOpenTransactionViewCommandExecute(object p) => true;
         private void OnOpenTransactionViewCommandexecute(object p)
         {
-            CurrentChildView = new TransactionViewModel();
+            //CurrentChildView = new TransactionViewModel();
+
+            if (TransactionView != null) { TransactionView.Visibility = Visibility.Collapsed; }
             TransactionView = new TransactionView();
+            CurrentChildView = TransactionView;   
             Caption = "Transaction";
             Icon = IconChar.MoneyBillTransfer;
+        }
+
+        public ICommand SearchClientCommand { get; }
+        private bool CanSearchClientCommandExecute(object p) => true;
+        private void OnSearchClientCommandExecute(object p)
+        {
+            if (ClientView.SearchClientBox.Text != String.Empty)
+            {
+                foreach (Client client in Clients)
+                {
+                    if (ClientView.SearchClientBox.Text == client.ID || ClientView.SearchClientBox.Text == client.Surname || ClientView.SearchClientBox.Text == client.Name || ClientView.SearchClientBox.Text == client.Patronymic)
+                    {
+                        List<Client> list = new List<Client>();
+                        list.Add(client);
+                        ClientView.membersDataGrid.ItemsSource = list;
+                    }
+                }
+            }
+            else { ClientView.membersDataGrid.ItemsSource = Clients; }
         }
 
         public ICommand OpenHistoryLogViewCommand { get; }
         private bool CanOpenHistoryLogViewCommandExecute(object p) => true;
         private void OnOpenHistoryLohViewCommandExecute(object p)
         {
-            CurrentChildView = new HistoryLogViewModel();
-            Caption = "History";
+            if (HistoryLogView != null) { HistoryLogView.Visibility = Visibility.Collapsed; }
+
+            HistoryLogView = new HistoryLogView();
+            CurrentChildView = HistoryLogView;
+            Caption = "История дейстий";
             Icon = IconChar.History;
         }
 
@@ -127,6 +159,7 @@ namespace StartCS_Exceptions.ViewModels
             Clients.Remove(client);
            //WriteToFileHistoryLog($"\nУдалён Менеджером {client.ToString().ToUpper()}");
             XmlSerialize(Clients);
+            ClientView.membersDataGrid.Items.Refresh();
         }
 
         /// <summary>
@@ -136,12 +169,8 @@ namespace StartCS_Exceptions.ViewModels
         private bool CanChangeClientCommandExecute(object p) => true; //p is Client client && Clients.Contains(client);
         private void OnChangeClientCommandExecute(object p)
         {
+            ClientView.membersDataGrid.UnselectAll();
             XmlSerialize(Clients);
-            //ManagerWindow.myListView.Items.Refresh();
-            //MessageWindow = new MessageWindow();
-            //MessageWindow.Owner = ManagerWindow;
-            //MessageWindow.MessageBlock.Text = "Изменения сохранены, подробности в журнале историй";
-            //MessageWindow.Show();
         }
 
         /// <summary>
@@ -215,6 +244,230 @@ namespace StartCS_Exceptions.ViewModels
             }
         }
 
+        public ICommand OpenOrCloseNonDepositCommand { get; }
+        private bool CanOpenNonDepositCommandExecute(object p) => true;
+        private void OnOpenNonDepositCommandExecute(object p)
+        {
+            foreach (Client client in Clients)
+            {
+                if (TransactionView.SearchBox.Text == client.ID)
+                {
+                    if (client.Bill == "Закрытый")
+                    {
+                        client.Bill = "0";
+                    }
+                    else
+                    {
+                        if (MessageBox.Show("Внимание весь счёт будет обнулён! Вы уверены что хотите продолжить?", "Внимание",
+                            MessageBoxButton.YesNo, MessageBoxImage.Warning, MessageBoxResult.No) == MessageBoxResult.Yes)
+                        {
+                            client.Bill = "Закрытый";
+                        }
+                    }
+                }
+            }
+            SearchCommandMethod();
+            XmlSerialize(Clients);
+        }
+
+        public ICommand OpenOrCloseDepositCommand { get; }
+        private bool CanOpenDepositCommandExecute(object p) => true;
+        private void OnOpenDepositCommandExecute(object p)
+        {
+            foreach (Client client in Clients)
+            {
+                if (TransactionView.SearchBox.Text == client.ID)
+                {
+                    if (client.DepBill == "Закрытый")
+                    {
+                        client.DepBill = "0";
+                    }
+                    else
+                    {
+                        if (MessageBox.Show("Внимание весь депозитный счёт будет обнулён! Вы уверены что хотите продолжить?", "Внимание",
+                           MessageBoxButton.YesNo, MessageBoxImage.Warning, MessageBoxResult.No) == MessageBoxResult.Yes)
+                        {
+                            client.DepBill = "Закрытый";
+                        }
+                    }
+                }
+            }
+            SearchCommandMethod();
+            XmlSerialize(Clients);
+        }
+
+        public ICommand NonDepPlusCommand { get; }
+        private bool CanNonDepPlusCommandExecute(object p) => true;
+        private void OnNonDepPlusCommandExecute(object p)
+        {
+            foreach (Client client in Clients)
+            {
+                if (TransactionView.NonDepAccountIDBlock.Text == client.ID && client.Bill != "Закрытый")
+                {
+                    if (TransactionView.NonDepAmountBlock.Text != string.Empty)
+                    {
+                        int sums = int.Parse(client.Bill) + int.Parse(TransactionView.NonDepAmountBlock.Text);
+                        client.Bill = Convert.ToString(sums);
+                    }
+                }
+            }
+            SearchCommandMethod();
+            XmlSerialize(Clients);
+        }
+
+        public ICommand DepositPlusCommand { get; }
+        private bool CanDepositPlusCommandExecute(object p) => true;
+        private void OnDepositPlusCommandExecute(object p)
+        {
+            foreach (Client client in Clients)
+            {
+                if (TransactionView.DepAccountIDBlock.Text == client.ID && client.DepBill != "Закрытый")
+                {
+                    if (TransactionView.DepAmountBlock.Text != string.Empty)
+                    {
+                        int sums = int.Parse(client.DepBill) + int.Parse(TransactionView.DepAmountBlock.Text);
+                        client.DepBill = Convert.ToString(sums);
+                    }
+                }
+            }
+            SearchCommandMethod();
+            XmlSerialize(Clients);
+        }
+
+        public ICommand SearchIDFromToCommand { get; }
+        private bool CanSearchIDFromToCommandExecute(object p) => true;
+        private void OnSearchIDFromToCommandExecute(object p)
+        {
+            foreach (Client client in Clients)
+            {
+                if (TransactionView.FromAccountTransaction.Text == client.ID && TransactionView.FromAccountTransaction.Text != String.Empty
+                    && TransactionView.ToAccountTransaction.Text != string.Empty)
+                {
+                    TransactionView.FromIDNonDepositBox.Text = client.Bill;
+                    TransactionView.FromIDDepositBox.Text = client.DepBill;
+
+                    if (TransactionView.FromIDNonDepositBox.Text == "Закрытый")
+                    {
+                        TransactionView.FromIDNonDepositBox.Background = new SolidColorBrush(Colors.DarkRed);
+                    }
+                    else { TransactionView.FromIDNonDepositBox.Background = new SolidColorBrush(Colors.White); }
+
+                    if (TransactionView.FromIDDepositBox.Text == "Закрытый")
+                    {
+                        TransactionView.FromIDDepositBox.Background = new SolidColorBrush(Colors.DarkRed);
+                    }
+                    else { TransactionView.FromIDDepositBox.Background = new SolidColorBrush(Colors.White); }
+
+                }
+                else continue;
+            }
+
+            foreach (Client client in Clients)
+            {
+                if (TransactionView.ToAccountTransaction.Text == client.ID && TransactionView.ToAccountTransaction.Text != String.Empty
+                   && TransactionView.FromAccountTransaction.Text != String.Empty)
+                {
+                    TransactionView.ToIDDepositBox.Text = client.DepBill;
+                    TransactionView.ToIDNonDepositBox.Text = client.Bill;
+
+                    if (TransactionView.ToIDDepositBox.Text == "Закрытый") { TransactionView.ToIDDepositBox.Background = new SolidColorBrush(Colors.DarkRed); }
+                    else { TransactionView.ToIDDepositBox.Background = new SolidColorBrush(Colors.White); }
+
+                    if (TransactionView.ToIDNonDepositBox.Text == "Закрытый") { TransactionView.ToIDNonDepositBox.Background = new SolidColorBrush(Colors.DarkRed); }
+                    else { TransactionView.ToIDNonDepositBox.Background = new SolidColorBrush(Colors.White); }
+                }
+                else continue;
+            }
+        }
+
+        private static int minusClientBalance;
+        private static bool ExistToBill = true;
+        private static bool ExistToDepBill = true;
+        private static Client dataNonDepositClient;
+        private static Client dataDepositClient;
+
+        /// <summary>
+        /// Перевод счёта от найденного по ID клиента к другому
+        /// </summary>
+        public ICommand TransferCommand { get; }
+        private bool CanTransferCommandExecute(object p) => true;
+        private void OnTransferCommandExecute(object p)
+        {
+            foreach (Client client in Clients)
+            {
+                if (TransactionView.FromAccountTransaction.Text == client.ID && TransactionView.FromAccountTransaction.Text != String.Empty
+                    && TransactionView.ToAccountTransaction.Text != String.Empty)
+                {
+                    if (TransactionView.TransactionAmountBlock.Text != String.Empty)
+                    {
+                        int amount = int.Parse(TransactionView.TransactionAmountBlock.Text);
+                        int clientBalance = int.Parse(client.Bill) - amount;
+                        client.Bill = Convert.ToString(clientBalance);
+                        minusClientBalance = amount;
+
+                        dataNonDepositClient = client;
+                    }
+                }
+            }
+
+            foreach (Client client in Clients)
+            {
+                if (client.Bill == "Закрытый") { ExistToBill = false; }
+                if (TransactionView.ToAccountTransaction.Text == client.ID && TransactionView.ToAccountTransaction.Text != String.Empty
+                    && TransactionView.FromAccountTransaction.Text != String.Empty)
+                {
+                    if (TransactionView.TransactionAmountBlock.Text != String.Empty && client.Bill != "Закрытый")
+                    {
+                        int sums = int.Parse(client.Bill) + minusClientBalance;
+                        client.Bill = Convert.ToString(sums);
+                    }
+                    else { MessageBox.Show("Счёт клиента закрытый"); }
+                }
+            }
+            SearchCommandMethod();
+            XmlSerialize(Clients);
+        }
+
+        public ICommand DepTransferCommand { get; }
+        private bool CanDepTransferCommandExecute(object p) => true;
+        private void OnDepTransferCommandExecute(object p)
+        {
+            foreach (Client client in Clients)
+            {
+                if (TransactionView.FromAccountTransaction.Text == client.ID && TransactionView.FromAccountTransaction.Text != String.Empty
+                    && TransactionView.ToAccountTransaction.Text != String.Empty)
+                {
+                    if (TransactionView.DepTransactionAmountBlock.Text != String.Empty && client.Bill != "Закрытый")
+                    {
+                        int amount = int.Parse(TransactionView.DepTransactionAmountBlock.Text);
+                        int clientBalance = int.Parse(client.DepBill) - amount;
+                        client.DepBill = Convert.ToString(clientBalance);
+                        minusClientBalance = amount;
+
+                        dataDepositClient = client;
+                    }
+                }
+            }
+
+            foreach (Client client in Clients)
+            {
+                if (client.DepBill == "Закрытый") { ExistToDepBill = false; }
+
+                if (TransactionView.ToAccountTransaction.Text == client.ID && TransactionView.ToAccountTransaction.Text != String.Empty
+                    && TransactionView.FromAccountTransaction.Text != String.Empty)
+                {
+                    if (TransactionView.DepTransactionAmountBlock.Text != String.Empty && client.DepBill != "Закрытый")
+                    {
+                        int sums = int.Parse(client.DepBill) + minusClientBalance;
+                        client.DepBill = Convert.ToString(sums);
+                    }
+                    else { MessageBox.Show("Депозитный счёт клиента закрытый"); }
+                }
+            }
+            SearchCommandMethod();
+            XmlSerialize(Clients);
+        }
+
         public MainWindowViewModel() 
         {
             OpenMainViewCommand = new LambdaCommand(OnOpenMainViewCommandExecute, CanOpenMainViewCommandExecute);
@@ -224,6 +477,14 @@ namespace StartCS_Exceptions.ViewModels
             DeleteClientCommand = new LambdaCommand(OnDeleteClientCommandExecute, CanDeleteClientCommandExecute);
             ChangeClientCommand = new LambdaCommand(OnChangeClientCommandExecute, CanChangeClientCommandExecute);
             SearchCommand = new LambdaCommand(OnSearchCommandExecute, CanSearchCommandExecute);
+            SearchClientCommand = new LambdaCommand(OnSearchClientCommandExecute, CanSearchClientCommandExecute);
+            OpenOrCloseNonDepositCommand = new LambdaCommand(OnOpenNonDepositCommandExecute, CanOpenNonDepositCommandExecute);
+            OpenOrCloseDepositCommand = new LambdaCommand(OnOpenDepositCommandExecute, CanOpenDepositCommandExecute);
+            NonDepPlusCommand = new LambdaCommand(OnNonDepPlusCommandExecute, CanNonDepPlusCommandExecute);
+            DepositPlusCommand = new LambdaCommand(OnDepositPlusCommandExecute, CanDepositPlusCommandExecute);
+            SearchIDFromToCommand = new LambdaCommand(OnSearchIDFromToCommandExecute, CanSearchIDFromToCommandExecute);
+            TransferCommand = new LambdaCommand(OnTransferCommandExecute, CanTransferCommandExecute);
+            DepTransferCommand = new LambdaCommand(OnDepTransferCommandExecute, CanDepTransferCommandExecute);
 
             Clients = new ObservableCollection<Client>();
             if (File.Exists(path)) { XmlDeserialize(Clients); }

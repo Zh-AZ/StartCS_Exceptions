@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Collections.ObjectModel;
 using System.ComponentModel;
 using System.IO;
 using System.Linq;
@@ -7,6 +8,7 @@ using System.Runtime.CompilerServices;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows;
+using System.Xml.Serialization;
 
 namespace StartCS_Exceptions
 {
@@ -29,14 +31,25 @@ namespace StartCS_Exceptions
             }
         }
 
-        string path = @"..\Debug\HistoryLog.txt";
-        async void WriteToFileHistoryLog(string propertyName, string ID, string Email, string Name, string Surname, string Patronymic, string NumberPhone, string Address)
+        string path = @"..\Debug\HistoryLog.xml";
+
+        public void XmlSerialize(ObservableCollection<Client> clients)
         {
-            using (StreamWriter sw = new StreamWriter(path, true))
+            File.WriteAllText(path, String.Empty);
+            XmlSerializer xmlSerializer = new XmlSerializer(typeof(ObservableCollection<Client>));
+            using (FileStream fs = new FileStream(path, FileMode.OpenOrCreate))
             {
-                await sw.WriteLineAsync($"Изменено {propertyName.ToUpper()} У клиента <{ID}>-<{Email}>-<{Name}>-<{Surname}>-<{Patronymic}>-<{NumberPhone}>-<{Address}>");
+                xmlSerializer.Serialize(fs, clients);
             }
         }
+       
+        //async void WriteToFileHistoryLog(string propertyName, string ID, string Email, string Name, string Surname, string Patronymic, string NumberPhone, string Address)
+        //{
+        //    using (StreamWriter sw = new StreamWriter(path, true))
+        //    {
+        //        await sw.WriteLineAsync($"Изменено {propertyName.ToUpper()} У клиента <{ID}>-<{Email}>-<{Name}>-<{Surname}>-<{Patronymic}>-<{NumberPhone}>-<{Address}>");
+        //    }
+        //}
 
         private string _ID;
         private string _Email;

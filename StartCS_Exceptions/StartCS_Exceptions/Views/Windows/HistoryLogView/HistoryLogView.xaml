@@ -4,10 +4,26 @@
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
              xmlns:local="clr-namespace:StartCS_Exceptions.Views.Windows.HistoryLogView"
+             xmlns:vm="clr-namespace:StartCS_Exceptions.ViewModels"
              mc:Ignorable="d" 
              d:DesignHeight="450" d:DesignWidth="800">
-    <Grid>
-       
+    
+    <UserControl.DataContext>
+        <vm:MainWindowViewModel x:Name="ViewModel"/>
+    </UserControl.DataContext>
 
+    <Grid>
+        <DataGrid>
+            <DataGrid.Columns>
+                <DataGridTextColumn Header="Изменения внесены"/>
+                <DataGridTextColumn Header="ID"/>
+                <DataGridTextColumn Header="First name"/>
+                <DataGridTextColumn Header="Middle name"/>
+                <DataGridTextColumn Header="Last name"/>
+                <DataGridTextColumn Header="Number phone"/>
+                <DataGridTextColumn Header="Address"/>
+                <DataGridTextColumn Header="Время"/>
+            </DataGrid.Columns>
+        </DataGrid>
     </Grid>
 </UserControl>

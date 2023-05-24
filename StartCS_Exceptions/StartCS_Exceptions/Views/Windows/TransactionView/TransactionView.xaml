@@ -103,8 +103,7 @@
                                 </StackPanel>
 
                                 <Button Content="Найти" 
-                                        Command="{Binding Path=SearchCommand}"
-                                        Click="Search_Click"
+                                        Command="{Binding Path=SearchCommand}"  
                                         FontWeight="Medium" Canvas.Left="313" 
                                         Canvas.Top="65" 
                                         HorizontalAlignment="Left" 
@@ -146,8 +145,7 @@
                                         FontWeight="Medium" 
                                         VerticalAlignment="Top" 
                                         Width="90" Height="25" 
-                                        Style="{DynamicResource ButtonColorOpenStyle}"
-                                        Click="OpenDepositButton_Click">
+                                        Style="{DynamicResource ButtonColorOpenStyle}">
 
                                     <Button.Template>
                                         <ControlTemplate TargetType="Button">
@@ -169,8 +167,7 @@
                                         Canvas.Left="590" Canvas.Top="87" 
                                         HorizontalAlignment="Left" 
                                         Width="90" Height="24"
-                                        VerticalAlignment="Center"
-                                        Click="OpenNonDepositButton_Click">
+                                        VerticalAlignment="Center"                    >
 
                                     <Button.Template>
                                         <ControlTemplate TargetType="Button">
@@ -216,8 +213,7 @@
                                     <Button x:Name="NonDepButton" 
                                         Content="Пополнить" 
                                         FontWeight="Medium" 
-                                        Command="{Binding Path=NonDepPlusCommand}"
-                                        Click="NonDepButton_Click"
+                                        Command="{Binding Path=NonDepPlusCommand}"                                      
                                         Style="{DynamicResource ButtonColorOpenStyle}" 
                                         Width="92" Height="29" 
                                         Canvas.Left="306" Canvas.Top="124" 
@@ -333,8 +329,7 @@
                                         Canvas.Left="328" Canvas.Top="119" 
                                         HorizontalAlignment="Left" 
                                         VerticalAlignment="Top" 
-                                        Width="92" Height="29"
-                                        Click="DepButton_Click">
+                                        Width="92" Height="29">
 
                                         <Button.Template>
                                             <ControlTemplate TargetType="Button">
@@ -485,8 +480,7 @@
                                         Canvas.Left="452" Canvas.Top="83" 
                                         FontWeight="Medium"
                                         Width="92" Height="29" 
-                                        HorizontalAlignment="Left" VerticalAlignment="Top"
-                                        Click="SeacrchButton_Click">
+                                        HorizontalAlignment="Left" VerticalAlignment="Top">
 
                                     <Button.Style>
                                         <Style TargetType="Button">
@@ -554,8 +548,7 @@
                                         FontWeight="Medium"
                                         Canvas.Left="845" Canvas.Top="122" 
                                         HorizontalAlignment="Left" 
-                                        VerticalAlignment="Top"
-                                        Click="DepTransferButton_Click">
+                                        VerticalAlignment="Top">
 
                                     <Button.Style>
                                         <Style TargetType="Button">
@@ -591,8 +584,7 @@
                                         FontWeight="Medium"
                                         Canvas.Top="61" 
                                         HorizontalAlignment="Left"
-                                        VerticalAlignment="Center"
-                                        Click="TransferButton_Click">
+                                        VerticalAlignment="Center">
 
                                     <Button.Style>
                                         <Style TargetType="Button">

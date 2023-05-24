@@ -331,7 +331,8 @@
                         Grid.Column="0">
                 <fa:IconImage Icon="Search" Height="20" Width="20" Foreground="{StaticResource plainTextColor3}"/>
 
-                <TextBox Text="Search..."
+                <TextBox x:Name="SearchClientBox"
+                         Text="Search..."
                          FontSize="13"
                          Height="24"
                          Width="300"
@@ -343,11 +344,12 @@
                          BorderBrush="{StaticResource plainTextColor3}"
                          BorderThickness="0,0,0,1"
                          VerticalContentAlignment="Center"
-                         Margin="5,5,0,0"/>
+                         Margin="5,5,0,0"
+                         PreviewMouseDown="SearchClientBox_MouseDown"/>
             </StackPanel>
 
             <Button
-                    Command="{Binding}"
+                    Command="{Binding Path=SearchClientCommand}"
                     Content="Search"
                     FontSize="12"
                     FontFamily="Montserrat"
@@ -422,7 +424,7 @@
                       ColumnHeaderStyle="{DynamicResource DataGridColumnHeaderStyle1}"
                       RowStyle="{DynamicResource DataGridRowStyle1}"
                       ItemsSource="{Binding Clients}"
-                      SelectedItem="{Binding Selected}"
+                      SelectedItem="{Binding Selected, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
                       Grid.Row="5"
                       CanUserDeleteRows="True"
                       IsReadOnly="False"
@@ -463,14 +465,29 @@
                         </DataGridTemplateColumn.CellTemplate>
                     </DataGridTemplateColumn>-->
 
-                    <DataGridTextColumn Binding="{Binding ID}" Header="ID"/>
-                    <DataGridTextColumn Binding="{Binding Surname}" Header="First name"/>
-                    <DataGridTextColumn Binding="{Binding Name}"  Header="Middle name"/>
-                    <DataGridTextColumn Binding="{Binding Patronymic}" Header="Last name"/>
-                    <DataGridTextColumn Binding="{Binding NumberPhone}" Header="Phone"/>
-                    <DataGridTextColumn Binding="{Binding Address}" Header="Address"/>
-                    <DataGridTextColumn Binding="{Binding Bill}" Header="Bill"/>
-                    <DataGridTextColumn Binding="{Binding DepBill}" Header="Deposit bill"/>
+                    <DataGridTextColumn Binding="{Binding ID, UpdateSourceTrigger=PropertyChanged}" 
+                                        Header="ID"/>
+                    
+                    <DataGridTextColumn Binding="{Binding Surname, UpdateSourceTrigger=PropertyChanged}" 
+                                        Header="First name"/>
+                    
+                    <DataGridTextColumn Binding="{Binding Name, UpdateSourceTrigger=PropertyChanged}"  
+                                        Header="Middle name"/>
+                    
+                    <DataGridTextColumn Binding="{Binding Patronymic, UpdateSourceTrigger=PropertyChanged}" 
+                                        Header="Last name"/>
+                    
+                    <DataGridTextColumn Binding="{Binding NumberPhone, UpdateSourceTrigger=PropertyChanged}" 
+                                        Header="Phone"/>
+                    
+                    <DataGridTextColumn Binding="{Binding Address, UpdateSourceTrigger=PropertyChanged}" 
+                                        Header="Address"/>
+                    
+                    <DataGridTextColumn Binding="{Binding Bill, UpdateSourceTrigger=PropertyChanged}" 
+                                        Header="Bill"/>
+                    
+                    <DataGridTextColumn Binding="{Binding DepBill, UpdateSourceTrigger=PropertyChanged}" 
+                                        Header="Deposit bill"/>
 
                     <!--<DataGridTextColumn Header="Position" 
                                         IsReadOnly="True" 
@@ -497,7 +514,7 @@
                                             RelativeSource={RelativeSource AncestorType={x:Type DataGrid}}}"
                                             Command="{Binding DataContext.ChangeClientCommand,
                                             RelativeSource={RelativeSource AncestorType={x:Type DataGrid}}}">
-                                        
+
                                         <Icon:PackIconMaterial Kind="PencilOutline"
                                                                Style="{StaticResource gridButtonIcon}"/>
                                     </Button>
