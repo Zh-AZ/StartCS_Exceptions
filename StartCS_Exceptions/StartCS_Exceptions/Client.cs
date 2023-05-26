@@ -16,6 +16,8 @@ namespace StartCS_Exceptions
     {
         public event PropertyChangedEventHandler PropertyChanged;
 
+        List<ClientsInHistory> ClientsInHistories = new List<ClientsInHistory>();
+
         protected virtual void OnPropertyChanged([CallerMemberName] string propertyName = null)
         {
             if (PropertyChanged != null)
@@ -27,29 +29,35 @@ namespace StartCS_Exceptions
                 {
                     //WriteToFileHistoryLog(propertyName, ID, Email, Surname, Name, Patronymic, NumberPhone, Address);
                     //MessageBox.Show($"Изменено {propertyName} У клиента {ID} {Email} {Surname} {Name} {Patronymic} {NumberPhone} {Address}");
+
+                    string changes = $"Изменено {propertyName} У клиента {ID} {Email} {Surname} {Name} {Patronymic} {NumberPhone} {Address}";
+
+                    ClientsInHistories.Add(new ClientsInHistory("Manager", changes, DateTime.Now));
+                    XmlSerialize(ClientsInHistories);
                 }
             }
         }
 
         string path = @"..\Debug\HistoryLog.xml";
 
-        public void XmlSerialize(ObservableCollection<Client> clients)
+        public void XmlSerialize(List<ClientsInHistory> clientsInHistories)
         {
-            File.WriteAllText(path, String.Empty);
-            XmlSerializer xmlSerializer = new XmlSerializer(typeof(ObservableCollection<Client>));
-            using (FileStream fs = new FileStream(path, FileMode.OpenOrCreate))
+            XmlSerializer xmlSerializer = new XmlSerializer(typeof(List<ClientsInHistory>));
+            using (FileStream fs = new FileStream(path, FileMode.Append))
             {
-                xmlSerializer.Serialize(fs, clients);
+                xmlSerializer.Serialize(fs, clientsInHistories);
             }
         }
-       
-        //async void WriteToFileHistoryLog(string propertyName, string ID, string Email, string Name, string Surname, string Patronymic, string NumberPhone, string Address)
-        //{
-        //    using (StreamWriter sw = new StreamWriter(path, true))
-        //    {
-        //        await sw.WriteLineAsync($"Изменено {propertyName.ToUpper()} У клиента <{ID}>-<{Email}>-<{Name}>-<{Surname}>-<{Patronymic}>-<{NumberPhone}>-<{Address}>");
-        //    }
-        //}
+
+        string pathtxt = @"..\Debug\History.txt";
+
+        async void WriteToFileHistoryLog(string propertyName, string ID, string Email, string Name, string Surname, string Patronymic, string NumberPhone, string Address)
+        {
+            using (StreamWriter sw = new StreamWriter(pathtxt, true))
+            {
+                await sw.WriteLineAsync($"Изменено {propertyName.ToUpper()} У клиента <{ID}>-<{Email}>-<{Name}>-<{Surname}>-<{Patronymic}>-<{NumberPhone}>-<{Address}>");
+            }
+        }
 
         private string _ID;
         private string _Email;

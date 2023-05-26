@@ -16,12 +16,7 @@
         <DataGrid>
             <DataGrid.Columns>
                 <DataGridTextColumn Header="Изменения внесены"/>
-                <DataGridTextColumn Header="ID"/>
-                <DataGridTextColumn Header="First name"/>
-                <DataGridTextColumn Header="Middle name"/>
-                <DataGridTextColumn Header="Last name"/>
-                <DataGridTextColumn Header="Number phone"/>
-                <DataGridTextColumn Header="Address"/>
+                <DataGridTextColumn Header="Что изменено"/>
                 <DataGridTextColumn Header="Время"/>
             </DataGrid.Columns>
         </DataGrid>
