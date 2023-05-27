@@ -13,11 +13,12 @@
     </UserControl.DataContext>
 
     <Grid>
-        <DataGrid>
+        <DataGrid ItemsSource="{Binding ClientsInHistories}"
+                  AutoGenerateColumns="False">
             <DataGrid.Columns>
-                <DataGridTextColumn Header="Изменения внесены"/>
-                <DataGridTextColumn Header="Что изменено"/>
-                <DataGridTextColumn Header="Время"/>
+                <DataGridTextColumn Header="Изменения внесены" Binding="{Binding WhoChanged}"/>
+                <DataGridTextColumn Header="Что изменено" Binding="{Binding WhatChanged}"/>
+                <DataGridTextColumn Header="Время" Binding="{Binding TimeChanged}"/>
             </DataGrid.Columns>
         </DataGrid>
     </Grid>

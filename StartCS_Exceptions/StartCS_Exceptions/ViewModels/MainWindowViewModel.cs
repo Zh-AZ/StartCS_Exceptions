@@ -20,12 +20,14 @@ using System.Xml.Serialization;
 using System.Windows.Media;
 using System.Windows.Controls;
 using System.Windows.Data;
+using System.Text.Json;
 
 namespace StartCS_Exceptions.ViewModels
 {
     internal class MainWindowViewModel : ViewModel
     {
         public static ObservableCollection<Client> Clients { get; set; } //= new ObservableCollection<Client>();
+        public static List<ClientsInHistory> ClientsInHistories { get; set; }        
         string path = @"..\Debug\Client.xml";
 
         static MainView MainView;
@@ -136,6 +138,8 @@ namespace StartCS_Exceptions.ViewModels
             else { ClientView.membersDataGrid.ItemsSource = Clients; }
         }
 
+        string historyLogPatch = @"..\Debug\HistoryLog.xml";
+
         public ICommand OpenHistoryLogViewCommand { get; }
         private bool CanOpenHistoryLogViewCommandExecute(object p) => true;
         private void OnOpenHistoryLohViewCommandExecute(object p)
@@ -146,6 +150,22 @@ namespace StartCS_Exceptions.ViewModels
             CurrentChildView = HistoryLogView;
             Caption = "История дейстий";
             Icon = IconChar.History;
+
+            if (File.Exists(historyLogPatch))
+            {
+                XmlSerializer xmlSerializer = new XmlSerializer(typeof(List<ClientsInHistory>));
+                using (FileStream fs = new FileStream(historyLogPatch, FileMode.OpenOrCreate))
+                {
+                    List<ClientsInHistory> newClients = xmlSerializer.Deserialize(fs) as List<ClientsInHistory>;
+                    if (newClients != null)
+                    {
+                        foreach (ClientsInHistory client in newClients)
+                        {
+                            ClientsInHistories.Add(client);
+                        }
+                    }
+                }
+            }
         }
 
         /// <summary>
@@ -487,6 +507,7 @@ namespace StartCS_Exceptions.ViewModels
             DepTransferCommand = new LambdaCommand(OnDepTransferCommandExecute, CanDepTransferCommandExecute);
 
             Clients = new ObservableCollection<Client>();
+            ClientsInHistories = new List<ClientsInHistory>();
             if (File.Exists(path)) { XmlDeserialize(Clients); }
             else { GenerationClient(); }
         }

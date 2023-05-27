@@ -9,6 +9,7 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Windows;
 using System.Xml.Serialization;
+using System.Text.Json;
 
 namespace StartCS_Exceptions
 {
@@ -16,7 +17,7 @@ namespace StartCS_Exceptions
     {
         public event PropertyChangedEventHandler PropertyChanged;
 
-        List<ClientsInHistory> ClientsInHistories = new List<ClientsInHistory>();
+        List<ClientsInHistory> ClientsInHistories { get; set; } //= new List<ClientsInHistory>();
 
         protected virtual void OnPropertyChanged([CallerMemberName] string propertyName = null)
         {
@@ -33,20 +34,54 @@ namespace StartCS_Exceptions
                     string changes = $"Изменено {propertyName} У клиента {ID} {Email} {Surname} {Name} {Patronymic} {NumberPhone} {Address}";
 
                     ClientsInHistories.Add(new ClientsInHistory("Manager", changes, DateTime.Now));
+
+                    //ClientsInHistory clientsInHistories = new ClientsInHistory("Manager", changes, DateTime.Now);
+                    XmlDeserialize();
                     XmlSerialize(ClientsInHistories);
+                    //JsonSerialize(ClientsInHistories);
                 }
             }
         }
 
         string path = @"..\Debug\HistoryLog.xml";
 
+        //public async void JsonSerialize(List<ClientsInHistory> clientsInHistories)
+        //{
+        //    var options = new JsonSerializerOptions { WriteIndented = true };
+        //    using (FileStream fs = new FileStream(path, FileMode.OpenOrCreate))
+        //    {
+        //        await JsonSerializer.SerializeAsync(fs, clientsInHistories, options);
+        //    }
+        //}
+
         public void XmlSerialize(List<ClientsInHistory> clientsInHistories)
         {
+            File.WriteAllText(path, String.Empty);
             XmlSerializer xmlSerializer = new XmlSerializer(typeof(List<ClientsInHistory>));
-            using (FileStream fs = new FileStream(path, FileMode.Append))
+            using (FileStream fs = new FileStream(path, FileMode.OpenOrCreate))
             {
                 xmlSerializer.Serialize(fs, clientsInHistories);
             }
+        }
+
+        void XmlDeserialize()
+        {
+            if (File.Exists(path) && new FileInfo(path).Length != 0)
+            {
+                XmlSerializer xmlSerializer = new XmlSerializer(typeof(List<ClientsInHistory>));
+                using (FileStream fs = new FileStream(path, FileMode.OpenOrCreate))
+                {
+                    List<ClientsInHistory> newClients = xmlSerializer.Deserialize(fs) as List<ClientsInHistory>;
+                    if (newClients != null)
+                    {
+                        foreach (ClientsInHistory client in newClients)
+                        {
+                            ClientsInHistories.Add(client);
+                        }
+                    }
+                }
+            }
+            else { ClientsInHistories.Clear(); }
         }
 
         string pathtxt = @"..\Debug\History.txt";
@@ -168,7 +203,7 @@ namespace StartCS_Exceptions
             }
         }
 
-        public Client() { }
+        public Client() { ClientsInHistories = new List<ClientsInHistory>(); }
 
         public Client(string id, string email, string name, string surname, string patronymic,
             string numberPhone, string address, string bill, string depBill)
