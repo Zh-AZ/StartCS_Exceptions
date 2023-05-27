@@ -14,11 +14,27 @@
 
     <Grid>
         <DataGrid ItemsSource="{Binding ClientsInHistories}"
-                  AutoGenerateColumns="False">
+                  AutoGenerateColumns="False"
+                  IsReadOnly="True"
+                  Style="{DynamicResource DataGridStyle1}" 
+                  CellStyle="{DynamicResource DataGridCellStyle1}"
+                  ColumnHeaderStyle="{DynamicResource DataGridColumnHeaderStyle1}"
+                  RowStyle="{DynamicResource DataGridRowStyle1}">
             <DataGrid.Columns>
-                <DataGridTextColumn Header="Изменения внесены" Binding="{Binding WhoChanged}"/>
-                <DataGridTextColumn Header="Что изменено" Binding="{Binding WhatChanged}"/>
-                <DataGridTextColumn Header="Время" Binding="{Binding TimeChanged}"/>
+                <DataGridTextColumn Header="Изменения внёс" 
+                                    Binding="{Binding WhoChanged}" 
+                                    Width="350" 
+                                    Foreground="#008000"/>
+                
+                <DataGridTextColumn Header="Что изменено" 
+                                    Binding="{Binding WhatChanged}" 
+                                    Width="485"
+                                    Foreground="#B8860B"/>
+                
+                <DataGridTextColumn Header="Время" 
+                                    Binding="{Binding TimeChanged}" 
+                                    Width="Auto"
+                                    Foreground="#800000"/>
             </DataGrid.Columns>
         </DataGrid>
     </Grid>

@@ -31,9 +31,9 @@ namespace StartCS_Exceptions
                     //WriteToFileHistoryLog(propertyName, ID, Email, Surname, Name, Patronymic, NumberPhone, Address);
                     //MessageBox.Show($"Изменено {propertyName} У клиента {ID} {Email} {Surname} {Name} {Patronymic} {NumberPhone} {Address}");
 
-                    string changes = $"Изменено {propertyName} У клиента {ID} {Email} {Surname} {Name} {Patronymic} {NumberPhone} {Address}";
+                    string changes = $"{propertyName} У клиента {ID} {Surname} {Name} {Patronymic}";
 
-                    ClientsInHistories.Add(new ClientsInHistory("Manager", changes, DateTime.Now));
+                    ClientsInHistories.Add(new ClientsInHistory("Менеджер", changes, DateTime.Now));
 
                     //ClientsInHistory clientsInHistories = new ClientsInHistory("Manager", changes, DateTime.Now);
                     XmlDeserialize();
@@ -66,7 +66,7 @@ namespace StartCS_Exceptions
 
         void XmlDeserialize()
         {
-            if (File.Exists(path) && new FileInfo(path).Length != 0)
+            if (File.Exists(path))
             {
                 XmlSerializer xmlSerializer = new XmlSerializer(typeof(List<ClientsInHistory>));
                 using (FileStream fs = new FileStream(path, FileMode.OpenOrCreate))
@@ -81,7 +81,6 @@ namespace StartCS_Exceptions
                     }
                 }
             }
-            else { ClientsInHistories.Clear(); }
         }
 
         string pathtxt = @"..\Debug\History.txt";

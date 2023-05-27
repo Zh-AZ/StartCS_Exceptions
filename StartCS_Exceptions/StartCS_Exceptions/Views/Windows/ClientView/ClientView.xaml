@@ -14,7 +14,7 @@
     <UserControl.Resources>
         <SolidColorBrush x:Key="{x:Static DataGrid.FocusBorderBrushKey}" Color="#FF000000"/>
 
-        <Style x:Key="DataGridCellStyle1" TargetType="{x:Type DataGridCell}">
+        <!--<Style x:Key="DataGridCellStyle1" TargetType="{x:Type DataGridCell}">
             <Setter Property="Background" Value="Transparent"/>
             <Setter Property="VerticalAlignment" Value="Center"/>
             <Setter Property="FocusVisualStyle" Value="{x:Null}"/>
@@ -307,7 +307,7 @@
                     </ControlTemplate>
                 </Setter.Value>
             </Setter>
-        </Style>
+        </Style>-->
     </UserControl.Resources>
     
     <UserControl.DataContext>
@@ -484,10 +484,12 @@
                                         Header="Address"/>
                     
                     <DataGridTextColumn Binding="{Binding Bill, UpdateSourceTrigger=PropertyChanged}" 
-                                        Header="Bill"/>
+                                        Header="Bill"
+                                        IsReadOnly="True"/>
                     
                     <DataGridTextColumn Binding="{Binding DepBill, UpdateSourceTrigger=PropertyChanged}" 
-                                        Header="Deposit bill"/>
+                                        Header="Deposit bill"
+                                        IsReadOnly="True"/>
 
                     <!--<DataGridTextColumn Header="Position" 
                                         IsReadOnly="True" 

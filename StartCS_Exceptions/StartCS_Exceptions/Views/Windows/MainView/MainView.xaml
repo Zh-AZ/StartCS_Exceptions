@@ -34,6 +34,53 @@
         <DataTemplate DataType="{x:Type viewModelHistoryLog:HistoryLogViewModel}">
             <viewModelHistoryLog:HistoryLogView/>
         </DataTemplate>
+
+        <ControlTemplate x:Key="ShakingButtonTemplate" TargetType="Button">
+            <Border Margin="5" BorderBrush="Aquamarine" BorderThickness="5" CornerRadius="5">
+                <ContentPresenter HorizontalAlignment="Center" Content="{TemplateBinding Content}">
+                    <ContentPresenter.RenderTransform>
+                        <TransformGroup>
+                            <TranslateTransform x:Name="Position"/>
+                        </TransformGroup>
+                    </ContentPresenter.RenderTransform>
+                </ContentPresenter>
+            </Border>
+            <ControlTemplate.Triggers>
+                <Trigger Property="IsMouseOver" Value="True">
+                    <Trigger.EnterActions>
+                        <BeginStoryboard x:Name="ShakeIt">
+                            <Storyboard>
+                                <DoubleAnimationUsingKeyFrames
+                                        Storyboard.TargetName="Position" 
+                                        Storyboard.TargetProperty="X" 
+                                        RepeatBehavior="5x"
+                                        >
+                                    <EasingDoubleKeyFrame KeyTime="0:0:0.05" Value="0"/>
+                                    <EasingDoubleKeyFrame KeyTime="0:0:0.1" Value="2"/>
+                                    <EasingDoubleKeyFrame KeyTime="0:0:0.15" Value="0"/>
+                                    <EasingDoubleKeyFrame KeyTime="0:0:0.20" Value="-2"/>
+                                    <EasingDoubleKeyFrame KeyTime="0:0:0.25" Value="0"/>
+                                </DoubleAnimationUsingKeyFrames>
+                                <!--
+                                    <DoubleAnimation 
+                                        Storyboard.TargetName="Position" 
+                                        Storyboard.TargetProperty="X" 
+                                        From="-2" To="2" 
+                                        Duration="0:0:0:0.1" 
+                                        AutoReverse="True" 
+                                        RepeatBehavior="10x">
+                                    </DoubleAnimation>
+-->
+                            </Storyboard>
+                        </BeginStoryboard>
+                    </Trigger.EnterActions>
+                </Trigger>
+            </ControlTemplate.Triggers>
+        </ControlTemplate>
+
+        <Style x:Key="ShakingButton" TargetType="Button">
+            <Setter Property="Template" Value="{StaticResource ShakingButtonTemplate}"/>
+        </Style>
     </Window.Resources>
 
     <Border CornerRadius="10"                    
