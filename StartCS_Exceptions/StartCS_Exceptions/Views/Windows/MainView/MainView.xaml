@@ -127,7 +127,7 @@
                     </StackPanel>
 
                     <!--Menu Buttons-->
-                    <RadioButton Style="{StaticResource menuButton}"
+                    <!--<RadioButton Style="{StaticResource menuButton}"
                                  Tag="{StaticResource color1}"
                                  IsChecked="True"
                                  Command="{Binding ShowHomeViewCommand}">
@@ -135,10 +135,11 @@
                             <fa:IconImage Icon="Home" Style="{StaticResource menuButtonIcon}"/>
                             <TextBlock Text="Home" Style="{StaticResource menuButtonText}"/>
                         </StackPanel>
-                    </RadioButton>
+                    </RadioButton>-->
                     <RadioButton Style="{StaticResource menuButton}"
                                  Tag="{StaticResource color2}"
-                                 Command="{Binding OpenClientViewCommand}">
+                                 Command="{Binding OpenClientViewCommand}"
+                                 IsChecked="True">
                         <StackPanel Orientation="Horizontal">
                             <fa:IconImage Icon="UserGroup" Style="{StaticResource menuButtonIcon}"/>
                             <TextBlock Text="Data clients" Style="{StaticResource menuButtonText}"/>
@@ -147,7 +148,8 @@
                     <RadioButton Style="{StaticResource menuButton}"
                                  Tag="{StaticResource color3}"
                                  IsChecked="False"
-                                 Command="{Binding Path=OpenTransactionViewCommand}">
+                                 Command="{Binding Path=OpenTransactionViewCommand}"
+                                 Name="TransactionShow">
                         <StackPanel Orientation="Horizontal">
                             <fa:IconImage Icon="MoneyBillTransfer" Style="{StaticResource menuButtonIcon}"/>
                             <TextBlock Text="Transaction" Style="{StaticResource menuButtonText}"/>

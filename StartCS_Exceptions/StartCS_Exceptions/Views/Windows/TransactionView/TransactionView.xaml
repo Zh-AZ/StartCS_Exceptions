@@ -187,7 +187,7 @@
 
                         <Grid Grid.Row="1" Margin="0,5,0,0">
                             <Border Margin="0,10,501,-3" 
-                                CornerRadius="8,8,3,3"
+                                CornerRadius="8,8,8,8"
                                 BorderThickness="2" RenderTransformOrigin="0.5,0.5">
                                 <Border.RenderTransform>
                                     <TransformGroup>
@@ -273,7 +273,7 @@
                             </Border>
 
                             <Border Margin="500,7,0,0" 
-                                CornerRadius="8,8,3,3"
+                                CornerRadius="8,8,8,8"
                                 BorderThickness="2">
                                 <Border.BorderBrush>
                                     <LinearGradientBrush StartPoint="0,0" EndPoint="1,1">

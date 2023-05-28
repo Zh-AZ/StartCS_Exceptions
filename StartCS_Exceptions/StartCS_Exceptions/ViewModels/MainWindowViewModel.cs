@@ -93,8 +93,29 @@ namespace StartCS_Exceptions.ViewModels
         private void OnOpenMainViewCommandExecute(object p)
         {
             MainView = new MainView();
-            MainView.Show();
-            LoginView.Close();
+            //ClientView = new ClientView();
+            if (LoginView.txtUser.Text == "Консультант".ToLower())
+            {
+                MainView.Show();
+                LoginView.Close();
+                MainView.WorkerName.Text = "Консультант";
+                MainView.AngleUpOrDown.Icon = IconChar.AngleDown;
+                MainView.ImageWorker.Fill = new ImageBrush(new BitmapImage(new Uri(BaseUriHelper.GetBaseUri(MainView), "/Images/IconUser.jpg")));
+                //ClientView.OperationsColumn.Visibility = Visibility.Hidden;
+                //ClientView.membersDataGrid.IsReadOnly = true;
+                MainView.TransactionShow.Visibility = Visibility.Collapsed;
+            }   
+            else if (LoginView.txtUser.Text == "Менеджер".ToLower())
+            {
+                MainView.Show();
+                LoginView.Close();
+                MainView.WorkerName.Text = "Менеджер";
+                MainView.AngleUpOrDown.Icon = IconChar.AngleUp;
+                MainView.ImageWorker.Fill = new ImageBrush(new BitmapImage(new Uri(BaseUriHelper.GetBaseUri(MainView), "/Images/IconManager.png")));
+                MainView.TransactionShow.Visibility = Visibility.Visible;
+            }
+            else { MessageBox.Show("False"); }
+
         }
 
         public ICommand OpenClientViewCommand { get; }
@@ -107,6 +128,17 @@ namespace StartCS_Exceptions.ViewModels
             CurrentChildView = ClientView;
             Caption = "Customers";
             Icon = IconChar.UserGroup;
+            if (MainView.WorkerName.Text == "Консультант")
+            {
+                ClientView.OperationsColumn.Visibility = Visibility.Hidden;
+                ClientView.membersDataGrid.IsReadOnly = true;
+                //MainView.TransactionShow.Visibility = Visibility.Hidden;
+            }
+            else 
+            {
+                ClientView.OperationsColumn.Visibility = Visibility.Visible;
+                ClientView.membersDataGrid.IsReadOnly = false;
+            }
         }
 
         public ICommand OpenTransactionViewCommand { get; }
@@ -499,18 +531,23 @@ namespace StartCS_Exceptions.ViewModels
         public ICommand ChooseWorkerCommand { get; }
         private void OnChooseWorkerCommandExecute(object p)
         {
-            if (MainView.AngleUpOrDown.Icon == IconChar.AngleUp)
+            if (MainView.AngleUpOrDown.Icon == IconChar.AngleUp && ClientView != null)
             {
                 MainView.AngleUpOrDown.Icon = IconChar.AngleDown;
                 MainView.WorkerName.Text = "Консультант";
                 MainView.ImageWorker.Fill = new ImageBrush(new BitmapImage(new Uri(BaseUriHelper.GetBaseUri(MainView), "/Images/IconUser.jpg")));
+                ClientView.OperationsColumn.Visibility = Visibility.Hidden;
+                ClientView.membersDataGrid.IsReadOnly = true;
+                MainView.TransactionShow.Visibility = Visibility.Collapsed;
             }
-            else
+            else if (MainView.AngleUpOrDown.Icon == IconChar.AngleDown && ClientView != null)
             {
                 MainView.AngleUpOrDown.Icon = IconChar.AngleUp;              
                 MainView.WorkerName.Text = "Менеджер";
                 MainView.ImageWorker.Fill = new ImageBrush(new BitmapImage(new Uri(BaseUriHelper.GetBaseUri(MainView), "/Images/IconManager.png")));
-                //ManagerWindow.WorkerImage.Source = new BitmapImage(new Uri("/Images/Manager.png", UriKind.Relative));
+                ClientView.OperationsColumn.Visibility = Visibility.Visible;
+                ClientView.membersDataGrid.IsReadOnly = false;
+                MainView.TransactionShow.Visibility = Visibility.Visible;
             }
 
         }
