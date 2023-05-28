@@ -21,6 +21,11 @@ using System.Windows.Media;
 using System.Windows.Controls;
 using System.Windows.Data;
 using System.Text.Json;
+using System.Windows.Media.Imaging;
+using System.Windows.Navigation;
+using System.Windows.Media.Animation;
+using MaterialDesignThemes.Wpf;
+using System.Windows.Media.Media3D;
 
 namespace StartCS_Exceptions.ViewModels
 {
@@ -85,7 +90,6 @@ namespace StartCS_Exceptions.ViewModels
         public void OnViewInitialized(LoginView loginView) { LoginView = loginView; }
 
         public ICommand OpenMainViewCommand { get; }
-        private bool CanOpenMainViewCommandExecute(object p) => true;
         private void OnOpenMainViewCommandExecute(object p)
         {
             MainView = new MainView();
@@ -94,7 +98,6 @@ namespace StartCS_Exceptions.ViewModels
         }
 
         public ICommand OpenClientViewCommand { get; }
-        private bool CanOpenClientViewCommandExecute(object p) => true;
         private void OnOpenClientCiewCommandExecute(object p)
         {
             //CurrentChildView = new ClientViewModel();
@@ -107,7 +110,6 @@ namespace StartCS_Exceptions.ViewModels
         }
 
         public ICommand OpenTransactionViewCommand { get; }
-        private bool CanOpenTransactionViewCommandExecute(object p) => true;
         private void OnOpenTransactionViewCommandexecute(object p)
         {
             //CurrentChildView = new TransactionViewModel();
@@ -120,7 +122,6 @@ namespace StartCS_Exceptions.ViewModels
         }
 
         public ICommand SearchClientCommand { get; }
-        private bool CanSearchClientCommandExecute(object p) => true;
         private void OnSearchClientCommandExecute(object p)
         {
             if (ClientView.SearchClientBox.Text != String.Empty)
@@ -141,7 +142,6 @@ namespace StartCS_Exceptions.ViewModels
         string historyLogPatch = @"..\Debug\HistoryLog.xml";
 
         public ICommand OpenHistoryLogViewCommand { get; }
-        private bool CanOpenHistoryLogViewCommandExecute(object p) => true;
         private void OnOpenHistoryLohViewCommandExecute(object p)
         {
             if (HistoryLogView != null) { HistoryLogView.Visibility = Visibility.Collapsed; }
@@ -172,7 +172,6 @@ namespace StartCS_Exceptions.ViewModels
         /// Удаление клиента
         /// </summary>
         public ICommand DeleteClientCommand { get; }
-        private bool CanDeleteClientCommandExecute(object p) => true; //p is Client client && Clients.Contains(client);
         private void OnDeleteClientCommandExecute(object p)
         {
             if (!(p is Client client)) return;
@@ -186,18 +185,34 @@ namespace StartCS_Exceptions.ViewModels
         /// Сохранение изменений клииента
         /// </summary>
         public ICommand ChangeClientCommand { get; }
-        private bool CanChangeClientCommandExecute(object p) => true; //p is Client client && Clients.Contains(client);
         private void OnChangeClientCommandExecute(object p)
         {
             ClientView.membersDataGrid.UnselectAll();
             XmlSerialize(Clients);
+            MainView.BellState.Visibility = Visibility.Collapsed;
+            var icon = new PackIcon
+            {
+                Name = "BellStateAlert",
+                Kind = PackIconKind.BellAlert,
+                Height = 20,
+                Width = 20,
+                Foreground = new SolidColorBrush(Colors.DarkOrchid)
+            };
+            
+            if (MainView.StackPanel.Children.Count < 5) 
+            {
+                MainView.StackPanel.Children.Add(icon);
+            }
+
+            // Foreground = "#784DFD"
+            // Height = "20"
+            // Width = "20"
         }
 
         /// <summary>
         /// Поиск клиента по ID 
         /// </summary>
         public ICommand SearchCommand { get; }
-        private bool CanSearchCommandExecute(object p) => true;
         private void OnSearchCommandExecute(object p)
         {
             SearchCommandMethod();
@@ -265,7 +280,6 @@ namespace StartCS_Exceptions.ViewModels
         }
 
         public ICommand OpenOrCloseNonDepositCommand { get; }
-        private bool CanOpenNonDepositCommandExecute(object p) => true;
         private void OnOpenNonDepositCommandExecute(object p)
         {
             foreach (Client client in Clients)
@@ -291,7 +305,6 @@ namespace StartCS_Exceptions.ViewModels
         }
 
         public ICommand OpenOrCloseDepositCommand { get; }
-        private bool CanOpenDepositCommandExecute(object p) => true;
         private void OnOpenDepositCommandExecute(object p)
         {
             foreach (Client client in Clients)
@@ -317,7 +330,6 @@ namespace StartCS_Exceptions.ViewModels
         }
 
         public ICommand NonDepPlusCommand { get; }
-        private bool CanNonDepPlusCommandExecute(object p) => true;
         private void OnNonDepPlusCommandExecute(object p)
         {
             foreach (Client client in Clients)
@@ -336,7 +348,6 @@ namespace StartCS_Exceptions.ViewModels
         }
 
         public ICommand DepositPlusCommand { get; }
-        private bool CanDepositPlusCommandExecute(object p) => true;
         private void OnDepositPlusCommandExecute(object p)
         {
             foreach (Client client in Clients)
@@ -355,7 +366,6 @@ namespace StartCS_Exceptions.ViewModels
         }
 
         public ICommand SearchIDFromToCommand { get; }
-        private bool CanSearchIDFromToCommandExecute(object p) => true;
         private void OnSearchIDFromToCommandExecute(object p)
         {
             foreach (Client client in Clients)
@@ -410,7 +420,6 @@ namespace StartCS_Exceptions.ViewModels
         /// Перевод счёта от найденного по ID клиента к другому
         /// </summary>
         public ICommand TransferCommand { get; }
-        private bool CanTransferCommandExecute(object p) => true;
         private void OnTransferCommandExecute(object p)
         {
             foreach (Client client in Clients)
@@ -449,7 +458,6 @@ namespace StartCS_Exceptions.ViewModels
         }
 
         public ICommand DepTransferCommand { get; }
-        private bool CanDepTransferCommandExecute(object p) => true;
         private void OnDepTransferCommandExecute(object p)
         {
             foreach (Client client in Clients)
@@ -488,23 +496,43 @@ namespace StartCS_Exceptions.ViewModels
             XmlSerialize(Clients);
         }
 
+        public ICommand ChooseWorkerCommand { get; }
+        private void OnChooseWorkerCommandExecute(object p)
+        {
+            if (MainView.AngleUpOrDown.Icon == IconChar.AngleUp)
+            {
+                MainView.AngleUpOrDown.Icon = IconChar.AngleDown;
+                MainView.WorkerName.Text = "Консультант";
+                MainView.ImageWorker.Fill = new ImageBrush(new BitmapImage(new Uri(BaseUriHelper.GetBaseUri(MainView), "/Images/IconUser.jpg")));
+            }
+            else
+            {
+                MainView.AngleUpOrDown.Icon = IconChar.AngleUp;              
+                MainView.WorkerName.Text = "Менеджер";
+                MainView.ImageWorker.Fill = new ImageBrush(new BitmapImage(new Uri(BaseUriHelper.GetBaseUri(MainView), "/Images/IconManager.png")));
+                //ManagerWindow.WorkerImage.Source = new BitmapImage(new Uri("/Images/Manager.png", UriKind.Relative));
+            }
+
+        }
+
         public MainWindowViewModel() 
         {
-            OpenMainViewCommand = new LambdaCommand(OnOpenMainViewCommandExecute, CanOpenMainViewCommandExecute);
-            OpenClientViewCommand = new LambdaCommand(OnOpenClientCiewCommandExecute, CanOpenClientViewCommandExecute);
-            OpenTransactionViewCommand = new LambdaCommand(OnOpenTransactionViewCommandexecute, CanOpenTransactionViewCommandExecute);
-            OpenHistoryLogViewCommand = new LambdaCommand(OnOpenHistoryLohViewCommandExecute, CanOpenHistoryLogViewCommandExecute);
-            DeleteClientCommand = new LambdaCommand(OnDeleteClientCommandExecute, CanDeleteClientCommandExecute);
-            ChangeClientCommand = new LambdaCommand(OnChangeClientCommandExecute, CanChangeClientCommandExecute);
-            SearchCommand = new LambdaCommand(OnSearchCommandExecute, CanSearchCommandExecute);
-            SearchClientCommand = new LambdaCommand(OnSearchClientCommandExecute, CanSearchClientCommandExecute);
-            OpenOrCloseNonDepositCommand = new LambdaCommand(OnOpenNonDepositCommandExecute, CanOpenNonDepositCommandExecute);
-            OpenOrCloseDepositCommand = new LambdaCommand(OnOpenDepositCommandExecute, CanOpenDepositCommandExecute);
-            NonDepPlusCommand = new LambdaCommand(OnNonDepPlusCommandExecute, CanNonDepPlusCommandExecute);
-            DepositPlusCommand = new LambdaCommand(OnDepositPlusCommandExecute, CanDepositPlusCommandExecute);
-            SearchIDFromToCommand = new LambdaCommand(OnSearchIDFromToCommandExecute, CanSearchIDFromToCommandExecute);
-            TransferCommand = new LambdaCommand(OnTransferCommandExecute, CanTransferCommandExecute);
-            DepTransferCommand = new LambdaCommand(OnDepTransferCommandExecute, CanDepTransferCommandExecute);
+            OpenMainViewCommand = new LambdaCommand(OnOpenMainViewCommandExecute);
+            OpenClientViewCommand = new LambdaCommand(OnOpenClientCiewCommandExecute);
+            OpenTransactionViewCommand = new LambdaCommand(OnOpenTransactionViewCommandexecute);
+            OpenHistoryLogViewCommand = new LambdaCommand(OnOpenHistoryLohViewCommandExecute);
+            DeleteClientCommand = new LambdaCommand(OnDeleteClientCommandExecute);
+            ChangeClientCommand = new LambdaCommand(OnChangeClientCommandExecute);
+            SearchCommand = new LambdaCommand(OnSearchCommandExecute);
+            SearchClientCommand = new LambdaCommand(OnSearchClientCommandExecute);
+            OpenOrCloseNonDepositCommand = new LambdaCommand(OnOpenNonDepositCommandExecute);
+            OpenOrCloseDepositCommand = new LambdaCommand(OnOpenDepositCommandExecute);
+            NonDepPlusCommand = new LambdaCommand(OnNonDepPlusCommandExecute);
+            DepositPlusCommand = new LambdaCommand(OnDepositPlusCommandExecute);
+            SearchIDFromToCommand = new LambdaCommand(OnSearchIDFromToCommandExecute);
+            TransferCommand = new LambdaCommand(OnTransferCommandExecute);
+            DepTransferCommand = new LambdaCommand(OnDepTransferCommandExecute);
+            ChooseWorkerCommand = new LambdaCommand(OnChooseWorkerCommandExecute);
 
             Clients = new ObservableCollection<Client>();
             ClientsInHistories = new List<ClientsInHistory>();

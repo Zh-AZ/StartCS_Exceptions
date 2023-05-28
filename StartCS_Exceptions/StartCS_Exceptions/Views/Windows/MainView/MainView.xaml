@@ -11,6 +11,7 @@
         xmlns:viewModelTransaction="clr-namespace:StartCS_Exceptions.Views.Windows.TransactionView"
         xmlns:viewModelHistoryLog="clr-namespace:StartCS_Exceptions.Views.Windows.HistoryLogView"
         xmlns:Icon="http://metro.mahapps.com/winfx/xaml/iconpacks"
+        xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes"
         Title="MainView" Height="700" Width="1300"
         WindowStartupLocation="CenterScreen"
         WindowStyle="None"
@@ -244,30 +245,35 @@
                                     Orientation="Horizontal"
                                     FlowDirection="RightToLeft"
                                     VerticalAlignment="Center"
-                                    Margin="0,0,10,0">
+                                    Margin="0,0,10,0"
+                                    Name="StackPanel">
                             <Button Style="{StaticResource iconButton}"
-                                    Tag="{StaticResource color1}">
-                                <fa:IconImage Icon="AngleDown" 
+                                    Tag="{StaticResource color1}"
+                                    Command="{Binding Path=ChooseWorkerCommand}">
+                                <fa:IconImage Icon="AngleUp"
+                                              Name="AngleUpOrDown"
                                               Height="12" Width="12" 
                                               Style="{StaticResource iconButtonIcon}"/>
                             </Button>
 
-                            <TextBlock Text="UserName"
+                            <TextBlock x:Name="WorkerName"
                                        Foreground="{StaticResource titleColor3}"
                                        FontFamily="Montserrat"
                                        FontSize="12"
                                        VerticalAlignment="Center"/>
 
+                            <!--<Image x:Name="ImageWorker"/>-->
                             <Ellipse Height="35" Width="35"
                                      Stroke="{StaticResource color2}"
                                      StrokeThickness="2"
-                                     Margin="10,0,10,0">
-                                <Ellipse.Fill>
+                                     Margin="10,0,10,0"
+                                     x:Name="ImageWorker">
+                                <!--<Ellipse.Fill>
                                     <ImageBrush ImageSource="/Images/user-icon.png"/>
-                                </Ellipse.Fill>
+                                </Ellipse.Fill>-->
                             </Ellipse>
 
-                            <Button Style="{StaticResource iconButton}"
+                            <!--<Button Style="{StaticResource iconButton}"
                                     Tag="{StaticResource color3}">
                                 <fa:IconImage Icon="Clock" Style="{StaticResource iconButtonIcon}"/>
                             </Button>
@@ -275,15 +281,20 @@
                             <Button Style="{StaticResource iconButton}"
                                     Tag="{StaticResource color4}">
                                 <fa:IconImage Icon="Envelope" Style="{StaticResource iconButtonIcon}"/>
-                            </Button>
-
-                            <Button Style="{StaticResource iconButton}"
+                            </Button>-->
+                            
+                            <!--<Button Style="{StaticResource iconButton}"
                                     Tag="{StaticResource color5}">
                                 <fa:IconImage Icon="Bell" Style="{StaticResource iconButtonIcon}"/>
-                            </Button>
+                            </Button>-->
+                            <materialDesign:PackIcon Kind="Bell"
+                                                     Foreground="#9932CC	" 
+                                                     Height="20"
+                                                     Width="20"
+                                                     Name="BellState"/>
                         </StackPanel>
                     </Grid>
-                    
+                    <!--#784DFD-->
                     <!--Content section / Child views-->
                     <ContentControl Content="{Binding CurrentChildView}"
                                     Grid.Row="2"
