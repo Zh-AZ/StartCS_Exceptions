@@ -93,7 +93,7 @@ namespace StartCS_Exceptions
             }
         }
 
-        private string _ID;
+        private int _ID;
         private string _Email;
         private string _Name;
         private string _Surname;
@@ -103,7 +103,7 @@ namespace StartCS_Exceptions
         private string _Bill;
         private string _DepBill;
 
-        public string ID
+        public int ID
         {
             get => _ID;
             set
@@ -204,7 +204,7 @@ namespace StartCS_Exceptions
 
         public Client() { ClientsInHistories = new List<ClientsInHistory>(); }
 
-        public Client(string id, string email, string name, string surname, string patronymic,
+        public Client(int id, string email, string name, string surname, string patronymic,
             string numberPhone, string address, string bill, string depBill)
         {
             ID = id;
@@ -216,11 +216,6 @@ namespace StartCS_Exceptions
             Address = address;
             Bill = bill;
             DepBill = depBill;
-        }
-
-        public override string ToString()
-        {
-            return String.Concat($"{ID} {Email} {Name} {Surname} {Patronymic} {NumberPhone} {Address}");
         }
     }
 }

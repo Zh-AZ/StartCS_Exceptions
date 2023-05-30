@@ -160,7 +160,7 @@ namespace StartCS_Exceptions.ViewModels
             {
                 foreach (Client client in Clients)
                 {
-                    if (ClientView.SearchClientBox.Text == client.ID || ClientView.SearchClientBox.Text == client.Surname || ClientView.SearchClientBox.Text == client.Name || ClientView.SearchClientBox.Text == client.Patronymic)
+                    if (ClientView.SearchClientBox.Text == client.ID.ToString() || ClientView.SearchClientBox.Text == client.Surname || ClientView.SearchClientBox.Text == client.Name || ClientView.SearchClientBox.Text == client.Patronymic)
                     {
                         List<Client> list = new List<Client>();
                         list.Add(client);
@@ -254,59 +254,123 @@ namespace StartCS_Exceptions.ViewModels
         {
             foreach (Client client in Clients)
             {
-                if (TransactionView.SearchBox.Text == client.ID)
+                try
                 {
-                    TransactionView.FoundBalanceBlock.Text = client.Bill;
-                    TransactionView.DepFoundBalanceBlock.Text = client.DepBill;
-                    if (client.DepBill == "Закрытый")
+                    if (Convert.ToInt32(TransactionView.SearchBox.Text) == client.ID)
                     {
-                        TransactionView.OpenDepositButton.Content = "Открыть";
-                        TransactionView.OpenDepositButton.Style = TransactionView.OpenDepositButton.TryFindResource("ButtonColorOpenStyle") as Style;
-                        TransactionView.DepButton.Style = TransactionView.OpenDepositButton.TryFindResource("ButtonColorCloseStyle") as Style;
-                        TransactionView.DepFoundBalanceBlock.Background = new SolidColorBrush(Colors.DarkRed);
-                    }
-                    else
-                    {
-                        TransactionView.OpenDepositButton.Content = "Закрыть";
-                        TransactionView.OpenDepositButton.Style = TransactionView.OpenDepositButton.TryFindResource("ButtonColorCloseStyle") as Style;
-                        TransactionView.DepButton.Style = TransactionView.OpenDepositButton.TryFindResource("ButtonColorOpenStyle") as Style;
-                        TransactionView.DepFoundBalanceBlock.Background = new SolidColorBrush(Colors.White);
-                    }
+                        TransactionView.FoundBalanceBlock.Text = client.Bill;
+                        TransactionView.DepFoundBalanceBlock.Text = client.DepBill;
+                        if (client.DepBill == "Закрытый")
+                        {
+                            TransactionView.OpenDepositButton.Content = "Открыть";
+                            TransactionView.OpenDepositButton.Style = TransactionView.OpenDepositButton.TryFindResource("ButtonColorOpenStyle") as Style;
+                            TransactionView.DepButton.Style = TransactionView.OpenDepositButton.TryFindResource("ButtonColorCloseStyle") as Style;
+                            TransactionView.DepFoundBalanceBlock.Background = new SolidColorBrush(Colors.DarkRed);
+                        }
+                        else
+                        {
+                            TransactionView.OpenDepositButton.Content = "Закрыть";
+                            TransactionView.OpenDepositButton.Style = TransactionView.OpenDepositButton.TryFindResource("ButtonColorCloseStyle") as Style;
+                            TransactionView.DepButton.Style = TransactionView.OpenDepositButton.TryFindResource("ButtonColorOpenStyle") as Style;
+                            TransactionView.DepFoundBalanceBlock.Background = new SolidColorBrush(Colors.White);
+                        }
 
-                    if (client.Bill == "Закрытый")
-                    {
-                        TransactionView.OpenNonDepositButton.Content = "Открыть";
-                        TransactionView.OpenNonDepositButton.Style = TransactionView.OpenDepositButton.TryFindResource("ButtonColorOpenStyle") as Style;
-                        TransactionView.NonDepButton.Style = TransactionView.OpenDepositButton.TryFindResource("ButtonColorCloseStyle") as Style;
-                        TransactionView.FoundBalanceBlock.Background = new SolidColorBrush(Colors.DarkRed);
+                        if (client.Bill == "Закрытый")
+                        {
+                            TransactionView.OpenNonDepositButton.Content = "Открыть";
+                            TransactionView.OpenNonDepositButton.Style = TransactionView.OpenDepositButton.TryFindResource("ButtonColorOpenStyle") as Style;
+                            TransactionView.NonDepButton.Style = TransactionView.OpenDepositButton.TryFindResource("ButtonColorCloseStyle") as Style;
+                            TransactionView.FoundBalanceBlock.Background = new SolidColorBrush(Colors.DarkRed);
+                        }
+                        else
+                        {
+                            TransactionView.OpenNonDepositButton.Content = "Закрыть";
+                            TransactionView.OpenNonDepositButton.Style = TransactionView.OpenDepositButton.TryFindResource("ButtonColorCloseStyle") as Style;
+                            TransactionView.NonDepButton.Style = TransactionView.OpenDepositButton.TryFindResource("ButtonColorOpenStyle") as Style;
+                            TransactionView.FoundBalanceBlock.Background = new SolidColorBrush(Colors.White);
+                        }
                     }
-                    else
+                }
+                catch
+                {
+                    if (TransactionView.SearchBox.Text == client.ID.ToString())
                     {
-                        TransactionView.OpenNonDepositButton.Content = "Закрыть";
-                        TransactionView.OpenNonDepositButton.Style = TransactionView.OpenDepositButton.TryFindResource("ButtonColorCloseStyle") as Style;
-                        TransactionView.NonDepButton.Style = TransactionView.OpenDepositButton.TryFindResource("ButtonColorOpenStyle") as Style;
-                        TransactionView.FoundBalanceBlock.Background = new SolidColorBrush(Colors.White);
+                        TransactionView.FoundBalanceBlock.Text = client.Bill;
+                        TransactionView.DepFoundBalanceBlock.Text = client.DepBill;
+                        if (client.DepBill == "Закрытый")
+                        {
+                            TransactionView.OpenDepositButton.Content = "Открыть";
+                            TransactionView.OpenDepositButton.Style = TransactionView.OpenDepositButton.TryFindResource("ButtonColorOpenStyle") as Style;
+                            TransactionView.DepButton.Style = TransactionView.OpenDepositButton.TryFindResource("ButtonColorCloseStyle") as Style;
+                            TransactionView.DepFoundBalanceBlock.Background = new SolidColorBrush(Colors.DarkRed);
+                        }
+                        else
+                        {
+                            TransactionView.OpenDepositButton.Content = "Закрыть";
+                            TransactionView.OpenDepositButton.Style = TransactionView.OpenDepositButton.TryFindResource("ButtonColorCloseStyle") as Style;
+                            TransactionView.DepButton.Style = TransactionView.OpenDepositButton.TryFindResource("ButtonColorOpenStyle") as Style;
+                            TransactionView.DepFoundBalanceBlock.Background = new SolidColorBrush(Colors.White);
+                        }
+
+                        if (client.Bill == "Закрытый")
+                        {
+                            TransactionView.OpenNonDepositButton.Content = "Открыть";
+                            TransactionView.OpenNonDepositButton.Style = TransactionView.OpenDepositButton.TryFindResource("ButtonColorOpenStyle") as Style;
+                            TransactionView.NonDepButton.Style = TransactionView.OpenDepositButton.TryFindResource("ButtonColorCloseStyle") as Style;
+                            TransactionView.FoundBalanceBlock.Background = new SolidColorBrush(Colors.DarkRed);
+                        }
+                        else
+                        {
+                            TransactionView.OpenNonDepositButton.Content = "Закрыть";
+                            TransactionView.OpenNonDepositButton.Style = TransactionView.OpenDepositButton.TryFindResource("ButtonColorCloseStyle") as Style;
+                            TransactionView.NonDepButton.Style = TransactionView.OpenDepositButton.TryFindResource("ButtonColorOpenStyle") as Style;
+                            TransactionView.FoundBalanceBlock.Background = new SolidColorBrush(Colors.White);
+                        }
                     }
                 }
             }
 
             foreach (Client client in Clients)
             {
-                if (TransactionView.FromAccountTransaction.Text == client.ID && TransactionView.FromAccountTransaction.Text != String.Empty
-                    && TransactionView.ToAccountTransaction.Text != string.Empty)
+                try
                 {
-                    TransactionView.FromIDNonDepositBox.Text = client.Bill;
-                    TransactionView.FromIDDepositBox.Text = client.DepBill;
+                    if (Convert.ToInt32(TransactionView.FromAccountTransaction.Text) == client.ID && TransactionView.FromAccountTransaction.Text != String.Empty
+                        && TransactionView.ToAccountTransaction.Text != string.Empty)
+                    {
+                        TransactionView.FromIDNonDepositBox.Text = client.Bill;
+                        TransactionView.FromIDDepositBox.Text = client.DepBill;
+                    }
+                }
+                catch (Exception)
+                {
+                    if (TransactionView.FromAccountTransaction.Text == client.ID.ToString() && TransactionView.FromAccountTransaction.Text != String.Empty
+                       && TransactionView.ToAccountTransaction.Text != string.Empty)
+                    {
+                        TransactionView.FromIDNonDepositBox.Text = client.Bill;
+                        TransactionView.FromIDDepositBox.Text = client.DepBill;
+                    }
                 }
             }
 
             foreach (Client client in Clients)
             {
-                if (TransactionView.ToAccountTransaction.Text == client.ID && TransactionView.ToAccountTransaction.Text != String.Empty
-                   && TransactionView.FromAccountTransaction.Text != String.Empty)
+                try
                 {
-                    TransactionView.ToIDDepositBox.Text = client.DepBill;
-                    TransactionView.ToIDNonDepositBox.Text = client.Bill;
+                    if (Convert.ToInt32(TransactionView.ToAccountTransaction.Text) == client.ID && TransactionView.ToAccountTransaction.Text != String.Empty
+                        && TransactionView.FromAccountTransaction.Text != String.Empty)
+                    {
+                        TransactionView.ToIDDepositBox.Text = client.DepBill;
+                        TransactionView.ToIDNonDepositBox.Text = client.Bill;
+                    }
+                }
+                catch (Exception)
+                {
+                    if (TransactionView.ToAccountTransaction.Text == client.ID.ToString() && TransactionView.ToAccountTransaction.Text != String.Empty
+                       && TransactionView.FromAccountTransaction.Text != String.Empty)
+                    {
+                        TransactionView.ToIDDepositBox.Text = client.DepBill;
+                        TransactionView.ToIDNonDepositBox.Text = client.Bill;
+                    }
                 }
             }
         }
@@ -316,18 +380,39 @@ namespace StartCS_Exceptions.ViewModels
         {
             foreach (Client client in Clients)
             {
-                if (TransactionView.SearchBox.Text == client.ID)
+                try
                 {
-                    if (client.Bill == "Закрытый")
+                    if (Convert.ToInt32(TransactionView.SearchBox.Text) == client.ID)
                     {
-                        client.Bill = "0";
-                    }
-                    else
-                    {
-                        if (MessageBox.Show("Внимание весь счёт будет обнулён! Вы уверены что хотите продолжить?", "Внимание",
-                            MessageBoxButton.YesNo, MessageBoxImage.Warning, MessageBoxResult.No) == MessageBoxResult.Yes)
+                        if (client.Bill == "Закрытый")
                         {
-                            client.Bill = "Закрытый";
+                            client.Bill = "0";
+                        }
+                        else
+                        {
+                            if (MessageBox.Show("Внимание весь счёт будет обнулён! Вы уверены что хотите продолжить?", "Внимание",
+                                MessageBoxButton.YesNo, MessageBoxImage.Warning, MessageBoxResult.No) == MessageBoxResult.Yes)
+                            {
+                                client.Bill = "Закрытый";
+                            }
+                        }
+                    }
+                }
+                catch
+                {
+                    if (TransactionView.SearchBox.Text == client.ID.ToString())
+                    {
+                        if (client.Bill == "Закрытый")
+                        {
+                            client.Bill = "0";
+                        }
+                        else
+                        {
+                            if (MessageBox.Show("Внимание весь счёт будет обнулён! Вы уверены что хотите продолжить?", "Внимание",
+                                MessageBoxButton.YesNo, MessageBoxImage.Warning, MessageBoxResult.No) == MessageBoxResult.Yes)
+                            {
+                                client.Bill = "Закрытый";
+                            }
                         }
                     }
                 }
@@ -341,18 +426,39 @@ namespace StartCS_Exceptions.ViewModels
         {
             foreach (Client client in Clients)
             {
-                if (TransactionView.SearchBox.Text == client.ID)
+                try
                 {
-                    if (client.DepBill == "Закрытый")
+                    if (Convert.ToInt32(TransactionView.SearchBox.Text) == client.ID)
                     {
-                        client.DepBill = "0";
-                    }
-                    else
-                    {
-                        if (MessageBox.Show("Внимание весь депозитный счёт будет обнулён! Вы уверены что хотите продолжить?", "Внимание",
-                           MessageBoxButton.YesNo, MessageBoxImage.Warning, MessageBoxResult.No) == MessageBoxResult.Yes)
+                        if (client.DepBill == "Закрытый")
                         {
-                            client.DepBill = "Закрытый";
+                            client.DepBill = "0";
+                        }
+                        else
+                        {
+                            if (MessageBox.Show("Внимание весь депозитный счёт будет обнулён! Вы уверены что хотите продолжить?", "Внимание",
+                               MessageBoxButton.YesNo, MessageBoxImage.Warning, MessageBoxResult.No) == MessageBoxResult.Yes)
+                            {
+                                client.DepBill = "Закрытый";
+                            }
+                        }
+                    }
+                }
+                catch
+                {
+                    if (TransactionView.SearchBox.Text == client.ID.ToString())
+                    {
+                        if (client.DepBill == "Закрытый")
+                        {
+                            client.DepBill = "0";
+                        }
+                        else
+                        {
+                            if (MessageBox.Show("Внимание весь депозитный счёт будет обнулён! Вы уверены что хотите продолжить?", "Внимание",
+                               MessageBoxButton.YesNo, MessageBoxImage.Warning, MessageBoxResult.No) == MessageBoxResult.Yes)
+                            {
+                                client.DepBill = "Закрытый";
+                            }
                         }
                     }
                 }
@@ -366,12 +472,26 @@ namespace StartCS_Exceptions.ViewModels
         {
             foreach (Client client in Clients)
             {
-                if (TransactionView.NonDepAccountIDBlock.Text == client.ID && client.Bill != "Закрытый")
+                try
                 {
-                    if (TransactionView.NonDepAmountBlock.Text != string.Empty)
+                    if (Convert.ToInt32(TransactionView.NonDepAccountIDBlock.Text) == client.ID && client.Bill != "Закрытый")
                     {
-                        int sums = int.Parse(client.Bill) + int.Parse(TransactionView.NonDepAmountBlock.Text);
-                        client.Bill = Convert.ToString(sums);
+                        if (TransactionView.NonDepAmountBlock.Text != string.Empty)
+                        {
+                            int sums = int.Parse(client.Bill) + int.Parse(TransactionView.NonDepAmountBlock.Text);
+                            client.Bill = Convert.ToString(sums);
+                        }
+                    }
+                }
+                catch
+                {
+                    if (TransactionView.NonDepAccountIDBlock.Text == client.ID.ToString() && client.Bill != "Закрытый")
+                    {
+                        if (TransactionView.NonDepAmountBlock.Text != string.Empty)
+                        {
+                            int sums = int.Parse(client.Bill) + int.Parse(TransactionView.NonDepAmountBlock.Text);
+                            client.Bill = Convert.ToString(sums);
+                        }
                     }
                 }
             }
@@ -384,12 +504,26 @@ namespace StartCS_Exceptions.ViewModels
         {
             foreach (Client client in Clients)
             {
-                if (TransactionView.DepAccountIDBlock.Text == client.ID && client.DepBill != "Закрытый")
+                try
                 {
-                    if (TransactionView.DepAmountBlock.Text != string.Empty)
+                    if (Convert.ToInt32(TransactionView.DepAccountIDBlock.Text) == client.ID && client.DepBill != "Закрытый")
                     {
-                        int sums = int.Parse(client.DepBill) + int.Parse(TransactionView.DepAmountBlock.Text);
-                        client.DepBill = Convert.ToString(sums);
+                        if (TransactionView.DepAmountBlock.Text != string.Empty)
+                        {
+                            int sums = int.Parse(client.DepBill) + int.Parse(TransactionView.DepAmountBlock.Text);
+                            client.DepBill = Convert.ToString(sums);
+                        }
+                    }
+                }
+                catch
+                {
+                    if (TransactionView.DepAccountIDBlock.Text == client.ID.ToString() && client.DepBill != "Закрытый")
+                    {
+                        if (TransactionView.DepAmountBlock.Text != string.Empty)
+                        {
+                            int sums = int.Parse(client.DepBill) + int.Parse(TransactionView.DepAmountBlock.Text);
+                            client.DepBill = Convert.ToString(sums);
+                        }
                     }
                 }
             }
@@ -402,43 +536,88 @@ namespace StartCS_Exceptions.ViewModels
         {
             foreach (Client client in Clients)
             {
-                if (TransactionView.FromAccountTransaction.Text == client.ID && TransactionView.FromAccountTransaction.Text != String.Empty
-                    && TransactionView.ToAccountTransaction.Text != string.Empty)
+                try
                 {
-                    TransactionView.FromIDNonDepositBox.Text = client.Bill;
-                    TransactionView.FromIDDepositBox.Text = client.DepBill;
-
-                    if (TransactionView.FromIDNonDepositBox.Text == "Закрытый")
+                    if (Convert.ToInt32(TransactionView.FromAccountTransaction.Text) == client.ID && TransactionView.FromAccountTransaction.Text != String.Empty
+                        && TransactionView.ToAccountTransaction.Text != string.Empty)
                     {
-                        TransactionView.FromIDNonDepositBox.Background = new SolidColorBrush(Colors.DarkRed);
-                    }
-                    else { TransactionView.FromIDNonDepositBox.Background = new SolidColorBrush(Colors.White); }
+                        TransactionView.FromIDNonDepositBox.Text = client.Bill;
+                        TransactionView.FromIDDepositBox.Text = client.DepBill;
 
-                    if (TransactionView.FromIDDepositBox.Text == "Закрытый")
-                    {
-                        TransactionView.FromIDDepositBox.Background = new SolidColorBrush(Colors.DarkRed);
-                    }
-                    else { TransactionView.FromIDDepositBox.Background = new SolidColorBrush(Colors.White); }
+                        if (TransactionView.FromIDNonDepositBox.Text == "Закрытый")
+                        {
+                            TransactionView.FromIDNonDepositBox.Background = new SolidColorBrush(Colors.DarkRed);
+                        }
+                        else { TransactionView.FromIDNonDepositBox.Background = new SolidColorBrush(Colors.White); }
 
+                        if (TransactionView.FromIDDepositBox.Text == "Закрытый")
+                        {
+                            TransactionView.FromIDDepositBox.Background = new SolidColorBrush(Colors.DarkRed);
+                        }
+                        else { TransactionView.FromIDDepositBox.Background = new SolidColorBrush(Colors.White); }
+
+                    }
+                    else continue;
                 }
-                else continue;
+                catch
+                {
+                    if (TransactionView.FromAccountTransaction.Text == client.ID.ToString() && TransactionView.FromAccountTransaction.Text != String.Empty
+                        && TransactionView.ToAccountTransaction.Text != string.Empty)
+                    {
+                        TransactionView.FromIDNonDepositBox.Text = client.Bill;
+                        TransactionView.FromIDDepositBox.Text = client.DepBill;
+
+                        if (TransactionView.FromIDNonDepositBox.Text == "Закрытый")
+                        {
+                            TransactionView.FromIDNonDepositBox.Background = new SolidColorBrush(Colors.DarkRed);
+                        }
+                        else { TransactionView.FromIDNonDepositBox.Background = new SolidColorBrush(Colors.White); }
+
+                        if (TransactionView.FromIDDepositBox.Text == "Закрытый")
+                        {
+                            TransactionView.FromIDDepositBox.Background = new SolidColorBrush(Colors.DarkRed);
+                        }
+                        else { TransactionView.FromIDDepositBox.Background = new SolidColorBrush(Colors.White); }
+
+                    }
+                    else continue;
+                }
             }
 
             foreach (Client client in Clients)
             {
-                if (TransactionView.ToAccountTransaction.Text == client.ID && TransactionView.ToAccountTransaction.Text != String.Empty
-                   && TransactionView.FromAccountTransaction.Text != String.Empty)
+                try
                 {
-                    TransactionView.ToIDDepositBox.Text = client.DepBill;
-                    TransactionView.ToIDNonDepositBox.Text = client.Bill;
+                    if (Convert.ToInt32(TransactionView.ToAccountTransaction.Text) == client.ID && TransactionView.ToAccountTransaction.Text != String.Empty
+                        && TransactionView.FromAccountTransaction.Text != String.Empty)
+                    {
+                        TransactionView.ToIDDepositBox.Text = client.DepBill;
+                        TransactionView.ToIDNonDepositBox.Text = client.Bill;
 
-                    if (TransactionView.ToIDDepositBox.Text == "Закрытый") { TransactionView.ToIDDepositBox.Background = new SolidColorBrush(Colors.DarkRed); }
-                    else { TransactionView.ToIDDepositBox.Background = new SolidColorBrush(Colors.White); }
+                        if (TransactionView.ToIDDepositBox.Text == "Закрытый") { TransactionView.ToIDDepositBox.Background = new SolidColorBrush(Colors.DarkRed); }
+                        else { TransactionView.ToIDDepositBox.Background = new SolidColorBrush(Colors.White); }
 
-                    if (TransactionView.ToIDNonDepositBox.Text == "Закрытый") { TransactionView.ToIDNonDepositBox.Background = new SolidColorBrush(Colors.DarkRed); }
-                    else { TransactionView.ToIDNonDepositBox.Background = new SolidColorBrush(Colors.White); }
+                        if (TransactionView.ToIDNonDepositBox.Text == "Закрытый") { TransactionView.ToIDNonDepositBox.Background = new SolidColorBrush(Colors.DarkRed); }
+                        else { TransactionView.ToIDNonDepositBox.Background = new SolidColorBrush(Colors.White); }
+                    }
+                    else continue;
                 }
-                else continue;
+                catch
+                {
+                    if (TransactionView.ToAccountTransaction.Text == client.ID.ToString() && TransactionView.ToAccountTransaction.Text != String.Empty
+                        && TransactionView.FromAccountTransaction.Text != String.Empty)
+                    {
+                        TransactionView.ToIDDepositBox.Text = client.DepBill;
+                        TransactionView.ToIDNonDepositBox.Text = client.Bill;
+
+                        if (TransactionView.ToIDDepositBox.Text == "Закрытый") { TransactionView.ToIDDepositBox.Background = new SolidColorBrush(Colors.DarkRed); }
+                        else { TransactionView.ToIDDepositBox.Background = new SolidColorBrush(Colors.White); }
+
+                        if (TransactionView.ToIDNonDepositBox.Text == "Закрытый") { TransactionView.ToIDNonDepositBox.Background = new SolidColorBrush(Colors.DarkRed); }
+                        else { TransactionView.ToIDNonDepositBox.Background = new SolidColorBrush(Colors.White); }
+                    }
+                    else continue;
+                }
             }
         }
 
@@ -456,17 +635,50 @@ namespace StartCS_Exceptions.ViewModels
         {
             foreach (Client client in Clients)
             {
-                if (TransactionView.FromAccountTransaction.Text == client.ID && TransactionView.FromAccountTransaction.Text != String.Empty
-                    && TransactionView.ToAccountTransaction.Text != String.Empty)
+                try
                 {
-                    if (TransactionView.TransactionAmountBlock.Text != String.Empty)
+                    if (Convert.ToInt32(TransactionView.FromAccountTransaction.Text) == client.ID && TransactionView.FromAccountTransaction.Text != String.Empty
+                        && TransactionView.ToAccountTransaction.Text != String.Empty)
                     {
-                        int amount = int.Parse(TransactionView.TransactionAmountBlock.Text);
-                        int clientBalance = int.Parse(client.Bill) - amount;
-                        client.Bill = Convert.ToString(clientBalance);
-                        minusClientBalance = amount;
+                        try
+                        {
+                            if (TransactionView.TransactionAmountBlock.Text != String.Empty)
+                            {
+                                int amount = int.Parse(TransactionView.TransactionAmountBlock.Text);
+                                int clientBalance = int.Parse(client.Bill) - amount;
+                                client.Bill = Convert.ToString(clientBalance);
+                                minusClientBalance = amount;
 
-                        dataNonDepositClient = client;
+                                dataNonDepositClient = client;
+                            }
+                        }
+                        catch
+                        {
+                            continue;
+                        }
+                    }
+                }
+                catch
+                {
+                    if (TransactionView.FromAccountTransaction.Text == client.ID.ToString() && TransactionView.FromAccountTransaction.Text != String.Empty
+                        && TransactionView.ToAccountTransaction.Text != String.Empty)
+                    {
+                        try
+                        {
+                            if (TransactionView.TransactionAmountBlock.Text != String.Empty)
+                            {
+                                int amount = int.Parse(TransactionView.TransactionAmountBlock.Text);
+                                int clientBalance = int.Parse(client.Bill) - amount;
+                                client.Bill = Convert.ToString(clientBalance);
+                                minusClientBalance = amount;
+
+                                dataNonDepositClient = client;
+                            }
+                        }
+                        catch
+                        {
+                            continue;
+                        }
                     }
                 }
             }
@@ -474,15 +686,31 @@ namespace StartCS_Exceptions.ViewModels
             foreach (Client client in Clients)
             {
                 if (client.Bill == "Закрытый") { ExistToBill = false; }
-                if (TransactionView.ToAccountTransaction.Text == client.ID && TransactionView.ToAccountTransaction.Text != String.Empty
-                    && TransactionView.FromAccountTransaction.Text != String.Empty)
+                try
                 {
-                    if (TransactionView.TransactionAmountBlock.Text != String.Empty && client.Bill != "Закрытый")
+                    if (Convert.ToInt32(TransactionView.ToAccountTransaction.Text) == client.ID && TransactionView.ToAccountTransaction.Text != String.Empty
+                        && TransactionView.FromAccountTransaction.Text != String.Empty)
                     {
-                        int sums = int.Parse(client.Bill) + minusClientBalance;
-                        client.Bill = Convert.ToString(sums);
+                        if (TransactionView.TransactionAmountBlock.Text != String.Empty && client.Bill != "Закрытый")
+                        {
+                            int sums = int.Parse(client.Bill) + minusClientBalance;
+                            client.Bill = Convert.ToString(sums);
+                        }
+                        else { MessageBox.Show("Счёт клиента закрытый"); }
                     }
-                    else { MessageBox.Show("Счёт клиента закрытый"); }
+                }
+                catch
+                {
+                    if (TransactionView.ToAccountTransaction.Text == client.ID.ToString() && TransactionView.ToAccountTransaction.Text != String.Empty
+                        && TransactionView.FromAccountTransaction.Text != String.Empty)
+                    {
+                        if (TransactionView.TransactionAmountBlock.Text != String.Empty && client.Bill != "Закрытый")
+                        {
+                            int sums = int.Parse(client.Bill) + minusClientBalance;
+                            client.Bill = Convert.ToString(sums);
+                        }
+                        else { MessageBox.Show("Счёт клиента закрытый"); }
+                    }
                 }
             }
             SearchCommandMethod();
@@ -494,17 +722,50 @@ namespace StartCS_Exceptions.ViewModels
         {
             foreach (Client client in Clients)
             {
-                if (TransactionView.FromAccountTransaction.Text == client.ID && TransactionView.FromAccountTransaction.Text != String.Empty
-                    && TransactionView.ToAccountTransaction.Text != String.Empty)
+                try
                 {
-                    if (TransactionView.DepTransactionAmountBlock.Text != String.Empty && client.Bill != "Закрытый")
+                    if (Convert.ToInt32(TransactionView.FromAccountTransaction.Text) == client.ID && TransactionView.FromAccountTransaction.Text != String.Empty
+                        && TransactionView.ToAccountTransaction.Text != String.Empty)
                     {
-                        int amount = int.Parse(TransactionView.DepTransactionAmountBlock.Text);
-                        int clientBalance = int.Parse(client.DepBill) - amount;
-                        client.DepBill = Convert.ToString(clientBalance);
-                        minusClientBalance = amount;
+                        try
+                        {
+                            if (TransactionView.DepTransactionAmountBlock.Text != String.Empty && client.Bill != "Закрытый")
+                            {
+                                int amount = int.Parse(TransactionView.DepTransactionAmountBlock.Text);
+                                int clientBalance = int.Parse(client.DepBill) - amount;
+                                client.DepBill = Convert.ToString(clientBalance);
+                                minusClientBalance = amount;
 
-                        dataDepositClient = client;
+                                dataDepositClient = client;
+                            }
+                        }
+                        catch
+                        {
+                            continue;
+                        }
+                    }
+                }
+                catch
+                {
+                    if (TransactionView.FromAccountTransaction.Text == client.ID.ToString() && TransactionView.FromAccountTransaction.Text != String.Empty
+                        && TransactionView.ToAccountTransaction.Text != String.Empty)
+                    {
+                        try
+                        {
+                            if (TransactionView.DepTransactionAmountBlock.Text != String.Empty && client.Bill != "Закрытый")
+                            {
+                                int amount = int.Parse(TransactionView.DepTransactionAmountBlock.Text);
+                                int clientBalance = int.Parse(client.DepBill) - amount;
+                                client.DepBill = Convert.ToString(clientBalance);
+                                minusClientBalance = amount;
+
+                                dataDepositClient = client;
+                            }
+                        }
+                        catch
+                        {
+                            continue;
+                        }
                     }
                 }
             }
@@ -513,15 +774,31 @@ namespace StartCS_Exceptions.ViewModels
             {
                 if (client.DepBill == "Закрытый") { ExistToDepBill = false; }
 
-                if (TransactionView.ToAccountTransaction.Text == client.ID && TransactionView.ToAccountTransaction.Text != String.Empty
-                    && TransactionView.FromAccountTransaction.Text != String.Empty)
+                try
                 {
-                    if (TransactionView.DepTransactionAmountBlock.Text != String.Empty && client.DepBill != "Закрытый")
+                    if (Convert.ToInt32(TransactionView.ToAccountTransaction.Text) == client.ID && TransactionView.ToAccountTransaction.Text != String.Empty
+                        && TransactionView.FromAccountTransaction.Text != String.Empty)
                     {
-                        int sums = int.Parse(client.DepBill) + minusClientBalance;
-                        client.DepBill = Convert.ToString(sums);
+                        if (TransactionView.DepTransactionAmountBlock.Text != String.Empty && client.DepBill != "Закрытый")
+                        {
+                            int sums = int.Parse(client.DepBill) + minusClientBalance;
+                            client.DepBill = Convert.ToString(sums);
+                        }
+                        else { MessageBox.Show("Депозитный счёт клиента закрытый"); }
                     }
-                    else { MessageBox.Show("Депозитный счёт клиента закрытый"); }
+                }
+                catch
+                {
+                    if (TransactionView.ToAccountTransaction.Text == client.ID.ToString() && TransactionView.ToAccountTransaction.Text != String.Empty
+                        && TransactionView.FromAccountTransaction.Text != String.Empty)
+                    {
+                        if (TransactionView.DepTransactionAmountBlock.Text != String.Empty && client.DepBill != "Закрытый")
+                        {
+                            int sums = int.Parse(client.DepBill) + minusClientBalance;
+                            client.DepBill = Convert.ToString(sums);
+                        }
+                        else { MessageBox.Show("Депозитный счёт клиента закрытый"); }
+                    }
                 }
             }
             SearchCommandMethod();
@@ -603,7 +880,7 @@ namespace StartCS_Exceptions.ViewModels
                 if (billRandomBool == true) { bill = billRandValue.ToString(); }
                 else { bill = "Закрытый"; }
 
-                Clients.Add(new Client(i.ToString(), Faker.Internet.Email(), Faker.Name.First(), Faker.Name.Middle(),
+                Clients.Add(new Client(i, Faker.Internet.Email(), Faker.Name.First(), Faker.Name.Middle(),
                     Faker.Name.Last(), Faker.Phone.Number(), Faker.Address.StreetName(), bill, depBill));
             }
             XmlSerialize(Clients);
