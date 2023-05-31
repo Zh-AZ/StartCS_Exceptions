@@ -1,14 +1,14 @@
-﻿<UserControl x:Class="StartCS_Exceptions.Views.Windows.ClientView.ClientView"
+<UserControl x:Class="ClientViewLibrary.UserControl1"
              xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
-             xmlns:local="clr-namespace:StartCS_Exceptions.Views.Windows.ClientView"
+             xmlns:local="clr-namespace:ClientViewLibrary"
              xmlns:fa="http://schemas.awesome.incremented/wpf/xaml/fontawesome.sharp"
              mc:Ignorable="d" 
+             d:DesignHeight="450" d:DesignWidth="800"
              xmlns:vm="clr-namespace:StartCS_Exceptions.ViewModels"
              xmlns:Icon="http://metro.mahapps.com/winfx/xaml/iconpacks"
-             d:DesignHeight="450" d:DesignWidth="800"
              xmlns:theme="clr-namespace:Microsoft.Windows.Themes;assembly=PresentationFramework.Aero2">
 
     <UserControl.Resources>
@@ -356,42 +356,7 @@
                     Cursor="Hand"
                     BorderThickness="0"
                     Foreground="White"
-                    VerticalAlignment="Top" Margin="340,6,220,0">
-                <Button.Style>
-                    <Style TargetType="Button">
-                        <Setter Property="Background" Value="#773DFF"/>
-                        <Setter Property="Template">
-                            <Setter.Value>
-                                <ControlTemplate TargetType="Button">
-                                    <Border Height="30"
-                                            CornerRadius="15"
-                                            Background="{TemplateBinding Background}">
-                                        <ContentPresenter VerticalAlignment="Center"
-                                                          HorizontalAlignment="Center"/>
-                                    </Border>
-                                </ControlTemplate>
-                            </Setter.Value>
-                        </Setter>
-
-                        <Style.Triggers>
-                            <Trigger Property="IsMouseOver" Value="True">
-                                <Setter Property="Background" Value="#8A16C1"/>
-                            </Trigger>
-                        </Style.Triggers>
-                    </Style>
-                </Button.Style>
-            </Button>
-
-            <Button
-                    Command="{Binding Path=OpenAddClientWindowCommand}"
-                    Content="Добавить"
-                    FontSize="12"
-                    FontFamily="Montserrat"
-                    Cursor="Hand"
-                    BorderThickness="0"
-                    Foreground="White"
-                    VerticalAlignment="Top" Margin="670,6,10,0" Grid.ColumnSpan="2"
-                    Name="AddButton">
+                    VerticalAlignment="Top" Margin="670,6,10,0" Grid.ColumnSpan="2">
                 <Button.Style>
                     <Style TargetType="Button">
                         <Setter Property="Background" Value="#773DFF"/>
@@ -582,6 +547,3 @@
         </Border>
     </Grid>
 </UserControl>
-
-<!--Command="{Binding RelativeSource={RelativeSource AncestorType={x:Type DataGrid}},
-                                            Path=DataContext.DeleteClientCommand}"-->

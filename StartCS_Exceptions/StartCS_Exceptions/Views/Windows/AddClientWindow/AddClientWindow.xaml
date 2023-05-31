@@ -1,0 +1,335 @@
+﻿<Window x:Class="StartCS_Exceptions.Views.Windows.AddClientWindow.AddClientWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:StartCS_Exceptions.Views.Windows.AddClientWindow"
+        mc:Ignorable="d"
+        xmlns:Icon="http://metro.mahapps.com/winfx/xaml/iconpacks"
+        xmlns:vm="clr-namespace:StartCS_Exceptions.ViewModels"
+        WindowStyle="None"
+        ResizeMode="NoResize"
+        WindowStartupLocation="CenterScreen"
+        Background="Transparent"
+        AllowsTransparency="True"
+        Title="AddClientWindow" Height="450" Width="400"
+        MouseDown="Window_MouseDown">
+
+    <Window.DataContext>
+        <vm:MainWindowViewModel x:Name="ViewModel"/>
+    </Window.DataContext>
+
+    <Border CornerRadius="12"
+            BorderThickness="2"
+            Opacity="0.95">
+
+        <Border.BorderBrush>
+            <LinearGradientBrush StartPoint="0,0" EndPoint="1,1">
+                <GradientStop Color="#462AD8" Offset="0"/>
+                <GradientStop Color="#DA34AE" Offset="0.75"/>
+                <GradientStop Color="#8A16C1" Offset="1"/>
+            </LinearGradientBrush>
+        </Border.BorderBrush>
+
+        <Border.Background>
+            <LinearGradientBrush StartPoint="0,1" EndPoint="1,0">
+                <GradientStop Color="#060531" Offset="0"/>
+                <GradientStop Color="#1B1448" Offset="1"/>
+            </LinearGradientBrush>
+        </Border.Background>
+
+        <Grid>
+            <Grid.RowDefinitions>
+                <RowDefinition Height="30"/>
+                <RowDefinition/>
+            </Grid.RowDefinitions>
+
+            <Grid Grid.Row="0" Margin="10,0,359,0">
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition/>
+                    <ColumnDefinition Width="25"/>
+                </Grid.ColumnDefinitions>
+
+                <Button     Command="{Binding Path=AddClientCommad}"              
+                            BorderThickness="0"
+                            Foreground="White"
+                            FontSize="18"
+                            FontFamily="Montserrat"
+                            Cursor="Hand"
+                            Grid.Column="1"
+                            Click="btnClose_Click">
+
+                    <Icon:PackIconMaterial Kind="Check"/>
+               
+                    <Button.Style>
+                        <Style TargetType="Button">
+                            <Setter Property="Background" Value="#008000"/>
+                            <Style.Triggers>
+                                <Trigger Property="IsMouseOver" Value="True">
+                                    <Setter Property="Background" Value="#9ACD32"/>
+                                </Trigger>
+                            </Style.Triggers>
+                        </Style>
+                    </Button.Style>
+
+                    <Button.Template>
+                        <ControlTemplate TargetType="Button">
+                            <Border Width="25" Height="25"
+                                        CornerRadius="9"
+                                        Background="{TemplateBinding Background}">
+                                <ContentPresenter VerticalAlignment="Center"
+                                                      HorizontalAlignment="Center"/>
+                            </Border>
+                        </ControlTemplate>
+                    </Button.Template>
+                </Button>
+            </Grid>
+
+            <Grid Grid.Row="0">
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition/>
+                    <ColumnDefinition Width="25"/>
+                    <ColumnDefinition Width="25"/>
+                    <ColumnDefinition Width="5"/>
+                </Grid.ColumnDefinitions>
+
+                <Button x:Name="btnClose"                          
+                            BorderThickness="0"
+                            Content="X"
+                            Foreground="White"
+                            FontSize="12"
+                            FontFamily="Montserrat"
+                            Cursor="Hand"
+                            Grid.Column="2"
+                            Click="btnClose_Click">
+
+                    <Button.Style>
+                        <Style TargetType="Button">
+                            <Setter Property="Background" Value="#DA34AE"/>
+                            <Style.Triggers>
+                                <Trigger Property="IsMouseOver" Value="True">
+                                    <Setter Property="Background" Value="#C62DAE"/>
+                                </Trigger>
+                            </Style.Triggers>
+                        </Style>
+                    </Button.Style>
+
+                    <Button.Template>
+                        <ControlTemplate TargetType="Button">
+                            <Border Width="18" Height="18"
+                                        CornerRadius="9"
+                                        Background="{TemplateBinding Background}">
+                                <ContentPresenter VerticalAlignment="Center"
+                                                      HorizontalAlignment="Center"/>
+                            </Border>
+                        </ControlTemplate>
+                    </Button.Template>
+                </Button>
+            </Grid>
+
+
+
+            <StackPanel  Orientation="Vertical" Grid.Row="1">
+
+                <TextBlock Text="Добавление нового клиента"
+                       Foreground="LightGray"
+                       FontSize="20"
+                       FontWeight="Medium"
+                       FontFamily="Montserrat"
+                       TextWrapping="Wrap"
+                       TextAlignment="Center"
+                       Height="30"/>
+
+                <TextBlock Width="350">
+                    <Run Text="ID"
+                         Foreground="LightGray"
+                         FontSize="15"/>
+                    
+                     <TextBox Name="IDAdd"
+                             FontSize="13"
+                             FontWeight="Medium"
+                             FontFamily="Montserrat"                            
+                             Foreground="White"
+                             CaretBrush="LightGray"
+                             BorderBrush="DarkGray"
+                             BorderThickness="0,0,0,2"
+                             Height="28"
+                             VerticalContentAlignment="Center"
+                             Margin="0,10,0,0"
+                             Padding="20,0,0,0" Width="374">
+                </TextBox>
+                </TextBlock>
+
+
+                <TextBlock Width="350">
+                    <Run Text="Email"
+                         Foreground="LightGray"
+                         FontSize="15"/>
+                    
+                     <TextBox Name="EmailAdd"
+                             FontSize="13"
+                             FontWeight="Medium"
+                             FontFamily="Montserrat"                            
+                             Foreground="White"
+                             CaretBrush="LightGray"
+                             BorderBrush="DarkGray"
+                             BorderThickness="0,0,0,2"
+                             Height="28"
+                             VerticalContentAlignment="Center"
+                             Margin="0,10,0,0"
+                             Padding="20,0,0,0" Width="374">
+                </TextBox>
+                </TextBlock>
+
+
+                <TextBlock Width="350">
+                    <Run Text="Фамилия"
+                         Foreground="LightGray"
+                         FontSize="15"/>
+                    
+                     <TextBox Name="SurnameAdd"
+                             FontSize="13"
+                             FontWeight="Medium"
+                             FontFamily="Montserrat"                            
+                             Foreground="White"
+                             CaretBrush="LightGray"
+                             BorderBrush="DarkGray"
+                             BorderThickness="0,0,0,2"
+                             Height="28"
+                             VerticalContentAlignment="Center"
+                             Margin="0,10,0,0"
+                             Padding="20,0,0,0" Width="374">
+                </TextBox>
+                </TextBlock>
+
+
+                <TextBlock Width="350">
+                    <Run Text="Имя"
+                         Foreground="LightGray"
+                         FontSize="15"/>
+                    
+                     <TextBox Name="NameAdd"
+                             FontSize="13"
+                             FontWeight="Medium"
+                             FontFamily="Montserrat"                            
+                             Foreground="White"
+                             CaretBrush="LightGray"
+                             BorderBrush="DarkGray"
+                             BorderThickness="0,0,0,2"
+                             Height="28"
+                             VerticalContentAlignment="Center"
+                             Margin="0,10,0,0"
+                             Padding="20,0,0,0" Width="374">
+                </TextBox>
+                </TextBlock>
+
+
+                <TextBlock Width="350">
+                    <Run Text="Отчесвто"
+                         Foreground="LightGray"
+                         FontSize="15"/>
+                    
+                     <TextBox Name="PatronymicAdd"
+                             FontSize="13"
+                             FontWeight="Medium"
+                             FontFamily="Montserrat"                            
+                             Foreground="White"
+                             CaretBrush="LightGray"
+                             BorderBrush="DarkGray"
+                             BorderThickness="0,0,0,2"
+                             Height="28"
+                             VerticalContentAlignment="Center"
+                             Margin="0,10,0,0"
+                             Padding="20,0,0,0" Width="374">
+                </TextBox>
+                </TextBlock>
+
+
+                <TextBlock Width="350">
+                    <Run Text="Номер телефона"
+                         Foreground="LightGray"
+                         FontSize="15"/>
+                    
+                     <TextBox Name="NumberPhoneAdd"
+                             FontSize="13"
+                             FontWeight="Medium"
+                             FontFamily="Montserrat"                            
+                             Foreground="White"
+                             CaretBrush="LightGray"
+                             BorderBrush="DarkGray"
+                             BorderThickness="0,0,0,2"
+                             Height="28"
+                             VerticalContentAlignment="Center"
+                             Margin="0,10,0,0"
+                             Padding="20,0,0,0" Width="374">
+                </TextBox>
+                </TextBlock>
+
+
+                <TextBlock Width="350">
+                    <Run Text="Адрес"
+                         Foreground="LightGray"
+                         FontSize="15"/>
+                     
+                     <TextBox Name="AddressAdd"
+                             FontSize="13"
+                             FontWeight="Medium"
+                             FontFamily="Montserrat"                            
+                             Foreground="White"
+                             CaretBrush="LightGray"
+                             BorderBrush="DarkGray"
+                             BorderThickness="0,0,0,2"
+                             Height="28"
+                             VerticalContentAlignment="Center"
+                             Margin="0,10,0,0"
+                             Padding="20,0,0,0" Width="374">
+                </TextBox>
+                </TextBlock>
+
+
+                <TextBlock Width="350">
+                    <Run Text="Счёт"
+                         Foreground="LightGray"
+                         FontSize="15"/>
+                    
+                     <TextBox Name="BillAdd"
+                              Text="0"
+                             FontSize="13"
+                             FontWeight="Medium"
+                             FontFamily="Montserrat"                            
+                             Foreground="White"
+                             CaretBrush="LightGray"
+                             BorderBrush="DarkGray"
+                             BorderThickness="0,0,0,2"
+                             Height="28"
+                             VerticalContentAlignment="Center"
+                             Margin="0,10,0,0"
+                             Padding="20,0,0,0" Width="374">
+                </TextBox>
+                </TextBlock>
+
+
+                <TextBlock Width="350">
+                    <Run Text="Депозитный счёт"
+                         Foreground="LightGray"
+                         FontSize="15"/>
+                    
+                     <TextBox Name="DepBillAdd"
+                              Text="0"
+                             FontSize="13"
+                             FontWeight="Medium"
+                             FontFamily="Montserrat"                            
+                             Foreground="White"
+                             CaretBrush="LightGray"
+                             BorderBrush="DarkGray"
+                             BorderThickness="0,0,0,2"
+                             Height="28"
+                             VerticalContentAlignment="Center"
+                             Margin="0,10,0,0"
+                             Padding="20,0,0,0" Width="374">
+                </TextBox>
+                </TextBlock>
+            </StackPanel>
+        </Grid>
+    </Border>
+</Window>

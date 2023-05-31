@@ -26,6 +26,8 @@ using System.Windows.Navigation;
 using System.Windows.Media.Animation;
 using MaterialDesignThemes.Wpf;
 using System.Windows.Media.Media3D;
+using StartCS_Exceptions.Views.Windows.AddClientWindow;
+using System.Windows.Documents;
 
 namespace StartCS_Exceptions.ViewModels
 {
@@ -39,6 +41,7 @@ namespace StartCS_Exceptions.ViewModels
         static ClientView ClientView;
         static TransactionView TransactionView;
         static HistoryLogView HistoryLogView;
+        static AddClientWindow AddClientWindow;
         private LoginView LoginView;
         private UserControl _currentChildView;
         private string _Caption;
@@ -861,8 +864,43 @@ namespace StartCS_Exceptions.ViewModels
 
         }
 
+        public ICommand OpenAddClientWindowCommand { get; }
+        private void OnOpenAddClientWindowCommandExecute(object p)
+        {
+            AddClientWindow = new AddClientWindow();
+            AddClientWindow.ShowDialog();
+        }
+
+        public ICommand AddClientCommad { get; }
+        private void OnAddClientCommandExecute(object p)
+        {
+            if (AddClientWindow.IDAdd.Text != String.Empty && AddClientWindow.EmailAdd.Text != String.Empty && AddClientWindow.SurnameAdd.Text != String.Empty && AddClientWindow.NameAdd.Text != String.Empty &&
+               AddClientWindow.PatronymicAdd.Text != String.Empty && AddClientWindow.NumberPhoneAdd.Text != String.Empty && AddClientWindow.AddressAdd.Text != String.Empty &&
+               AddClientWindow.BillAdd.Text != String.Empty && AddClientWindow.DepBillAdd.Text != String.Empty)
+            {
+                if (int.TryParse(AddClientWindow.BillAdd.Text, out int k) && int.TryParse(AddClientWindow.DepBillAdd.Text, out int v))
+                {
+                    try
+                    {
+                        Client client = new Client(Convert.ToInt32(AddClientWindow.IDAdd.Text), AddClientWindow.EmailAdd.Text, AddClientWindow.SurnameAdd.Text, AddClientWindow.NameAdd.Text,
+                            AddClientWindow.PatronymicAdd.Text, AddClientWindow.NumberPhoneAdd.Text,
+                            AddClientWindow.AddressAdd.Text, AddClientWindow.BillAdd.Text, AddClientWindow.DepBillAdd.Text);
+
+                        Clients.Add(client);
+                        ClientView.membersDataGrid.ItemsSource = Clients;
+                        XmlSerialize(Clients);
+
+                    }
+                    catch { MessageBox.Show("Неверный ввод для ID!", "Ошибка", MessageBoxButton.OK, MessageBoxImage.Error); }
+                }
+                else { MessageBox.Show("Неверный ввод для счетов!", "Ошибка", MessageBoxButton.OK, MessageBoxImage.Error); }
+            }
+            else { MessageBox.Show("Неполная информация!", "Ошибка", MessageBoxButton.OK, MessageBoxImage.Error); }
+        }
+
         public MainWindowViewModel() 
         {
+            OpenAddClientWindowCommand = new LambdaCommand(OnOpenAddClientWindowCommandExecute);
             OpenMainViewCommand = new LambdaCommand(OnOpenMainViewCommandExecute);
             OpenClientViewCommand = new LambdaCommand(OnOpenClientCiewCommandExecute);
             OpenTransactionViewCommand = new LambdaCommand(OnOpenTransactionViewCommandexecute);
@@ -879,6 +917,7 @@ namespace StartCS_Exceptions.ViewModels
             TransferCommand = new LambdaCommand(OnTransferCommandExecute);
             DepTransferCommand = new LambdaCommand(OnDepTransferCommandExecute);
             ChooseWorkerCommand = new LambdaCommand(OnChooseWorkerCommandExecute);
+            AddClientCommad = new LambdaCommand(OnAddClientCommandExecute);
 
             Clients = new ObservableCollection<Client>();
             ClientsInHistories = new List<ClientsInHistory>();
