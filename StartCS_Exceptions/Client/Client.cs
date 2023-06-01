@@ -1,23 +1,21 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Collections.ObjectModel;
 using System.ComponentModel;
 using System.IO;
 using System.Linq;
 using System.Runtime.CompilerServices;
 using System.Text;
 using System.Threading.Tasks;
-using System.Windows;
 using System.Xml.Serialization;
-using System.Text.Json;
+using ClientsInHistory;
 
-namespace StartCS_Exceptions
+namespace Client
 {
     public class Client : INotifyPropertyChanged
     {
         public event PropertyChangedEventHandler PropertyChanged;
 
-        List<ClientsInHistory> ClientsInHistories { get; set; } //= new List<ClientsInHistory>();
+        List<ClientsInHistory.ClientsInHistory> ClientsInHistories { get; set; } //= new List<ClientsInHistory>();
 
         protected virtual void OnPropertyChanged([CallerMemberName] string propertyName = null)
         {
@@ -33,7 +31,7 @@ namespace StartCS_Exceptions
 
                     string changes = $"{propertyName} У клиента {ID} {Surname} {Name} {Patronymic}";
 
-                    ClientsInHistories.Add(new ClientsInHistory("Менеджер", changes, DateTime.Now));
+                    ClientsInHistories.Add(new ClientsInHistory.ClientsInHistory("Менеджер", changes, DateTime.Now));
 
                     //ClientsInHistory clientsInHistories = new ClientsInHistory("Manager", changes, DateTime.Now);
                     XmlDeserialize();
@@ -54,10 +52,10 @@ namespace StartCS_Exceptions
         //    }
         //}
 
-        public void XmlSerialize(List<ClientsInHistory> clientsInHistories)
+        public void XmlSerialize(List<ClientsInHistory.ClientsInHistory> clientsInHistories)
         {
             File.WriteAllText(path, String.Empty);
-            XmlSerializer xmlSerializer = new XmlSerializer(typeof(List<ClientsInHistory>));
+            XmlSerializer xmlSerializer = new XmlSerializer(typeof(List<ClientsInHistory.ClientsInHistory>));
             using (FileStream fs = new FileStream(path, FileMode.OpenOrCreate))
             {
                 xmlSerializer.Serialize(fs, clientsInHistories);
@@ -68,13 +66,13 @@ namespace StartCS_Exceptions
         {
             if (File.Exists(path))
             {
-                XmlSerializer xmlSerializer = new XmlSerializer(typeof(List<ClientsInHistory>));
+                XmlSerializer xmlSerializer = new XmlSerializer(typeof(List<ClientsInHistory.ClientsInHistory>));
                 using (FileStream fs = new FileStream(path, FileMode.OpenOrCreate))
                 {
-                    List<ClientsInHistory> newClients = xmlSerializer.Deserialize(fs) as List<ClientsInHistory>;
+                    List<ClientsInHistory.ClientsInHistory> newClients = xmlSerializer.Deserialize(fs) as List<ClientsInHistory.ClientsInHistory>;
                     if (newClients != null)
                     {
-                        foreach (ClientsInHistory client in newClients)
+                        foreach (ClientsInHistory.ClientsInHistory client in newClients)
                         {
                             ClientsInHistories.Add(client);
                         }
@@ -202,7 +200,7 @@ namespace StartCS_Exceptions
             }
         }
 
-        public Client() { ClientsInHistories = new List<ClientsInHistory>(); }
+        public Client() { ClientsInHistories = new List<ClientsInHistory.ClientsInHistory>(); }
 
         public Client(int id, string email, string name, string surname, string patronymic,
             string numberPhone, string address, string bill, string depBill)

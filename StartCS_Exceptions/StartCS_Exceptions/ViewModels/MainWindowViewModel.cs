@@ -28,13 +28,16 @@ using MaterialDesignThemes.Wpf;
 using System.Windows.Media.Media3D;
 using StartCS_Exceptions.Views.Windows.AddClientWindow;
 using System.Windows.Documents;
+using Client;
+using ClientsInHistory;
+
 
 namespace StartCS_Exceptions.ViewModels
 {
     internal class MainWindowViewModel : ViewModel
     {
-        public static ObservableCollection<Client> Clients { get; set; } //= new ObservableCollection<Client>();
-        public static List<ClientsInHistory> ClientsInHistories { get; set; }        
+        public static ObservableCollection<Client.Client> Clients { get; set; } //= new ObservableCollection<Client>();
+        public static List<ClientsInHistory.ClientsInHistory> ClientsInHistories { get; set; }        
         string path = @"..\Debug\Client.xml";
 
         static MainView MainView;
@@ -45,9 +48,9 @@ namespace StartCS_Exceptions.ViewModels
         private LoginView LoginView;
         private UserControl _currentChildView;
         private string _Caption;
-        private static Client _Selected;
+        private static Client.Client _Selected;
 
-        public Client Selected
+        public Client.Client Selected
         {
             get => _Selected;
             set => Set(ref _Selected, value);
@@ -161,11 +164,11 @@ namespace StartCS_Exceptions.ViewModels
         {
             if (ClientView.SearchClientBox.Text != String.Empty)
             {
-                foreach (Client client in Clients)
+                foreach (Client.Client client in Clients)
                 {
                     if (ClientView.SearchClientBox.Text == client.ID.ToString() || ClientView.SearchClientBox.Text == client.Surname || ClientView.SearchClientBox.Text == client.Name || ClientView.SearchClientBox.Text == client.Patronymic)
                     {
-                        List<Client> list = new List<Client>();
+                        List<Client.Client> list = new List<Client.Client>();
                         list.Add(client);
                         ClientView.membersDataGrid.ItemsSource = list;
                     }
@@ -188,13 +191,13 @@ namespace StartCS_Exceptions.ViewModels
 
             if (File.Exists(historyLogPatch))
             {
-                XmlSerializer xmlSerializer = new XmlSerializer(typeof(List<ClientsInHistory>));
+                XmlSerializer xmlSerializer = new XmlSerializer(typeof(List<ClientsInHistory.ClientsInHistory>));
                 using (FileStream fs = new FileStream(historyLogPatch, FileMode.OpenOrCreate))
                 {
-                    List<ClientsInHistory> newClients = xmlSerializer.Deserialize(fs) as List<ClientsInHistory>;
+                    List<ClientsInHistory.ClientsInHistory> newClients = xmlSerializer.Deserialize(fs) as List<ClientsInHistory.ClientsInHistory>;
                     if (newClients != null)
                     {
-                        foreach (ClientsInHistory client in newClients)
+                        foreach (ClientsInHistory.ClientsInHistory client in newClients)
                         {
                             ClientsInHistories.Add(client);
                         }
@@ -209,7 +212,7 @@ namespace StartCS_Exceptions.ViewModels
         public ICommand DeleteClientCommand { get; }
         private void OnDeleteClientCommandExecute(object p)
         {
-            if (!(p is Client client)) return;
+            if (!(p is Client.Client client)) return;
             Clients.Remove(client);
            //WriteToFileHistoryLog($"\nУдалён Менеджером {client.ToString().ToUpper()}");
             XmlSerialize(Clients);
@@ -255,7 +258,7 @@ namespace StartCS_Exceptions.ViewModels
 
         void SearchCommandMethod()
         {
-            foreach (Client client in Clients)
+            foreach (Client.Client client in Clients)
             {
                 try
                 {
@@ -335,7 +338,7 @@ namespace StartCS_Exceptions.ViewModels
                 }
             }
 
-            foreach (Client client in Clients)
+            foreach (Client.Client client in Clients)
             {
                 try
                 {
@@ -359,7 +362,7 @@ namespace StartCS_Exceptions.ViewModels
                 }
             }
 
-            foreach (Client client in Clients)
+            foreach (Client.Client client in Clients)
             {
                 try
                 {
@@ -387,7 +390,7 @@ namespace StartCS_Exceptions.ViewModels
         public ICommand OpenOrCloseNonDepositCommand { get; }
         private void OnOpenNonDepositCommandExecute(object p)
         {
-            foreach (Client client in Clients)
+            foreach (Client.Client client in Clients)
             {
                 try
                 {
@@ -435,7 +438,7 @@ namespace StartCS_Exceptions.ViewModels
         public ICommand OpenOrCloseDepositCommand { get; }
         private void OnOpenDepositCommandExecute(object p)
         {
-            foreach (Client client in Clients)
+            foreach (Client.Client client in Clients)
             {
                 try
                 {
@@ -483,7 +486,7 @@ namespace StartCS_Exceptions.ViewModels
         public ICommand NonDepPlusCommand { get; }
         private void OnNonDepPlusCommandExecute(object p)
         {
-            foreach (Client client in Clients)
+            foreach (Client.Client client in Clients)
             {
                 try
                 {
@@ -517,7 +520,7 @@ namespace StartCS_Exceptions.ViewModels
         public ICommand DepositPlusCommand { get; }
         private void OnDepositPlusCommandExecute(object p)
         {
-            foreach (Client client in Clients)
+            foreach (Client.Client client in Clients)
             {
                 try
                 {
@@ -551,7 +554,7 @@ namespace StartCS_Exceptions.ViewModels
         public ICommand SearchIDFromToCommand { get; }
         private void OnSearchIDFromToCommandExecute(object p)
         {
-            foreach (Client client in Clients)
+            foreach (Client.Client client in Clients)
             {
                 try
                 {
@@ -603,7 +606,7 @@ namespace StartCS_Exceptions.ViewModels
                 }
             }
 
-            foreach (Client client in Clients)
+            foreach (Client.Client client in Clients)
             {
                 try
                 {
@@ -646,8 +649,8 @@ namespace StartCS_Exceptions.ViewModels
         private static int minusDepClientBalance;
         private static bool ExistToBill = true;
         private static bool ExistToDepBill = true;
-        private static Client dataNonDepositClient;
-        private static Client dataDepositClient;
+        private static Client.Client dataNonDepositClient;
+        private static Client.Client dataDepositClient;
 
         /// <summary>
         /// Перевод счёта от найденного по ID клиента к другому
@@ -655,7 +658,7 @@ namespace StartCS_Exceptions.ViewModels
         public ICommand TransferCommand { get; }
         private void OnTransferCommandExecute(object p)
         {
-            foreach (Client client in Clients)
+            foreach (Client.Client client in Clients)
             {
                 try
                 {
@@ -708,7 +711,7 @@ namespace StartCS_Exceptions.ViewModels
                 }
             }
 
-            foreach (Client client in Clients)
+            foreach (Client.Client client in Clients)
             {
                 if (client.Bill == "Закрытый") { ExistToBill = false; }
                 try
@@ -749,7 +752,7 @@ namespace StartCS_Exceptions.ViewModels
         public ICommand DepTransferCommand { get; }
         private void OnDepTransferCommandExecute(object p)
         {
-            foreach (Client client in Clients)
+            foreach (Client.Client client in Clients)
             {
                 try
                 {
@@ -802,7 +805,7 @@ namespace StartCS_Exceptions.ViewModels
                 }
             }
 
-            foreach (Client client in Clients)
+            foreach (Client.Client client in Clients)
             {
                 if (client.DepBill == "Закрытый") { ExistToDepBill = false; }
 
@@ -882,7 +885,7 @@ namespace StartCS_Exceptions.ViewModels
                 {
                     try
                     {
-                        Client client = new Client(Convert.ToInt32(AddClientWindow.IDAdd.Text), AddClientWindow.EmailAdd.Text, AddClientWindow.SurnameAdd.Text, AddClientWindow.NameAdd.Text,
+                        Client.Client client = new Client.Client(Convert.ToInt32(AddClientWindow.IDAdd.Text), AddClientWindow.EmailAdd.Text, AddClientWindow.SurnameAdd.Text, AddClientWindow.NameAdd.Text,
                             AddClientWindow.PatronymicAdd.Text, AddClientWindow.NumberPhoneAdd.Text,
                             AddClientWindow.AddressAdd.Text, AddClientWindow.BillAdd.Text, AddClientWindow.DepBillAdd.Text);
 
@@ -919,8 +922,8 @@ namespace StartCS_Exceptions.ViewModels
             ChooseWorkerCommand = new LambdaCommand(OnChooseWorkerCommandExecute);
             AddClientCommad = new LambdaCommand(OnAddClientCommandExecute);
 
-            Clients = new ObservableCollection<Client>();
-            ClientsInHistories = new List<ClientsInHistory>();
+            Clients = new ObservableCollection<Client.Client>();
+            ClientsInHistories = new List<ClientsInHistory.ClientsInHistory>();
             if (File.Exists(path)) { XmlDeserialize(Clients); }
             else { GenerationClient(); }
         }
@@ -951,33 +954,33 @@ namespace StartCS_Exceptions.ViewModels
                 if (billRandomBool == true) { bill = billRandValue.ToString(); }
                 else { bill = "Закрытый"; }
 
-                Clients.Add(new Client(i, Faker.Internet.Email(), Faker.Name.First(), Faker.Name.Middle(),
+                Clients.Add(new Client.Client(i, Faker.Internet.Email(), Faker.Name.First(), Faker.Name.Middle(),
                     Faker.Name.Last(), Faker.Phone.Number(), Faker.Address.StreetName(), bill, depBill));
             }
             XmlSerialize(Clients);
         }
 
-        public void XmlSerialize(ObservableCollection<Client> clients)
+        public void XmlSerialize(ObservableCollection<Client.Client> clients)
         {
             File.WriteAllText(path, String.Empty);
-            XmlSerializer xmlSerializer = new XmlSerializer(typeof(ObservableCollection<Client>));
+            XmlSerializer xmlSerializer = new XmlSerializer(typeof(ObservableCollection<Client.Client>));
             using (FileStream fs = new FileStream(path, FileMode.OpenOrCreate))
             {
                 xmlSerializer.Serialize(fs, clients);
             }
         }
 
-        void XmlDeserialize(ObservableCollection<Client> clients)
+        void XmlDeserialize(ObservableCollection<Client.Client> clients)
         {
             if (File.Exists(path))
             {
-                XmlSerializer xmlSerializer = new XmlSerializer(typeof(ObservableCollection<Client>));
+                XmlSerializer xmlSerializer = new XmlSerializer(typeof(ObservableCollection<Client.Client>));
                 using (FileStream fs = new FileStream(path, FileMode.OpenOrCreate))
                 {
-                    ObservableCollection<Client> newClients = xmlSerializer.Deserialize(fs) as ObservableCollection<Client>;
+                    ObservableCollection<Client.Client> newClients = xmlSerializer.Deserialize(fs) as ObservableCollection<Client.Client>;
                     if (newClients != null)
                     {
-                        foreach (Client client in newClients)
+                        foreach (Client.Client client in newClients)
                         {
                             Clients.Add(client);
                         }

@@ -108,8 +108,6 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </ApplicationDefinition>
-    <Compile Include="Client.cs" />
-    <Compile Include="ClientsInHistory.cs" />
     <Compile Include="ViewModels\Base\ViewModel.cs" />
     <Compile Include="ViewModels\MainWindowViewModel.cs" />
     <Compile Include="Views\Windows\AddClientWindow\AddClientWindow.xaml.cs">
@@ -217,6 +215,16 @@
   </ItemGroup>
   <ItemGroup>
     <Resource Include="Images\IconUser.jpg" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\ClientsInHistory\ClientsInHistory.csproj">
+      <Project>{7c11f6aa-f0cc-4f0d-a151-51509246c0fc}</Project>
+      <Name>ClientsInHistory</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Client\Client.csproj">
+      <Project>{43ab10af-c58f-4b4d-b602-0b4657f948ba}</Project>
+      <Name>Client</Name>
+    </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <Import Project="..\packages\NETStandard.Library.2.0.3\build\netstandard2.0\NETStandard.Library.targets" Condition="Exists('..\packages\NETStandard.Library.2.0.3\build\netstandard2.0\NETStandard.Library.targets')" />
