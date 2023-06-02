@@ -26,31 +26,17 @@ namespace Client
 
                 if (args.PropertyName != "ItemSource")
                 {
-                    //WriteToFileHistoryLog(propertyName, ID, Email, Surname, Name, Patronymic, NumberPhone, Address);
-                    //MessageBox.Show($"Изменено {propertyName} У клиента {ID} {Email} {Surname} {Name} {Patronymic} {NumberPhone} {Address}");
-
                     string changes = $"{propertyName} У клиента {ID} {Surname} {Name} {Patronymic}";
 
                     ClientsInHistories.Add(new ClientsInHistory.ClientsInHistory("Менеджер", changes, DateTime.Now));
 
-                    //ClientsInHistory clientsInHistories = new ClientsInHistory("Manager", changes, DateTime.Now);
                     XmlDeserialize();
                     XmlSerialize(ClientsInHistories);
-                    //JsonSerialize(ClientsInHistories);
                 }
             }
         }
 
         string path = @"..\Debug\HistoryLog.xml";
-
-        //public async void JsonSerialize(List<ClientsInHistory> clientsInHistories)
-        //{
-        //    var options = new JsonSerializerOptions { WriteIndented = true };
-        //    using (FileStream fs = new FileStream(path, FileMode.OpenOrCreate))
-        //    {
-        //        await JsonSerializer.SerializeAsync(fs, clientsInHistories, options);
-        //    }
-        //}
 
         public void XmlSerialize(List<ClientsInHistory.ClientsInHistory> clientsInHistories)
         {

@@ -103,7 +103,7 @@ namespace StartCS_Exceptions.ViewModels
         {
             MainView = new MainView();
 
-            if (LoginView.txtUser.Text == "Консультант".ToLower())
+            if (LoginView.txtUser.Text.ToLower() == "Консультант".ToLower())
             {
                 MainView.Show();
                 LoginView.Close();
@@ -112,7 +112,7 @@ namespace StartCS_Exceptions.ViewModels
                 MainView.ImageWorker.Fill = new ImageBrush(new BitmapImage(new Uri(BaseUriHelper.GetBaseUri(MainView), "/Images/IconUser.jpg")));
                 MainView.TransactionShow.Visibility = Visibility.Collapsed;
             }   
-            else if (LoginView.txtUser.Text == "Менеджер".ToLower())
+            else if (LoginView.txtUser.Text.ToLower() == "Менеджер".ToLower())
             {
                 MainView.Show();
                 LoginView.Close();
@@ -728,7 +728,8 @@ namespace StartCS_Exceptions.ViewModels
                         Clients.Add(client);
                         ClientView.membersDataGrid.ItemsSource = Clients;
                         XmlSerialize(Clients);
-
+                        Clients.Clear();
+                        XmlDeserialize(Clients);
                     }
                     catch { MessageBox.Show("Неверный ввод для ID!", "Ошибка", MessageBoxButton.OK, MessageBoxImage.Error); }
                 }
