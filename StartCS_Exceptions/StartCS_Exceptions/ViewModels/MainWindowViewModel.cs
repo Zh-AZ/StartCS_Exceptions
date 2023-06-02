@@ -36,7 +36,7 @@ namespace StartCS_Exceptions.ViewModels
 {
     internal class MainWindowViewModel : ViewModel
     {
-        public static ObservableCollection<Client.Client> Clients { get; set; } //= new ObservableCollection<Client>();
+        public static ObservableCollection<Client.Client> Clients { get; set; } 
         public static List<ClientsInHistory.ClientsInHistory> ClientsInHistories { get; set; }        
         string path = @"..\Debug\Client.xml";
 
@@ -50,6 +50,8 @@ namespace StartCS_Exceptions.ViewModels
         private string _Caption;
         private static Client.Client _Selected;
 
+        #region Свойства
+
         public Client.Client Selected
         {
             get => _Selected;
@@ -58,10 +60,7 @@ namespace StartCS_Exceptions.ViewModels
         
         public UserControl CurrentChildView
         {
-            get
-            {
-                return _currentChildView;
-            }
+            get => _currentChildView;
             set
             {
                 _currentChildView = value;
@@ -71,10 +70,7 @@ namespace StartCS_Exceptions.ViewModels
 
         public string Caption
         {
-            get
-            {
-                return _Caption;
-            }
+            get => _Caption;
             set
             {
                 _Caption = value;
@@ -93,13 +89,20 @@ namespace StartCS_Exceptions.ViewModels
             }
         }
 
+        #endregion
+
         public void OnViewInitialized(LoginView loginView) { LoginView = loginView; }
 
+        #region Команды
+
+        /// <summary>
+        /// Открыть главное окно для Менеджера или Консультанта
+        /// </summary>
         public ICommand OpenMainViewCommand { get; }
         private void OnOpenMainViewCommandExecute(object p)
         {
             MainView = new MainView();
-            //ClientView = new ClientView();
+
             if (LoginView.txtUser.Text == "Консультант".ToLower())
             {
                 MainView.Show();
@@ -107,8 +110,6 @@ namespace StartCS_Exceptions.ViewModels
                 MainView.WorkerName.Text = "Консультант";
                 MainView.AngleUpOrDown.Icon = IconChar.AngleDown;
                 MainView.ImageWorker.Fill = new ImageBrush(new BitmapImage(new Uri(BaseUriHelper.GetBaseUri(MainView), "/Images/IconUser.jpg")));
-                //ClientView.OperationsColumn.Visibility = Visibility.Hidden;
-                //ClientView.membersDataGrid.IsReadOnly = true;
                 MainView.TransactionShow.Visibility = Visibility.Collapsed;
             }   
             else if (LoginView.txtUser.Text == "Менеджер".ToLower())
@@ -120,45 +121,51 @@ namespace StartCS_Exceptions.ViewModels
                 MainView.ImageWorker.Fill = new ImageBrush(new BitmapImage(new Uri(BaseUriHelper.GetBaseUri(MainView), "/Images/IconManager.png")));
                 MainView.TransactionShow.Visibility = Visibility.Visible;
             }
-            else { MessageBox.Show("False"); }
+            else { MessageBox.Show($"Сотрудник {LoginView.txtUser.Text} не распознан", "Ошибка", MessageBoxButton.OK, MessageBoxImage.Error); }
 
         }
 
+        /// <summary>
+        /// Показать пользовательский элемент клиентов
+        /// </summary>
         public ICommand OpenClientViewCommand { get; }
         private void OnOpenClientCiewCommandExecute(object p)
         {
-            //CurrentChildView = new ClientViewModel();
-
             if (ClientView != null) { ClientView.Visibility = Visibility.Collapsed; }
             ClientView = new ClientView();
             CurrentChildView = ClientView;
-            Caption = "Customers";
+            Caption = "Клиенты";
             Icon = IconChar.UserGroup;
             if (MainView.WorkerName.Text == "Консультант")
             {
                 ClientView.OperationsColumn.Visibility = Visibility.Hidden;
+                ClientView.AddButton.Visibility = Visibility.Hidden;
                 ClientView.membersDataGrid.IsReadOnly = true;
-                //MainView.TransactionShow.Visibility = Visibility.Hidden;
             }
             else 
             {
                 ClientView.OperationsColumn.Visibility = Visibility.Visible;
+                ClientView.AddButton.Visibility = Visibility.Visible;
                 ClientView.membersDataGrid.IsReadOnly = false;
             }
         }
 
+        /// <summary>
+        /// Показать пользовательский элемент транзакции
+        /// </summary>
         public ICommand OpenTransactionViewCommand { get; }
         private void OnOpenTransactionViewCommandexecute(object p)
         {
-            //CurrentChildView = new TransactionViewModel();
-
             if (TransactionView != null) { TransactionView.Visibility = Visibility.Collapsed; }
             TransactionView = new TransactionView();
             CurrentChildView = TransactionView;   
-            Caption = "Transaction";
+            Caption = "Транзакция";
             Icon = IconChar.MoneyBillTransfer;
         }
 
+        /// <summary>
+        /// Кнопка поиска клиентов по ID, Имени, Фамилии и Отчества
+        /// </summary>
         public ICommand SearchClientCommand { get; }
         private void OnSearchClientCommandExecute(object p)
         {
@@ -166,10 +173,10 @@ namespace StartCS_Exceptions.ViewModels
             {
                 foreach (Client.Client client in Clients)
                 {
-                    if (ClientView.SearchClientBox.Text == client.ID.ToString() || ClientView.SearchClientBox.Text == client.Surname || ClientView.SearchClientBox.Text == client.Name || ClientView.SearchClientBox.Text == client.Patronymic)
+                    if (ClientView.SearchClientBox.Text == client.ID.ToString() || ClientView.SearchClientBox.Text == client.Surname || ClientView.SearchClientBox.Text == client.Name || 
+                        ClientView.SearchClientBox.Text == client.Patronymic)
                     {
-                        List<Client.Client> list = new List<Client.Client>();
-                        list.Add(client);
+                        List<Client.Client> list = new List<Client.Client> { client };
                         ClientView.membersDataGrid.ItemsSource = list;
                     }
                 }
@@ -179,6 +186,9 @@ namespace StartCS_Exceptions.ViewModels
 
         string historyLogPatch = @"..\Debug\HistoryLog.xml";
 
+        /// <summary>
+        /// Показать пользовательский элемент истории
+        /// </summary>
         public ICommand OpenHistoryLogViewCommand { get; }
         private void OnOpenHistoryLohViewCommandExecute(object p)
         {
@@ -186,7 +196,7 @@ namespace StartCS_Exceptions.ViewModels
 
             HistoryLogView = new HistoryLogView();
             CurrentChildView = HistoryLogView;
-            Caption = "История дейстий";
+            Caption = "История клиентов";
             Icon = IconChar.History;
 
             if (File.Exists(historyLogPatch))
@@ -214,7 +224,6 @@ namespace StartCS_Exceptions.ViewModels
         {
             if (!(p is Client.Client client)) return;
             Clients.Remove(client);
-           //WriteToFileHistoryLog($"\nУдалён Менеджером {client.ToString().ToUpper()}");
             XmlSerialize(Clients);
             ClientView.membersDataGrid.Items.Refresh();
         }
@@ -241,14 +250,10 @@ namespace StartCS_Exceptions.ViewModels
             {
                 MainView.StackPanel.Children.Add(icon);
             }
-
-            // Foreground = "#784DFD"
-            // Height = "20"
-            // Width = "20"
         }
 
         /// <summary>
-        /// Поиск клиента по ID 
+        /// Поиск клиента по ID для транзакции
         /// </summary>
         public ICommand SearchCommand { get; }
         private void OnSearchCommandExecute(object p)
@@ -300,41 +305,6 @@ namespace StartCS_Exceptions.ViewModels
                 catch
                 {
                     break;
-                    //continue;
-                    //if (TransactionView.SearchBox.Text == client.ID.ToString())
-                    //{
-                    //    TransactionView.FoundBalanceBlock.Text = client.Bill;
-                    //    TransactionView.DepFoundBalanceBlock.Text = client.DepBill;
-                    //    if (client.DepBill == "Закрытый")
-                    //    {
-                    //        TransactionView.OpenDepositButton.Content = "Открыть";
-                    //        TransactionView.OpenDepositButton.Style = TransactionView.OpenDepositButton.TryFindResource("ButtonColorOpenStyle") as Style;
-                    //        TransactionView.DepButton.Style = TransactionView.OpenDepositButton.TryFindResource("ButtonColorCloseStyle") as Style;
-                    //        TransactionView.DepFoundBalanceBlock.Background = new SolidColorBrush(Colors.DarkRed);
-                    //    }
-                    //    else
-                    //    {
-                    //        TransactionView.OpenDepositButton.Content = "Закрыть";
-                    //        TransactionView.OpenDepositButton.Style = TransactionView.OpenDepositButton.TryFindResource("ButtonColorCloseStyle") as Style;
-                    //        TransactionView.DepButton.Style = TransactionView.OpenDepositButton.TryFindResource("ButtonColorOpenStyle") as Style;
-                    //        TransactionView.DepFoundBalanceBlock.Background = new SolidColorBrush(Colors.White);
-                    //    }
-
-                    //    if (client.Bill == "Закрытый")
-                    //    {
-                    //        TransactionView.OpenNonDepositButton.Content = "Открыть";
-                    //        TransactionView.OpenNonDepositButton.Style = TransactionView.OpenDepositButton.TryFindResource("ButtonColorOpenStyle") as Style;
-                    //        TransactionView.NonDepButton.Style = TransactionView.OpenDepositButton.TryFindResource("ButtonColorCloseStyle") as Style;
-                    //        TransactionView.FoundBalanceBlock.Background = new SolidColorBrush(Colors.DarkRed);
-                    //    }
-                    //    else
-                    //    {
-                    //        TransactionView.OpenNonDepositButton.Content = "Закрыть";
-                    //        TransactionView.OpenNonDepositButton.Style = TransactionView.OpenDepositButton.TryFindResource("ButtonColorCloseStyle") as Style;
-                    //        TransactionView.NonDepButton.Style = TransactionView.OpenDepositButton.TryFindResource("ButtonColorOpenStyle") as Style;
-                    //        TransactionView.FoundBalanceBlock.Background = new SolidColorBrush(Colors.White);
-                    //    }
-                    //}
                 }
             }
 
@@ -352,13 +322,6 @@ namespace StartCS_Exceptions.ViewModels
                 catch (Exception)
                 {
                     break;
-                    //continue;
-                    //if (TransactionView.FromAccountTransaction.Text == client.ID.ToString() && TransactionView.FromAccountTransaction.Text != String.Empty
-                    //   && TransactionView.ToAccountTransaction.Text != string.Empty)
-                    //{
-                    //    TransactionView.FromIDNonDepositBox.Text = client.Bill;
-                    //    TransactionView.FromIDDepositBox.Text = client.DepBill;
-                    //}
                 }
             }
 
@@ -376,17 +339,13 @@ namespace StartCS_Exceptions.ViewModels
                 catch (Exception)
                 {
                     break;
-                    //continue;
-                    //if (TransactionView.ToAccountTransaction.Text == client.ID.ToString() && TransactionView.ToAccountTransaction.Text != String.Empty
-                    //   && TransactionView.FromAccountTransaction.Text != String.Empty)
-                    //{
-                    //    TransactionView.ToIDDepositBox.Text = client.DepBill;
-                    //    TransactionView.ToIDNonDepositBox.Text = client.Bill;
-                    //}
                 }
             }
         }
 
+        /// <summary>
+        /// Открыть или закрыть недепозитный счёт
+        /// </summary>
         public ICommand OpenOrCloseNonDepositCommand { get; }
         private void OnOpenNonDepositCommandExecute(object p)
         {
@@ -413,28 +372,15 @@ namespace StartCS_Exceptions.ViewModels
                 catch
                 {
                     break;
-                    //continue;
-                    //if (TransactionView.SearchBox.Text == client.ID.ToString())
-                    //{
-                    //    if (client.Bill == "Закрытый")
-                    //    {
-                    //        client.Bill = "0";
-                    //    }
-                    //    else
-                    //    {
-                    //        if (MessageBox.Show("Внимание весь счёт будет обнулён! Вы уверены что хотите продолжить?", "Внимание",
-                    //            MessageBoxButton.YesNo, MessageBoxImage.Warning, MessageBoxResult.No) == MessageBoxResult.Yes)
-                    //        {
-                    //            client.Bill = "Закрытый";
-                    //        }
-                    //    }
-                    //}
                 }
             }
             SearchCommandMethod();
             XmlSerialize(Clients);
         }
 
+        /// <summary>
+        /// Открыть или закрыть депозитный счёт
+        /// </summary>
         public ICommand OpenOrCloseDepositCommand { get; }
         private void OnOpenDepositCommandExecute(object p)
         {
@@ -461,28 +407,15 @@ namespace StartCS_Exceptions.ViewModels
                 catch
                 {
                     break;
-                    //continue;
-                    //if (TransactionView.SearchBox.Text == client.ID.ToString())
-                    //{
-                    //    if (client.DepBill == "Закрытый")
-                    //    {
-                    //        client.DepBill = "0";
-                    //    }
-                    //    else
-                    //    {
-                    //        if (MessageBox.Show("Внимание весь депозитный счёт будет обнулён! Вы уверены что хотите продолжить?", "Внимание",
-                    //           MessageBoxButton.YesNo, MessageBoxImage.Warning, MessageBoxResult.No) == MessageBoxResult.Yes)
-                    //        {
-                    //            client.DepBill = "Закрытый";
-                    //        }
-                    //    }
-                    //}
                 }
             }
             SearchCommandMethod();
             XmlSerialize(Clients);
         }
 
+        /// <summary>
+        /// Пополнить недепозитный счёт
+        /// </summary>
         public ICommand NonDepPlusCommand { get; }
         private void OnNonDepPlusCommandExecute(object p)
         {
@@ -502,21 +435,15 @@ namespace StartCS_Exceptions.ViewModels
                 catch
                 {
                     break;
-                    //continue;
-                    //if (TransactionView.NonDepAccountIDBlock.Text == client.ID.ToString() && client.Bill != "Закрытый")
-                    //{
-                    //    if (TransactionView.NonDepAmountBlock.Text != string.Empty)
-                    //    {
-                    //        int sums = int.Parse(client.Bill) + int.Parse(TransactionView.NonDepAmountBlock.Text);
-                    //        client.Bill = Convert.ToString(sums);
-                    //    }
-                    //}
                 }
             }
             SearchCommandMethod();
             XmlSerialize(Clients);
         }
 
+        /// <summary>
+        /// Пополнить депозитный счёт
+        /// </summary>
         public ICommand DepositPlusCommand { get; }
         private void OnDepositPlusCommandExecute(object p)
         {
@@ -536,21 +463,15 @@ namespace StartCS_Exceptions.ViewModels
                 catch
                 {
                     break;
-                    //continue;
-                    //if (TransactionView.DepAccountIDBlock.Text == client.ID.ToString() && client.DepBill != "Закрытый")
-                    //{
-                    //    if (TransactionView.DepAmountBlock.Text != string.Empty)
-                    //    {
-                    //        int sums = int.Parse(client.DepBill) + int.Parse(TransactionView.DepAmountBlock.Text);
-                    //        client.DepBill = Convert.ToString(sums);
-                    //    }
-                    //}
                 }
             }
             SearchCommandMethod();
             XmlSerialize(Clients);
         }
 
+        /// <summary>
+        /// Поиск клиентов по ID отправителя и получателя для дальнейшего перевода
+        /// </summary>
         public ICommand SearchIDFromToCommand { get; }
         private void OnSearchIDFromToCommandExecute(object p)
         {
@@ -582,27 +503,6 @@ namespace StartCS_Exceptions.ViewModels
                 catch
                 {
                     break;
-                    //continue;
-                    //if (TransactionView.FromAccountTransaction.Text == client.ID.ToString() && TransactionView.FromAccountTransaction.Text != String.Empty
-                    //    && TransactionView.ToAccountTransaction.Text != string.Empty)
-                    //{
-                    //    TransactionView.FromIDNonDepositBox.Text = client.Bill;
-                    //    TransactionView.FromIDDepositBox.Text = client.DepBill;
-
-                    //    if (TransactionView.FromIDNonDepositBox.Text == "Закрытый")
-                    //    {
-                    //        TransactionView.FromIDNonDepositBox.Background = new SolidColorBrush(Colors.DarkRed);
-                    //    }
-                    //    else { TransactionView.FromIDNonDepositBox.Background = new SolidColorBrush(Colors.White); }
-
-                    //    if (TransactionView.FromIDDepositBox.Text == "Закрытый")
-                    //    {
-                    //        TransactionView.FromIDDepositBox.Background = new SolidColorBrush(Colors.DarkRed);
-                    //    }
-                    //    else { TransactionView.FromIDDepositBox.Background = new SolidColorBrush(Colors.White); }
-
-                    //}
-                    //else continue;
                 }
             }
 
@@ -627,20 +527,6 @@ namespace StartCS_Exceptions.ViewModels
                 catch
                 {
                     break;
-                    //continue;
-                    //if (TransactionView.ToAccountTransaction.Text == client.ID.ToString() && TransactionView.ToAccountTransaction.Text != String.Empty
-                    //    && TransactionView.FromAccountTransaction.Text != String.Empty)
-                    //{
-                    //    TransactionView.ToIDDepositBox.Text = client.DepBill;
-                    //    TransactionView.ToIDNonDepositBox.Text = client.Bill;
-
-                    //    if (TransactionView.ToIDDepositBox.Text == "Закрытый") { TransactionView.ToIDDepositBox.Background = new SolidColorBrush(Colors.DarkRed); }
-                    //    else { TransactionView.ToIDDepositBox.Background = new SolidColorBrush(Colors.White); }
-
-                    //    if (TransactionView.ToIDNonDepositBox.Text == "Закрытый") { TransactionView.ToIDNonDepositBox.Background = new SolidColorBrush(Colors.DarkRed); }
-                    //    else { TransactionView.ToIDNonDepositBox.Background = new SolidColorBrush(Colors.White); }
-                    //}
-                    //else continue;
                 }
             }
         }
@@ -687,27 +573,6 @@ namespace StartCS_Exceptions.ViewModels
                 catch
                 {
                     break;
-                    //continue;
-                    //if (TransactionView.FromAccountTransaction.Text == client.ID.ToString() && TransactionView.FromAccountTransaction.Text != String.Empty
-                    //    && TransactionView.ToAccountTransaction.Text != String.Empty && TransactionView.ToIDDepositBox.Text != String.Empty && TransactionView.ToIDDepositBox.Text != "Закрытый")
-                    //{
-                    //    try
-                    //    {
-                    //        if (TransactionView.TransactionAmountBlock.Text != String.Empty)
-                    //        {
-                    //            int amount = int.Parse(TransactionView.TransactionAmountBlock.Text);
-                    //            int clientBalance = int.Parse(client.Bill) - amount;
-                    //            client.Bill = Convert.ToString(clientBalance);
-                    //            minusClientBalance = amount;
-
-                    //            dataNonDepositClient = client;
-                    //        }
-                    //    }
-                    //    catch
-                    //    {
-                    //        continue;
-                    //    }
-                    //}
                 }
             }
 
@@ -726,29 +591,21 @@ namespace StartCS_Exceptions.ViewModels
 
                             minusClientBalance = 0;
                         }
-                        else { MessageBox.Show("Счёт клиента закрытый"); }
+                        else { MessageBox.Show("Счёт клиента закрытый", "Внимание!", MessageBoxButton.OK, MessageBoxImage.Warning); }
                     }
                 }
                 catch
                 {
                     break;
-                    //continue;
-                    //if (TransactionView.ToAccountTransaction.Text == client.ID.ToString() && TransactionView.ToAccountTransaction.Text != String.Empty
-                    //    && TransactionView.FromAccountTransaction.Text != String.Empty)
-                    //{
-                    //    if (TransactionView.TransactionAmountBlock.Text != String.Empty && client.Bill != "Закрытый")
-                    //    {
-                    //        int sums = int.Parse(client.Bill) + minusClientBalance;
-                    //        client.Bill = Convert.ToString(sums);
-                    //    }
-                    //    else { MessageBox.Show("Счёт клиента закрытый"); }
-                    //}
                 }
             }
             SearchCommandMethod();
             XmlSerialize(Clients);
         }
 
+        /// <summary>
+        /// Перевод депозитного счёта от найденного по ID клиента к другому
+        /// </summary>
         public ICommand DepTransferCommand { get; }
         private void OnDepTransferCommandExecute(object p)
         {
@@ -781,27 +638,6 @@ namespace StartCS_Exceptions.ViewModels
                 catch
                 {
                     break;
-                    //continue;
-                    //if (TransactionView.FromAccountTransaction.Text == client.ID.ToString() && TransactionView.FromAccountTransaction.Text != String.Empty
-                    //    && TransactionView.ToAccountTransaction.Text != String.Empty && TransactionView.ToIDDepositBox.Text != String.Empty && TransactionView.ToIDDepositBox.Text != "Закрытый")
-                    //{
-                    //    try
-                    //    {
-                    //        if (TransactionView.DepTransactionAmountBlock.Text != String.Empty && client.Bill != "Закрытый")
-                    //        {
-                    //            int amount = int.Parse(TransactionView.DepTransactionAmountBlock.Text);
-                    //            int clientBalance = int.Parse(client.DepBill) - amount;
-                    //            client.DepBill = Convert.ToString(clientBalance);
-                    //            minusClientBalance = amount;
-
-                    //            dataDepositClient = client;
-                    //        }
-                    //    }
-                    //    catch
-                    //    {
-                    //        continue;
-                    //    }
-                    //}
                 }
             }
 
@@ -820,29 +656,21 @@ namespace StartCS_Exceptions.ViewModels
                             client.DepBill = Convert.ToString(sums);
                             minusDepClientBalance = 0;
                         }
-                        else { MessageBox.Show("Депозитный счёт клиента закрытый"); }
+                        else { MessageBox.Show("Депозитный счёт клиента закрытый", "Внимание!", MessageBoxButton.OK, MessageBoxImage.Warning); }
                     }
                 }
                 catch
                 {
                     break;
-                    //continue;
-                    //if (TransactionView.ToAccountTransaction.Text == client.ID.ToString() && TransactionView.ToAccountTransaction.Text != String.Empty
-                    //    && TransactionView.FromAccountTransaction.Text != String.Empty)
-                    //{
-                    //    if (TransactionView.DepTransactionAmountBlock.Text != String.Empty && client.DepBill != "Закрытый")
-                    //    {
-                    //        int sums = int.Parse(client.DepBill) + minusClientBalance;
-                    //        client.DepBill = Convert.ToString(sums);
-                    //    }
-                    //    else { MessageBox.Show("Депозитный счёт клиента закрытый"); }
-                    //}
                 }
             }
             SearchCommandMethod();
             XmlSerialize(Clients);
         }
 
+        /// <summary>
+        /// Выбор сотрудника Менеджера или Консультанта
+        /// </summary>
         public ICommand ChooseWorkerCommand { get; }
         private void OnChooseWorkerCommandExecute(object p)
         {
@@ -852,6 +680,7 @@ namespace StartCS_Exceptions.ViewModels
                 MainView.WorkerName.Text = "Консультант";
                 MainView.ImageWorker.Fill = new ImageBrush(new BitmapImage(new Uri(BaseUriHelper.GetBaseUri(MainView), "/Images/IconUser.jpg")));
                 ClientView.OperationsColumn.Visibility = Visibility.Hidden;
+                ClientView.AddButton.Visibility = Visibility.Hidden;
                 ClientView.membersDataGrid.IsReadOnly = true;
                 MainView.TransactionShow.Visibility = Visibility.Collapsed;
             }
@@ -861,12 +690,16 @@ namespace StartCS_Exceptions.ViewModels
                 MainView.WorkerName.Text = "Менеджер";
                 MainView.ImageWorker.Fill = new ImageBrush(new BitmapImage(new Uri(BaseUriHelper.GetBaseUri(MainView), "/Images/IconManager.png")));
                 ClientView.OperationsColumn.Visibility = Visibility.Visible;
+                ClientView.AddButton.Visibility = Visibility.Visible;
                 ClientView.membersDataGrid.IsReadOnly = false;
                 MainView.TransactionShow.Visibility = Visibility.Visible;
             }
 
         }
 
+        /// <summary>
+        /// Открыть окно добавления клиентов
+        /// </summary>
         public ICommand OpenAddClientWindowCommand { get; }
         private void OnOpenAddClientWindowCommandExecute(object p)
         {
@@ -874,6 +707,9 @@ namespace StartCS_Exceptions.ViewModels
             AddClientWindow.ShowDialog();
         }
 
+        /// <summary>
+        /// Добавление клиентов
+        /// </summary>
         public ICommand AddClientCommad { get; }
         private void OnAddClientCommandExecute(object p)
         {
@@ -900,6 +736,8 @@ namespace StartCS_Exceptions.ViewModels
             }
             else { MessageBox.Show("Неполная информация!", "Ошибка", MessageBoxButton.OK, MessageBoxImage.Error); }
         }
+
+        #endregion
 
         public MainWindowViewModel() 
         {
@@ -928,6 +766,9 @@ namespace StartCS_Exceptions.ViewModels
             else { GenerationClient(); }
         }
 
+        /// <summary>
+        /// Генерация случайных клиентов
+        /// </summary>
         void GenerationClient()
         {
             Random random = new Random();
@@ -960,6 +801,10 @@ namespace StartCS_Exceptions.ViewModels
             XmlSerialize(Clients);
         }
 
+        /// <summary>
+        /// Сериализация xml файла
+        /// </summary>
+        /// <param name="clients"></param>
         public void XmlSerialize(ObservableCollection<Client.Client> clients)
         {
             File.WriteAllText(path, String.Empty);
@@ -970,6 +815,10 @@ namespace StartCS_Exceptions.ViewModels
             }
         }
 
+        /// <summary>
+        /// Десериализация xml файла
+        /// </summary>
+        /// <param name="clients"></param>
         void XmlDeserialize(ObservableCollection<Client.Client> clients)
         {
             if (File.Exists(path))

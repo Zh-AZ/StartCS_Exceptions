@@ -24,15 +24,15 @@
     
 
     <Window.Resources>
-        <DataTemplate DataType="{x:Type viewModelClient:ClientViewModel}">
+        <DataTemplate DataType="{x:Type viewModelClient:ClientView}">
             <viewModelClient:ClientView/>
         </DataTemplate>
 
-        <DataTemplate DataType="{x:Type viewModelTransaction:TransactionViewModel}">
+        <DataTemplate DataType="{x:Type viewModelTransaction:TransactionView}">
             <viewModelTransaction:TransactionView/>
         </DataTemplate>
 
-        <DataTemplate DataType="{x:Type viewModelHistoryLog:HistoryLogViewModel}">
+        <DataTemplate DataType="{x:Type viewModelHistoryLog:HistoryLogView}">
             <viewModelHistoryLog:HistoryLogView/>
         </DataTemplate>
 
@@ -62,16 +62,6 @@
                                     <EasingDoubleKeyFrame KeyTime="0:0:0.20" Value="-2"/>
                                     <EasingDoubleKeyFrame KeyTime="0:0:0.25" Value="0"/>
                                 </DoubleAnimationUsingKeyFrames>
-                                <!--
-                                    <DoubleAnimation 
-                                        Storyboard.TargetName="Position" 
-                                        Storyboard.TargetProperty="X" 
-                                        From="-2" To="2" 
-                                        Duration="0:0:0:0.1" 
-                                        AutoReverse="True" 
-                                        RepeatBehavior="10x">
-                                    </DoubleAnimation>
--->
                             </Storyboard>
                         </BeginStoryboard>
                     </Trigger.EnterActions>
@@ -95,12 +85,12 @@
         </Border.BorderBrush>
         <Grid>
             <Grid.ColumnDefinitions>
-                <!--Navigation menu-->
+                <!--Меню навигации-->
                 <ColumnDefinition Width="250"/>
-                <!--Content section-->
+                <!--Раздел контента-->
                 <ColumnDefinition Width="*"/>
             </Grid.ColumnDefinitions>
-            <!--Navigation Menu-->
+            <!--Меню навигации-->
             <Border CornerRadius="10,0,0,10"
                     Grid.Column="0">
                 <Border.Background>
@@ -111,7 +101,7 @@
                 </Border.Background>
                 <StackPanel>
 
-                    <!--Logo-->
+                    <!--Логотип-->
                     <StackPanel Orientation="Horizontal"
                                 Height="35"
                                 Margin="15,25,0,40">
@@ -126,23 +116,13 @@
                                    Margin="10,0,0,0"/>
                     </StackPanel>
 
-                    <!--Menu Buttons-->
-                    <!--<RadioButton Style="{StaticResource menuButton}"
-                                 Tag="{StaticResource color1}"
-                                 IsChecked="True"
-                                 Command="{Binding ShowHomeViewCommand}">
-                        <StackPanel Orientation="Horizontal">
-                            <fa:IconImage Icon="Home" Style="{StaticResource menuButtonIcon}"/>
-                            <TextBlock Text="Home" Style="{StaticResource menuButtonText}"/>
-                        </StackPanel>
-                    </RadioButton>-->
                     <RadioButton Style="{StaticResource menuButton}"
                                  Tag="{StaticResource color2}"
                                  Command="{Binding OpenClientViewCommand}"
                                  IsChecked="True">
                         <StackPanel Orientation="Horizontal">
                             <fa:IconImage Icon="UserGroup" Style="{StaticResource menuButtonIcon}"/>
-                            <TextBlock Text="Data clients" Style="{StaticResource menuButtonText}"/>
+                            <TextBlock Text="Клиенты" Style="{StaticResource menuButtonText}"/>
                         </StackPanel>
                     </RadioButton>
                     <RadioButton Style="{StaticResource menuButton}"
@@ -152,7 +132,7 @@
                                  Name="TransactionShow">
                         <StackPanel Orientation="Horizontal">
                             <fa:IconImage Icon="MoneyBillTransfer" Style="{StaticResource menuButtonIcon}"/>
-                            <TextBlock Text="Transaction" Style="{StaticResource menuButtonText}"/>
+                            <TextBlock Text="Транзакция" Style="{StaticResource menuButtonText}"/>
                         </StackPanel>
                     </RadioButton>
                     <RadioButton Style="{StaticResource menuButton}"
@@ -161,13 +141,13 @@
                                  Command="{Binding Path=OpenHistoryLogViewCommand}">
                         <StackPanel Orientation="Horizontal">
                             <fa:IconImage Icon="History" Style="{StaticResource menuButtonIcon}"/>
-                            <TextBlock Text="History log" Style="{StaticResource menuButtonText}"/>
+                            <TextBlock Text="Журнал истории" Style="{StaticResource menuButtonText}"/>
                         </StackPanel>
                     </RadioButton>
                 </StackPanel>
             </Border>
 
-            <!--Main Section-->
+            <!--Основной раздел-->
             <Border CornerRadius="0,10,10,0"
                     Grid.Column="1">
                 <Border.Background>
@@ -178,15 +158,15 @@
                 </Border.Background>
                 <Grid>
                     <Grid.RowDefinitions>
-                        <!--Control bar-->
+                        <!--Панель управления-->
                         <RowDefinition Height="25"/>
                         <!--Header / Caption-->
                         <RowDefinition Height="35"/>
-                        <!--Content section / Child views-->
+                        <!--Главный панель / Child views-->
                         <RowDefinition Height="*"/>
                     </Grid.RowDefinitions>
                     
-                    <!--Control bar-->
+                    <!--Панель управления-->
                     <StackPanel x:Name="pnlControlBar"
                                 Grid.Row="0"
                                 Orientation="Horizontal"
@@ -242,7 +222,7 @@
                                        VerticalAlignment="Center"/>
                         </StackPanel>
                         
-                        <!--User options-->
+                        <!--Пареметры пользователя-->
                         <StackPanel Grid.Column="1"
                                     Orientation="Horizontal"
                                     FlowDirection="RightToLeft"
@@ -264,31 +244,13 @@
                                        FontSize="12"
                                        VerticalAlignment="Center"/>
 
-                            <!--<Image x:Name="ImageWorker"/>-->
                             <Ellipse Height="35" Width="35"
                                      Stroke="{StaticResource color2}"
                                      StrokeThickness="2"
                                      Margin="10,0,10,0"
                                      x:Name="ImageWorker">
-                                <!--<Ellipse.Fill>
-                                    <ImageBrush ImageSource="/Images/user-icon.png"/>
-                                </Ellipse.Fill>-->
                             </Ellipse>
 
-                            <!--<Button Style="{StaticResource iconButton}"
-                                    Tag="{StaticResource color3}">
-                                <fa:IconImage Icon="Clock" Style="{StaticResource iconButtonIcon}"/>
-                            </Button>
-
-                            <Button Style="{StaticResource iconButton}"
-                                    Tag="{StaticResource color4}">
-                                <fa:IconImage Icon="Envelope" Style="{StaticResource iconButtonIcon}"/>
-                            </Button>-->
-                            
-                            <!--<Button Style="{StaticResource iconButton}"
-                                    Tag="{StaticResource color5}">
-                                <fa:IconImage Icon="Bell" Style="{StaticResource iconButtonIcon}"/>
-                            </Button>-->
                             <materialDesign:PackIcon Kind="Bell"
                                                      Foreground="#9932CC	" 
                                                      Height="20"
@@ -296,8 +258,8 @@
                                                      Name="BellState"/>
                         </StackPanel>
                     </Grid>
-                    <!--#784DFD-->
-                    <!--Content section / Child views-->
+                   
+                    <!--Главный панель / Child views-->
                     <ContentControl Content="{Binding CurrentChildView}"
                                     Grid.Row="2"
                                     Margin="25"/>

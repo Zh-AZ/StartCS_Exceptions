@@ -116,11 +116,9 @@
     <Compile Include="Views\Windows\HistoryLogView\HistoryLogView.xaml.cs">
       <DependentUpon>HistoryLogView.xaml</DependentUpon>
     </Compile>
-    <Compile Include="Views\Windows\HistoryLogView\HistoryLogViewModel.cs" />
     <Compile Include="Views\Windows\TransactionView\TransactionView.xaml.cs">
       <DependentUpon>TransactionView.xaml</DependentUpon>
     </Compile>
-    <Compile Include="Views\Windows\TransactionView\TransactionViewModel.cs" />
     <Page Include="Styles\ButtonStyles.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
@@ -158,7 +156,6 @@
     <Compile Include="Views\Windows\ClientView\ClientView.xaml.cs">
       <DependentUpon>ClientView.xaml</DependentUpon>
     </Compile>
-    <Compile Include="Views\Windows\ClientView\ClientViewModel.cs" />
     <Compile Include="Views\Windows\MainView\MainView.xaml.cs">
       <DependentUpon>MainView.xaml</DependentUpon>
     </Compile>
